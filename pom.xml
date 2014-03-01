@@ -1,0 +1,20 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.com.futbid</groupId>
+	<artifactId>fut-bid</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>FUT - FIFA Ultimate Team</name>
+
+	<dependencies>
+		
+	</dependencies>
+
+	<modules>
+		<module>fut-bid-domain</module>
+		<module>fut-bid-integration</module>
+		<module>fut-bid-service</module>
+		<module>fut-bid-swing</module>
+		<module>fut-bid-web</module>
+	</modules>
+</project>

@@ -1,0 +1,14 @@
+target/
+*.war
+*.class
+.classpath
+.project
+.settings/
+.metadata/
+.DS_Store
+.livereload
+nbactions.xml
+bin/
+pom.xml.releaseBackup
+release.properties
+*.orig
