@@ -14,36 +14,50 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import br.com.futbid.swing.ui.enumeration.Tab;
+import br.com.futbid.domain.enumeration.Tab;
 import br.com.futbid.swing.ui.listener.ChangeTabListener;
+import br.com.futbid.swing.ui.panel.auth.AuthenticationPainel;
+import br.com.futbid.swing.ui.panel.auth.impl.AuthenticationPainelImpl;
+import br.com.futbid.swing.ui.panel.tab.WorkTabPanel;
+import br.com.futbid.swing.ui.panel.work.impl.WorkPanelImpl;
 import br.com.futbid.swing.ui.settings.SettingsPanel;
 import br.com.futbid.swing.ui.settings.impl.SettingsPanelImpl;
 
 public class MainPanel extends JPanel {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     private SettingsPanel settingsPanel;
-   /* private BasePanel ap = new BasePanel();
-    private SettingsPanel sp = new SettingsPanel();
-    private AutobuyerInventoryPanel buyIP = new AutobuyerInventoryPanel();
-    private AutobidderInventoryPanel bidIP = new AutobidderInventoryPanel();*/
+
+    private WorkTabPanel workTabPainel;
+
+    /*
+     * private BasePanel ap = new BasePanel(); private SettingsPanel sp = new SettingsPanel(); private
+     * AutobuyerInventoryPanel buyIP = new AutobuyerInventoryPanel(); private AutobidderInventoryPanel bidIP = new
+     * AutobidderInventoryPanel();
+     */
 
     public MainPanel() {
-	
+
 	setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
 
 	final JTabbedPane tabPanel = new JTabbedPane();
 	tabPanel.setPreferredSize(new Dimension(800, 550));
 
+	AuthenticationPainel authenticationPanel = new AuthenticationPainelImpl();
+	authenticationPanel.setName(Tab.LOGIN.getName());
+
+	workTabPainel = new WorkTabPanel(authenticationPanel, new WorkPanelImpl());
+	tabPanel.addTab(Tab.LOGIN.getName(), (Component) workTabPainel);
+
 	settingsPanel = new SettingsPanelImpl();
 	settingsPanel.setName(Tab.SETTINGS.getName());
 	tabPanel.addTab(Tab.SETTINGS.getName(), (Component) settingsPanel);
-	
-	/*tabPanel.addTab("Autobuyer", this.ap);
-	tabPanel.addTab("Settings", this.sp);
-	tabPanel.addTab("Buyer inventory", this.buyIP);
-	tabPanel.addTab("Bidder inventory", this.bidIP);*/
+
+	/*
+	 * tabPanel.addTab("Buyer inventory", this.buyIP); 
+	 * tabPanel.addTab("Bidder inventory", this.bidIP);
+	 */
 
 	add(tabPanel);
 

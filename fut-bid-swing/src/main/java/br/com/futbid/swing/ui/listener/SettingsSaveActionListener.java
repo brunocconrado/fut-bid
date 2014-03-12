@@ -5,20 +5,17 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import br.com.futbid.service.SettingsService;
 import br.com.futbid.swing.ui.settings.SettingsPanel;
 
 public class SettingsSaveActionListener implements ActionListener {
     
-    private SettingsService settingsService;
-
     @Override
     public void actionPerformed(ActionEvent event) {
 	
 	Object object = ((JButton)event.getSource()).getParent().getParent();
 	if(object instanceof SettingsPanel) {
 	    SettingsPanel settings = (SettingsPanel) object;
-	    //settings.
+	    settings.save();
 	}
 	
     }

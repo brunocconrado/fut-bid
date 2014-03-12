@@ -1,11 +1,11 @@
-package br.com.futbid.swing.ui.enumeration;
+package br.com.futbid.domain.enumeration;
 
 public enum Tab {
     
     WORK(1, "WORK"),
     SETTINGS(2, "SETTINGS"),
     BUY(3, "BUY"),
-    BID(4, "BID");
+    BID(4, "BID"), LOGIN(5, "AUTHENTICATION");
     
     private String name;
     

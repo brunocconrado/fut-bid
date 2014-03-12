@@ -1,4 +1,4 @@
-package br.com.futbid.swing.ui.enumeration;
+package br.com.futbid.domain.enumeration;
 
 public class SearchFields {
     

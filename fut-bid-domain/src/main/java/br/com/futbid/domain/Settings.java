@@ -1,73 +1,76 @@
 package br.com.futbid.domain;
 
+import br.com.futbid.domain.enumeration.search.ActionDuration;
+
 public class Settings {
 
-    private long sleepTime;
-    private long tradePileSize;
-    private long auctionDuration;
+    private Long minInWallet;
+    private Long sleepTime;
 
-    private int maxBoughtCountPerMin;
-    private int minCoinsValue;
-    private int watchListSize;
-    private int maxBidCountPerCycle;
+    private Integer tradePileSize;
+    private Integer maxBoughtCountPerMin;
+    private Integer watchListSize;
+    private Integer maxBidCountPerCycle;
+
+    private ActionDuration actionDuration;
 
     private boolean dontBuy;
     private boolean stopBidIfTradePileIsFull;
     private boolean logToFile;
 
-    public long getSleepTime() {
+    public Long getSleepTime() {
 	return sleepTime;
     }
 
-    public void setSleepTime(long sleepTime) {
+    public void setSleepTime(Long sleepTime) {
 	this.sleepTime = sleepTime;
     }
 
-    public long getTradePileSize() {
+    public Integer getTradePileSize() {
 	return tradePileSize;
     }
 
-    public void setTradePileSize(long tradePileSize) {
+    public void setTradePileSize(Integer tradePileSize) {
 	this.tradePileSize = tradePileSize;
     }
 
-    public long getAuctionDuration() {
-	return auctionDuration;
+    public ActionDuration getActionDuration() {
+	return actionDuration;
     }
 
-    public void setAuctionDuration(long auctionDuration) {
-	this.auctionDuration = auctionDuration;
+    public void setActionDuration(ActionDuration actionDuration) {
+	this.actionDuration = actionDuration;
     }
 
-    public int getMaxBoughtCountPerMin() {
+    public Integer getMaxBoughtCountPerMin() {
 	return maxBoughtCountPerMin;
     }
 
-    public void setMaxBoughtCountPerMin(int maxBoughtCountPerMin) {
+    public void setMaxBoughtCountPerMin(Integer maxBoughtCountPerMin) {
 	this.maxBoughtCountPerMin = maxBoughtCountPerMin;
     }
 
-    public int getMinCoinsValue() {
-	return minCoinsValue;
+    public Long getMinInWallet() {
+	return minInWallet;
     }
 
-    public void setMinCoinsValue(int minCoinsValue) {
-	this.minCoinsValue = minCoinsValue;
+    public void setMinInWallet(Long minInWallet) {
+	this.minInWallet = minInWallet;
     }
 
-    public int getWatchListSize() {
+    public Integer getWatchListSize() {
 	return watchListSize;
     }
 
-    public void setWatchListSize(int watchListSize) {
+    public void setWatchListSize(Integer watchListSize) {
 	this.watchListSize = watchListSize;
     }
 
-    public int getMaxBidCountPerCycle() {
+    public Integer getMaxBidCountPerCycle() {
 	return maxBidCountPerCycle;
     }
 
-    public void setMaxBidCountPerCycle(int maxBidCountPerCycle) {
+    public void setMaxBidCountPerCycle(Integer maxBidCountPerCycle) {
 	this.maxBidCountPerCycle = maxBidCountPerCycle;
     }
 
@@ -93,6 +96,18 @@ public class Settings {
 
     public void setLogToFile(boolean logToFile) {
 	this.logToFile = logToFile;
+    }
+
+    @Override
+    public String toString() {
+	return "Settings [" + (minInWallet != null ? "minInWallet: " + minInWallet + ", " : "")
+		+ (sleepTime != null ? "sleepTime: " + sleepTime + ", " : "")
+		+ (tradePileSize != null ? "tradePileSize: " + tradePileSize + ", " : "")
+		+ (maxBoughtCountPerMin != null ? "maxBoughtCountPerMin: " + maxBoughtCountPerMin + ", " : "")
+		+ (watchListSize != null ? "watchListSize: " + watchListSize + ", " : "")
+		+ (maxBidCountPerCycle != null ? "maxBidCountPerCycle: " + maxBidCountPerCycle + ", " : "")
+		+ (actionDuration != null ? "actionDuration: " + actionDuration + ", " : "") + "dontBuy: " + dontBuy
+		+ ", stopBidIfTradePileIsFull: " + stopBidIfTradePileIsFull + ", logToFile: " + logToFile + " ]";
     }
 
 }

@@ -8,19 +8,22 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.text.NumberFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import br.com.futbid.domain.Settings;
+import br.com.futbid.domain.enumeration.search.ActionDuration;
 import br.com.futbid.service.SettingsService;
 import br.com.futbid.service.impl.SettingsServiceImpl;
-import br.com.futbid.swing.ui.enumeration.search.SellTime;
+import br.com.futbid.swing.ui.listener.ChangeFieldFormatterListener;
 import br.com.futbid.swing.ui.listener.SettingsSaveActionListener;
 import br.com.futbid.swing.ui.settings.SettingsPanel;
 import br.com.futbid.swing.ui.utils.Colors;
@@ -31,24 +34,19 @@ public class SettingsPanelImpl extends JPanel implements SettingsPanel {
 
     private SettingsService settingsService = new SettingsServiceImpl();
 
-    private Settings settings;
-
-    private JCheckBox logToFileField;
-    private JTextField sleepTimeFiled;
-    private JTextField tradePileSizeField;
-    private JCheckBox dontByField;
+    private JCheckBox logToFile;
+    private JTextField sleepTime;
+    private JTextField tradePileSize;
+    private JCheckBox dontBy;
     private JCheckBox stopBidWhenTradePileFull;
     private JTextField maxBoughtCountPerMin;
-    private JComboBox auctionDuration;
-    private JTextField minCoinsValue;
+    private JComboBox<ActionDuration> auctionDuration;
+    private JFormattedTextField minInWallet;
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     public SettingsPanelImpl() {
 
-	settings = settingsService.find();
-
 	setLayout(new BorderLayout());
-	
+
 	JPanel controlPanel = new JPanel(new FlowLayout(2));
 	controlPanel.setPreferredSize(new Dimension(0, 70));
 	controlPanel.setBackground(Colors.BACK_GROUND);
@@ -58,13 +56,15 @@ public class SettingsPanelImpl extends JPanel implements SettingsPanel {
 	controlPanel.add(saveButton);
 
 	add(createGeneralSettingsPanel(), "North");
-	
+
 	JPanel center = new JPanel(new BorderLayout());
 	center.add(createBuyingAndSellingSettingsPanel(), "North");
 	center.setBackground(Colors.BACK_GROUND);
-	
+
 	add(center, "Center");
 	add(controlPanel, "South");
+
+	updateFields();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -72,13 +72,13 @@ public class SettingsPanelImpl extends JPanel implements SettingsPanel {
 
 	GridLayout appLeftlayout = new GridLayout(4, 2);
 	appLeftlayout.setVgap(20);
-	
+
 	JPanel leftPanel = new JPanel();
 	leftPanel.setBackground(Colors.BACK_GROUND);
 	leftPanel.setPreferredSize(new Dimension(470, 170));
 	leftPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 	leftPanel.setLayout(appLeftlayout);
-	
+
 	leftPanel.add(createLable("Stop biding if trade pile is full: ", Colors.BACK_GROUND));
 	stopBidWhenTradePileFull = new JCheckBox();
 	stopBidWhenTradePileFull.setBackground(Colors.BACK_GROUND);
@@ -89,17 +89,18 @@ public class SettingsPanelImpl extends JPanel implements SettingsPanel {
 	leftPanel.add(maxBoughtCountPerMin);
 
 	leftPanel.add(createLable("Auction duration (hours): ", Colors.BACK_GROUND));
-	auctionDuration = new JComboBox(SellTime.values());
+	auctionDuration = new JComboBox(ActionDuration.values());
 	auctionDuration.setSelectedIndex(0);
 	leftPanel.add(auctionDuration);
 
 	leftPanel.add(createLable("Minimal user coins left: ", Colors.BACK_GROUND));
-	minCoinsValue = new JTextField();
-	leftPanel.add(minCoinsValue);
+	minInWallet = new JFormattedTextField(NumberFormat.getInstance());
+	minInWallet.addPropertyChangeListener(new ChangeFieldFormatterListener());
+	leftPanel.add(minInWallet);
 
 	GridLayout rightLayout = new GridLayout(4, 1);
 	rightLayout.setVgap(20);
-	
+
 	JPanel rightPanel = new JPanel();
 	rightPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 	rightPanel.setBackground(Colors.BACK_GROUND);
@@ -113,23 +114,24 @@ public class SettingsPanelImpl extends JPanel implements SettingsPanel {
 	appCenterPanel.setBackground(Colors.BACK_GROUND);
 	appCenterPanel.add(leftPanel, "West");
 	appCenterPanel.add(rightPanel, "East");
-	
+
 	JPanel buyingSellSettingsPanel = new JPanel(new BorderLayout());
 	buyingSellSettingsPanel.setBackground(Colors.BACK_GROUND);
 	buyingSellSettingsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-	buyingSellSettingsPanel.add(createLable("Buying & Selling Settings: ", Colors.BACK_GROUND, Colors.FOREGROUND), "North");
+	buyingSellSettingsPanel.add(createLable("Buying & Selling Settings: ", Colors.BACK_GROUND, Colors.FOREGROUND),
+		"North");
 	buyingSellSettingsPanel.add(appCenterPanel, "Center");
 
 	return buyingSellSettingsPanel;
-	
+
     }
 
     private JPanel createGeneralSettingsPanel() {
-	
+
 	JPanel settingsPanel = new JPanel(new BorderLayout());
 	settingsPanel.setBackground(Colors.BACK_GROUND);
 	settingsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-	
+
 	JLabel generalSettingsLabel = new JLabel("General Settings: ");
 	generalSettingsLabel.setBackground(Colors.BACK_GROUND);
 	generalSettingsLabel.setForeground(new Color(12, 132, 201));
@@ -166,7 +168,7 @@ public class SettingsPanelImpl extends JPanel implements SettingsPanel {
 
 	settingsPanel.add(generalSettingsLabel, "North");
 	settingsPanel.add(centerPanel, "Center");
-	
+
 	return settingsPanel;
     }
 
@@ -174,40 +176,42 @@ public class SettingsPanelImpl extends JPanel implements SettingsPanel {
 	panel.add(createLable("Save all the logs from logfeed into a file.", Colors.BACK_GROUND));
 	panel.add(createLable("Number of miliseconds that bot will sleep.", Colors.BACK_GROUND));
 	panel.add(createLable("Trade pile size", Colors.BACK_GROUND));
-	panel.add(createLable("Autobuyer will only relist, clear sold and analyze watch list items.", Colors.BACK_GROUND));
+	panel.add(createLable("Autobuyer will only relist, clear sold and analyze watch list items.",
+		Colors.BACK_GROUND));
     }
 
     private void logFile(JPanel panel) {
 	panel.add(createLable("Log to File: ", Colors.BACK_GROUND));
 
-	logToFileField = new JCheckBox();
-	logToFileField.setBackground(Colors.BACK_GROUND);
-	panel.add(this.logToFileField);
+	logToFile = new JCheckBox();
+	logToFile.setBackground(Colors.BACK_GROUND);
+	panel.add(this.logToFile);
     }
 
     private void sleepTime(JPanel panel) {
 	panel.add(createLable("Sleep Time (seconds): ", Colors.BACK_GROUND));
 
-	sleepTimeFiled = new JTextField();
-	panel.add(sleepTimeFiled);
+	sleepTime = new JTextField();
+	panel.add(sleepTime);
     }
 
     private void tradePileSize(JPanel panel) {
 	panel.add(createLable("Trade pile size: ", Colors.BACK_GROUND));
 
-	tradePileSizeField = new JTextField();
-	panel.add(tradePileSizeField);
+	tradePileSize = new JTextField();
+	panel.add(tradePileSize);
     }
 
     private void dontBuy(JPanel panel) {
 	panel.add(createLable("Don't Buy: ", Colors.BACK_GROUND));
 
-	dontByField = new JCheckBox();
-	dontByField.setBackground(Colors.BACK_GROUND);
-	panel.add(dontByField);
+	dontBy = new JCheckBox();
+	dontBy.setBackground(Colors.BACK_GROUND);
+	panel.add(dontBy);
     }
-    
+
     public void save() {
+	settingsService.save(populateSettings());
 	/*
 	 * ApplicationParametersManager.INSTANCE().saveNewValues(this.logToFileField.isSelected(),
 	 * this.sleepTimeFiled.getText(), this.tradePileSizeField.getText(), this.dontByField.isSelected(),
@@ -219,6 +223,20 @@ public class SettingsPanelImpl extends JPanel implements SettingsPanel {
 
     @Override
     public void updateFields() {
+
+	Settings settings = settingsService.find();
+	dontBy.setSelected(settings.isDontBuy());
+	stopBidWhenTradePileFull.setSelected(settings.isStopBidIfTradePileIsFull());
+
+	sleepTime.setText(settings.getSleepTime() != null ? settings.getSleepTime().toString() : "");
+
+	tradePileSize.setText(settings.getTradePileSize() != null ? settings.getTradePileSize().toString() : "");
+	maxBoughtCountPerMin.setText(settings.getMaxBoughtCountPerMin() != null ? settings.getMaxBoughtCountPerMin()
+		.toString() : "");
+
+	auctionDuration.setSelectedItem(settings.getActionDuration());
+	minInWallet.setValue(settings.getMinInWallet());
+
 	/*
 	 * this.logToFileField.setSelected(ApplicationParametersManager.INSTANCE().isLogToFile());
 	 * this.sleepTimeFiled.setText(ApplicationParametersManager.INSTANCE().getSleepTimeInSeconds() + "");
@@ -232,6 +250,41 @@ public class SettingsPanelImpl extends JPanel implements SettingsPanel {
 	 * this.stopBidWhenTradePileFull
 	 * .setSelected(ApplicationParametersManager.INSTANCE().isStopBidIfTradePileIsFull());
 	 */
+    }
+
+    private Settings populateSettings() {
+
+	Settings settings = settingsService.find();
+	settings.setLogToFile(logToFile.isSelected());
+	settings.setDontBuy(dontBy.isSelected());
+	settings.setStopBidIfTradePileIsFull(stopBidWhenTradePileFull.isSelected());
+
+	settings.setSleepTime(formatLong(sleepTime.getText()));
+
+	settings.setTradePileSize(formatInteger(tradePileSize.getText()));
+	settings.setMaxBoughtCountPerMin(formatInteger(maxBoughtCountPerMin.getText()));
+
+	settings.setActionDuration((ActionDuration) auctionDuration.getSelectedItem());
+
+	settings.setMinInWallet((Long) minInWallet.getValue());
+
+	return settings;
+    }
+
+    private Long formatLong(String text) {
+	try {
+	    return Long.parseLong(text);
+	} catch (NumberFormatException e) {
+	    return 0L;
+	}
+    }
+    
+    private Integer formatInteger(String text) {
+	try {
+	    return Integer.parseInt(text);
+	} catch (NumberFormatException e) {
+	    return 0;
+	}
     }
 
 }

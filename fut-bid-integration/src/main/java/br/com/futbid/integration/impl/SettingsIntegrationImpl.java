@@ -6,8 +6,13 @@ import br.com.futbid.integration.SettingsIntegration;
 public class SettingsIntegrationImpl implements SettingsIntegration {
 
     public void save(Settings settings) {
-	// TODO Auto-generated method stub
-	
+	//TODO
+	System.out.println(settings);
+    }
+    
+    public Settings find() {
+	//FIXME
+	return new Settings();
     }
 
 }
