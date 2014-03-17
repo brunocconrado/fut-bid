@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import br.com.futbid.domain.auth.Credentials;
 import br.com.futbid.swing.ui.listener.AuthActionListener;
 import br.com.futbid.swing.ui.panel.auth.AuthenticationPainel;
 import br.com.futbid.swing.ui.panel.tab.WorkTabPanel;
@@ -69,16 +70,10 @@ public class AuthenticationPainelImpl extends JPanel implements AuthenticationPa
 		"Arial", 1, 14)), "North");
 	add(centerContainer, "Center");
     }
-    
+
     @Override
     public void setWorkPanel(WorkTabPanel workTabPanel) {
 	this.workTabPanel = workTabPanel;
-    }
-
-    @Override
-    public boolean login() {
-	// TODO Auto-generated method stub
-	return false;
     }
 
     @Override
@@ -94,6 +89,18 @@ public class AuthenticationPainelImpl extends JPanel implements AuthenticationPa
     @Override
     public void showAutoBuyerPanel() {
 	workTabPanel.showAutoBuyerPanel();
+    }
+
+    @Override
+    public Credentials getCredentials() {
+	Credentials credentials = new Credentials();
+	/*credentials.setLogin(emailField.getText());
+	credentials.setPassword(passwordField.getText());
+	credentials.setSecretAnswer(answerField.getText());*/
+	credentials.setLogin("bruno_csantos@hotmail.com");
+	credentials.setPassword("xxx");
+	credentials.setSecretAnswer("xxx");
+	return credentials;
     }
 
 }
