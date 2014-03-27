@@ -1,22 +1,49 @@
 package br.com.futbid.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import br.com.futbid.domain.enumeration.search.ActionDuration;
 
 public class Settings {
-
+    
+    @JsonProperty("minCoinsValue")
     private Long minInWallet;
+    
+    @JsonProperty("sleepTime")
     private Long sleepTime;
 
+    @JsonProperty("tradePileSize")
     private Integer tradePileSize;
+    
+    @JsonProperty("maxBoughtCountPerMin")
     private Integer maxBoughtCountPerMin;
+    
+    @JsonInclude(Include.NON_NULL)
+    @JsonProperty("watchListSize")
     private Integer watchListSize;
+    
+    @JsonInclude(Include.NON_NULL)
+    @JsonProperty("maxBidCountPerCycle")
     private Integer maxBidCountPerCycle;
 
-    private ActionDuration actionDuration;
-
+    @JsonProperty("dontBuy")
     private boolean dontBuy;
+    
+    @JsonProperty("stopBidIfTPIsFull")
     private boolean stopBidIfTradePileIsFull;
+    
+    @JsonProperty("logToFile")
     private boolean logToFile;
+    
+    @JsonInclude(Include.NON_NULL)
+    @JsonProperty(value = "auctionDuration", required = false)
+    private Long actionDurationLong;
+    
+    @JsonInclude(Include.NON_NULL)
+    @JsonProperty(value = "actionDuration", required = false)
+    private ActionDuration actionDuration;
 
     public Long getSleepTime() {
 	return sleepTime;
@@ -34,7 +61,18 @@ public class Settings {
 	this.tradePileSize = tradePileSize;
     }
 
+    public Long getActionDurationLong() {
+        return actionDurationLong;
+    }
+
+    public void setActionDurationLong(Long actionDurationLong) {
+        this.actionDurationLong = actionDurationLong;
+    }
+
     public ActionDuration getActionDuration() {
+	if(actionDuration == null) {
+	    actionDuration = ActionDuration.getBy(actionDurationLong);
+	}
 	return actionDuration;
     }
 

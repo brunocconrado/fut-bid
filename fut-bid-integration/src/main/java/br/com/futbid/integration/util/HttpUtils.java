@@ -23,6 +23,9 @@ public final class HttpUtils {
 	while ((line = reader.readLine()) != null) {
 	    result.append(line);
 	}
+	
+	System.out.println(result.toString());
+	
 	return result.toString();
     }
 

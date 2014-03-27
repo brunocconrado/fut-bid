@@ -6,19 +6,29 @@ public enum ActionDuration {
 	    "1 Day", 86400L), THREE_DAYS("3 Days", 259200L);
 
     private String name;
-    private long value;
+    private Long value;
 
-    private ActionDuration(String name, long value) {
+    private ActionDuration(String name, Long value) {
 	this.value = value;
 	this.name = name;
     }
 
-    public long getValue() {
+    public Long getValue() {
 	return this.value;
     }
 
     public String toString() {
 	return this.name;
+    }
+
+    public static ActionDuration getBy(Long actionDurationLong) {
+	for (ActionDuration action : values()) {
+	    if (action.value.equals(actionDurationLong)) {
+		return action;
+	    }
+	}
+
+	throw new IllegalArgumentException("Action not found for " + actionDurationLong.toString());
     }
 
 }

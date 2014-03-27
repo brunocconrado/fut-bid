@@ -225,6 +225,7 @@ public class SettingsPanelImpl extends JPanel implements SettingsPanel {
     public void updateFields() {
 
 	Settings settings = settingsService.find();
+	logToFile.setSelected(settings.isLogToFile());
 	dontBy.setSelected(settings.isDontBuy());
 	stopBidWhenTradePileFull.setSelected(settings.isStopBidIfTradePileIsFull());
 
@@ -237,19 +238,6 @@ public class SettingsPanelImpl extends JPanel implements SettingsPanel {
 	auctionDuration.setSelectedItem(settings.getActionDuration());
 	minInWallet.setValue(settings.getMinInWallet());
 
-	/*
-	 * this.logToFileField.setSelected(ApplicationParametersManager.INSTANCE().isLogToFile());
-	 * this.sleepTimeFiled.setText(ApplicationParametersManager.INSTANCE().getSleepTimeInSeconds() + "");
-	 * this.tradePileSizeField.setText(String.valueOf(ApplicationParametersManager.INSTANCE().getTradePileSize()));
-	 * 
-	 * this.dontByField.setSelected(ApplicationParametersManager.INSTANCE().isDontBuy());
-	 * this.maxBoughtCountPerMin.setText(ApplicationParametersManager.INSTANCE().getMaxBoughtCountPerMin() + "");
-	 * for (SearchFields.AuctionDuration ad : SearchFields.AuctionDuration.values()) { if (ad.getValue() ==
-	 * ApplicationParametersManager.INSTANCE().getAuctionDuration()) { this.auctionDuration.setSelectedItem(ad); } }
-	 * this.minCoinsValue.setText(ApplicationParametersManager.INSTANCE().getMinCoinsValue() + "");
-	 * this.stopBidWhenTradePileFull
-	 * .setSelected(ApplicationParametersManager.INSTANCE().isStopBidIfTradePileIsFull());
-	 */
     }
 
     private Settings populateSettings() {

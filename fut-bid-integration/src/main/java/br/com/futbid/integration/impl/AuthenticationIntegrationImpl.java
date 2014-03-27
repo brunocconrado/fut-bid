@@ -40,13 +40,16 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
     public static final Pattern NUCLEUS_ID_PATTERN = Pattern.compile(".* userid\\s*:\\s*\"(\\d+)\".*");
 
     private AccountIntegration accountIntegration = new AccountIntegrationImpl();
+    
+    private Session session = new Session();
 
     @Override
+    @SuppressWarnings("static-access")
     public void login(String email, String password, String secretAnswer) {
 
 	try {
 
-	    HttpClient client = ConnectionManager.INSTANCE().getClient();
+	    HttpClient client = ConnectionManager.getInstance().getClient();
 
 	    HttpGet loginGet = new HttpGet("http://www.easports.com/uk/fifa/football-club/ultimate-team");
 	    HttpContext context = new BasicHttpContext();
@@ -101,6 +104,9 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 	    authenticate(auth, account);
 	    validateAnswer(auth, account.getxUtRoute(), secretAnswer);
 
+	    session.setAccount(account);
+	    session.setAuth(auth);
+	    
 	} catch (Exception e) {
 	    //TODO substituir por log
 	    e.printStackTrace();
@@ -144,7 +150,7 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 
 	    HttpResponse response = null;
 	    try {
-		response = ConnectionManager.INSTANCE().getClient().execute(authenticatePost);
+		response = ConnectionManager.getInstance().getClient().execute(authenticatePost);
 	    } catch (Exception e) {
 		e.printStackTrace();
 	    }
@@ -198,7 +204,7 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 	    params.add(new BasicNameValuePair("answer", HashUtil.getHash(securityAnswer)));
 	    validatePost.setEntity(new UrlEncodedFormEntity(params));
 
-	    HttpResponse response = ConnectionManager.INSTANCE().getClient().execute(validatePost);
+	    HttpResponse response = ConnectionManager.getInstance().getClient().execute(validatePost);
 
 	    String result = HttpUtils.readHttpResponse(response);
 

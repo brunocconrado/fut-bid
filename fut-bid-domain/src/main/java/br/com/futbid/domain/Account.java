@@ -23,7 +23,16 @@ public class Account {
 	return hostHeader;
     }
 
+    public String getHttpsHostHeader() {
+	if(hostHeader != null && (!hostHeader.contains("http://") || !hostHeader.contains("https://"))) {
+	   return "https://" + hostHeader;
+	}
+	
+	return hostHeader;
+    }
+
     public void setHostHeader(String hostHeader) {
+
 	this.hostHeader = hostHeader;
     }
 

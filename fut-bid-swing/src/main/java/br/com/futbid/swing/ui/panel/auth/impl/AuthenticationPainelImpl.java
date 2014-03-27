@@ -98,8 +98,8 @@ public class AuthenticationPainelImpl extends JPanel implements AuthenticationPa
 	credentials.setPassword(passwordField.getText());
 	credentials.setSecretAnswer(answerField.getText());*/
 	credentials.setLogin("bruno_csantos@hotmail.com");
-	credentials.setPassword("xxx");
-	credentials.setSecretAnswer("xxx");
+	credentials.setPassword("1212Bruc");
+	credentials.setSecretAnswer("terra");
 	return credentials;
     }
 

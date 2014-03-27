@@ -33,9 +33,9 @@ public class AccountIntegrationImpl implements AccountIntegration {
 
 	    HttpUtils.addStandardHeaders(request, xRoute, String.valueOf(auth.getNucleusId()));
 
-	    HttpResponse response = ConnectionManager.INSTANCE().getClient().execute(request);
+	    HttpResponse response = ConnectionManager.getInstance().getClient().execute(request);
 
-	    ConnectionManager.INSTANCE().checkResponseHeadersForCookies(response.getHeaders("Set-Cookie"));
+	    ConnectionManager.getInstance().checkResponseHeadersForCookies(response.getHeaders("Set-Cookie"));
 
 	    String result = HttpUtils.readHttpResponse(response);
 	    JSONObject shard1JsonResp = new JSONObject(result);
@@ -43,7 +43,7 @@ public class AccountIntegrationImpl implements AccountIntegration {
 	    HttpGet repeatRequest = new HttpGet(url);
 	    HttpUtils.addStandardHeaders(repeatRequest, "https://utas.s2.fut.ea.com:443",
 		    String.valueOf(auth.getNucleusId()));
-	    HttpResponse repeatResponse = ConnectionManager.INSTANCE().getClient().execute(repeatRequest);
+	    HttpResponse repeatResponse = ConnectionManager.getInstance().getClient().execute(repeatRequest);
 
 	    result = HttpUtils.readHttpResponse(repeatResponse);
 	    JSONObject shard2JsonResp = new JSONObject(result);

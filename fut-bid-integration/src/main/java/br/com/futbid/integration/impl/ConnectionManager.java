@@ -14,14 +14,16 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.LaxRedirectStrategy;
 
 import br.com.futbid.integration.util.HttpUtils;
 
+@SuppressWarnings("deprecation")
 public class ConnectionManager {
 
     private static ConnectionManager instance;
+    
+    private Session session = new Session();
 
     private final HttpClient client;
 
@@ -32,7 +34,7 @@ public class ConnectionManager {
 	this.client = client;
     }
 
-    public static ConnectionManager INSTANCE() {
+    public static ConnectionManager getInstance() {
 	if (instance == null) {
 	    synchronized (ConnectionManager.class) {
 		if (instance == null) {
@@ -49,44 +51,45 @@ public class ConnectionManager {
 
     public String generateCookieString() {
 	StringBuilder cookieResult = new StringBuilder();
-	/*for (Map.Entry<String, String> entry : SessionManager.INSTANCE().getCookiesMap().entrySet()) {
+	for (Map.Entry<String, String> entry : session.getCookies().entrySet()) {
 	    cookieResult.append((String) entry.getKey()).append("=").append((String) entry.getValue()).append("; ");
-	}*/
+	}
 	return cookieResult.substring(0, cookieResult.length() - 2);
     }
 
     public void checkResponseHeadersForCookies(Header[] headers) {
 	for (Header h : headers) {
+	    
 	    for (HeaderElement element : h.getElements()) {
-		/*if (element.getName().equals("EASW_KEY")) {
-		    SessionManager.INSTANCE().addCookie("EASW_KEY", element.getValue());
+		if (element.getName().equals("EASW_KEY")) {
+		    session.addCookie("EASW_KEY", element.getValue());
 		}
 		if (element.getName().equals("easf_sess_com")) {
-		    SessionManager.INSTANCE().addCookie("easf_sess_com", element.getValue());
+		    session.addCookie("easf_sess_com", element.getValue());
 		}
 		if (element.getName().equals("EASF_PERSIST")) {
-		    SessionManager.INSTANCE().addCookie("EASF_PERSIST", element.getValue());
+		    session.addCookie("EASF_PERSIST", element.getValue());
 		}
 		if (element.getName().indexOf("FUTWebPhishing") >= 0) {
-		    SessionManager.INSTANCE().addCookie(element.getName(), element.getValue());
-		}*/
+		    session.addCookie(element.getName(), element.getValue());
+		}
 	    }
 	}
     }
 
-    public HttpGet getHttpGetWithCookie(String url) {
+    public HttpGet getHttpGetWithCookie(String url, String xUtRoute) {
 	HttpGet newHttpGet = new HttpGet(url);
-	/*if (SessionManager.INSTANCE().getX_UT_SID() != null) {
-	    newHttpGet.setHeader("X-UT-SID", SessionManager.INSTANCE().getX_UT_SID());
-	}*/
+	if (xUtRoute != null) {
+	    newHttpGet.setHeader("X-UT-SID", xUtRoute);
+	}
 	return newHttpGet;
     }
 
-    public HttpPost getHttpPostWithCookie(String url) {
+    public HttpPost getHttpPostWithCookie(String url, String xUtRoute) {
 	HttpPost newHttpPost = new HttpPost(url);
-	/*if (SessionManager.INSTANCE().getX_UT_SID() != null) {
-	    newHttpPost.setHeader("X-UT-SID", SessionManager.INSTANCE().getX_UT_SID());
-	}*/
+	if (xUtRoute != null) {
+	    newHttpPost.setHeader("X-UT-SID", xUtRoute);
+	}
 	return newHttpPost;
     }
 
