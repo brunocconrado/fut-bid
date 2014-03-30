@@ -1,57 +1,120 @@
 package br.com.futbid.domain;
 
-public class Player {
+import br.com.futbid.domain.enumeration.Level;
+import br.com.futbid.domain.search.Type;
 
-    private int rating;
-    private String ps3_auction_average;
-    private String club_image;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonRootName;
+
+@JsonRootName("player")
+public class Player extends Card {
+
+    private static final long serialVersionUID = 2014032701L;
+
+    public Player() {
+	setType(Type.PLAYER);
+    }
+
+    private Long idPlayer;
+
+    @JsonInclude(Include.NON_NULL)
+    private String ps3ActionAverage;
+
+    @JsonInclude(Include.NON_NULL)
+    private String clubImage;
+
+    @JsonInclude(Include.NON_NULL)
     private String image;
-    private String revision_type;
-    private String workrates_short_string;
-    private String full_name;
-    private long player_id;
-    private String xbox_auction_average;
-    private long id;
-    private String nation_image;
-    private String pc_auction_average;
-    private String type;
-    private String short_name;
-    private int club;
-    private int nation;
-    private int attr6;
-    private int attr4;
-    private int attr5;
-    private int attr2;
-    private int attr3;
-    private int attr1;
+
+    @JsonInclude(Include.NON_NULL)
+    private String revisionType;
+
+    @JsonInclude(Include.NON_NULL)
+    private String workratesShortString;
+
+    @JsonInclude(Include.NON_NULL)
+    private String fullName;
+
+    @JsonInclude(Include.NON_NULL)
+    private String xboxActionAverage;
+
+    @JsonInclude(Include.NON_NULL)
+    private String nationImage;
+
+    @JsonInclude(Include.NON_NULL)
+    private String pcActionAverage;
+
+    @JsonInclude(Include.NON_NULL)
+    private String shortName;
+
+    @JsonInclude(Include.NON_NULL)
     private String slug;
-    private int league;
+
+    @JsonInclude(Include.NON_NULL)
+    private Long playerId;
+
+    @JsonInclude(Include.NON_NULL)
+    private Integer rating;
+
+    @JsonInclude(Include.NON_NULL)
+    private Integer club;
+
+    @JsonInclude(Include.NON_NULL)
+    private Integer nation;
+
+    @JsonInclude(Include.NON_NULL)
+    private Integer attr1;
+
+    @JsonInclude(Include.NON_NULL)
+    private Integer attr2;
+
+    @JsonInclude(Include.NON_NULL)
+    private Integer attr3;
+
+    @JsonInclude(Include.NON_NULL)
+    private Integer attr4;
+
+    @JsonInclude(Include.NON_NULL)
+    private Integer attr5;
+
+    @JsonInclude(Include.NON_NULL)
+    private Integer attr6;
+
+    @JsonInclude(Include.NON_NULL)
+    private Level level;
+
+    @JsonInclude(Include.NON_NULL)
+    private Integer league;
+
+    @JsonInclude(Include.NON_NULL)
     private boolean rare;
-    private int level;
+
+    @JsonInclude(Include.NON_NULL)
     private String position;
 
-    public int getRating() {
-	return rating;
+    public Long getIdPlayer() {
+	return idPlayer;
     }
 
-    public void setRating(int rating) {
-	this.rating = rating;
+    public void setIdPlayer(Long idPlayer) {
+	this.idPlayer = idPlayer;
     }
 
-    public String getPs3_auction_average() {
-	return ps3_auction_average;
+    public String getPs3ActionAverage() {
+	return ps3ActionAverage;
     }
 
-    public void setPs3_auction_average(String ps3_auction_average) {
-	this.ps3_auction_average = ps3_auction_average;
+    public void setPs3ActionAverage(String ps3ActionAverage) {
+	this.ps3ActionAverage = ps3ActionAverage;
     }
 
-    public String getClub_image() {
-	return club_image;
+    public String getClubImage() {
+	return clubImage;
     }
 
-    public void setClub_image(String club_image) {
-	this.club_image = club_image;
+    public void setClubImage(String clubImage) {
+	this.clubImage = clubImage;
     }
 
     public String getImage() {
@@ -62,148 +125,60 @@ public class Player {
 	this.image = image;
     }
 
-    public String getRevision_type() {
-	return revision_type;
+    public String getRevisionType() {
+	return revisionType;
     }
 
-    public void setRevision_type(String revision_type) {
-	this.revision_type = revision_type;
+    public void setRevisionType(String revisionType) {
+	this.revisionType = revisionType;
     }
 
-    public String getWorkrates_short_string() {
-	return workrates_short_string;
+    public String getWorkratesShortString() {
+	return workratesShortString;
     }
 
-    public void setWorkrates_short_string(String workrates_short_string) {
-	this.workrates_short_string = workrates_short_string;
+    public void setWorkratesShortString(String workratesShortString) {
+	this.workratesShortString = workratesShortString;
     }
 
-    public String getFull_name() {
-	return full_name;
+    public String getFullName() {
+	return fullName;
     }
 
-    public void setFull_name(String full_name) {
-	this.full_name = full_name;
+    public void setFullName(String fullName) {
+	this.fullName = fullName;
     }
 
-    public long getPlayer_id() {
-	return player_id;
+    public String getXboxActionAverage() {
+	return xboxActionAverage;
     }
 
-    public void setPlayer_id(long player_id) {
-	this.player_id = player_id;
+    public void setXboxActionAverage(String xboxActionAverage) {
+	this.xboxActionAverage = xboxActionAverage;
     }
 
-    public String getXbox_auction_average() {
-	return xbox_auction_average;
+    public String getNationImage() {
+	return nationImage;
     }
 
-    public void setXbox_auction_average(String xbox_auction_average) {
-	this.xbox_auction_average = xbox_auction_average;
+    public void setNationImage(String nationImage) {
+	this.nationImage = nationImage;
     }
 
-    public long getId() {
-	return id;
+    public String getPcActionAverage() {
+	return pcActionAverage;
     }
 
-    public void setId(long id) {
-	this.id = id;
+    public void setPcActionAverage(String pcActionAverage) {
+	this.pcActionAverage = pcActionAverage;
     }
 
-    public String getNation_image() {
-	return nation_image;
+    public String getShortName() {
+	return shortName;
     }
 
-    public void setNation_image(String nation_image) {
-	this.nation_image = nation_image;
-    }
-
-    public String getPc_auction_average() {
-	return pc_auction_average;
-    }
-
-    public void setPc_auction_average(String pc_auction_average) {
-	this.pc_auction_average = pc_auction_average;
-    }
-
-    public String getType() {
-	return type;
-    }
-
-    public void setType(String type) {
-	this.type = type;
-    }
-
-    public String getShort_name() {
-	return short_name;
-    }
-
-    public void setShort_name(String short_name) {
-	this.short_name = short_name;
-    }
-
-    public int getClub() {
-	return club;
-    }
-
-    public void setClub(int club) {
-	this.club = club;
-    }
-
-    public int getNation() {
-	return nation;
-    }
-
-    public void setNation(int nation) {
-	this.nation = nation;
-    }
-
-    public int getAttr6() {
-	return attr6;
-    }
-
-    public void setAttr6(int attr6) {
-	this.attr6 = attr6;
-    }
-
-    public int getAttr4() {
-	return attr4;
-    }
-
-    public void setAttr4(int attr4) {
-	this.attr4 = attr4;
-    }
-
-    public int getAttr5() {
-	return attr5;
-    }
-
-    public void setAttr5(int attr5) {
-	this.attr5 = attr5;
-    }
-
-    public int getAttr2() {
-	return attr2;
-    }
-
-    public void setAttr2(int attr2) {
-	this.attr2 = attr2;
-    }
-
-    public int getAttr3() {
-	return attr3;
-    }
-
-    public void setAttr3(int attr3) {
-	this.attr3 = attr3;
-    }
-
-    public int getAttr1() {
-	return attr1;
-    }
-
-    public void setAttr1(int attr1) {
-	this.attr1 = attr1;
+    public void setShortName(String shortName) {
+	this.shortName = shortName;
     }
 
     public String getSlug() {
@@ -214,11 +189,99 @@ public class Player {
 	this.slug = slug;
     }
 
-    public int getLeague() {
+    public Long getPlayerId() {
+	return playerId;
+    }
+
+    public void setPlayerId(Long playerId) {
+	this.playerId = playerId;
+    }
+
+    public Integer getRating() {
+	return rating;
+    }
+
+    public void setRating(Integer rating) {
+	this.rating = rating;
+    }
+
+    public Integer getClub() {
+	return club;
+    }
+
+    public void setClub(Integer club) {
+	this.club = club;
+    }
+
+    public Integer getNation() {
+	return nation;
+    }
+
+    public void setNation(Integer nation) {
+	this.nation = nation;
+    }
+
+    public Integer getAttr1() {
+	return attr1;
+    }
+
+    public void setAttr1(Integer attr1) {
+	this.attr1 = attr1;
+    }
+
+    public Integer getAttr2() {
+	return attr2;
+    }
+
+    public void setAttr2(Integer attr2) {
+	this.attr2 = attr2;
+    }
+
+    public Integer getAttr3() {
+	return attr3;
+    }
+
+    public void setAttr3(Integer attr3) {
+	this.attr3 = attr3;
+    }
+
+    public Integer getAttr4() {
+	return attr4;
+    }
+
+    public void setAttr4(Integer attr4) {
+	this.attr4 = attr4;
+    }
+
+    public Integer getAttr5() {
+	return attr5;
+    }
+
+    public void setAttr5(Integer attr5) {
+	this.attr5 = attr5;
+    }
+
+    public Integer getAttr6() {
+	return attr6;
+    }
+
+    public void setAttr6(Integer attr6) {
+	this.attr6 = attr6;
+    }
+
+    public Level getLevel() {
+	return level;
+    }
+
+    public void setLevel(Level level) {
+	this.level = level;
+    }
+
+    public Integer getLeague() {
 	return league;
     }
 
-    public void setLeague(int league) {
+    public void setLeague(Integer league) {
 	this.league = league;
     }
 
@@ -228,14 +291,6 @@ public class Player {
 
     public void setRare(boolean rare) {
 	this.rare = rare;
-    }
-
-    public int getLevel() {
-	return level;
-    }
-
-    public void setLevel(int level) {
-	this.level = level;
     }
 
     public String getPosition() {

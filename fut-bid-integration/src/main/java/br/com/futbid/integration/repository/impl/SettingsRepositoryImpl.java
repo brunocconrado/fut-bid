@@ -3,6 +3,11 @@ package br.com.futbid.integration.repository.impl;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import br.com.futbid.domain.Settings;
 import br.com.futbid.integration.exception.IntegrationException;
 import br.com.futbid.integration.repository.SettingsRepository;
@@ -10,11 +15,16 @@ import br.com.futbid.integration.repository.connection.SQLLiteConnection;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@Repository
 public class SettingsRepositoryImpl implements SettingsRepository {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(SettingsRepositoryImpl.class);
 
-    private SQLLiteConnection connection = SQLLiteConnection.getInstance();
+    @Autowired
+    private SQLLiteConnection connection;
 
-    private ObjectMapper mapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper mapper;
 
     @Override
     public Settings find() {
@@ -28,6 +38,7 @@ public class SettingsRepositoryImpl implements SettingsRepository {
 
 	    return result == null ? null : mapper.readValue(result, Settings.class);
 	} catch (Exception e) {
+	    LOG.error("Error find", e);
 	    throw new IntegrationException(e);
 	}
     }
@@ -46,6 +57,7 @@ public class SettingsRepositoryImpl implements SettingsRepository {
 
 	    return connection.getConnection().createStatement().executeUpdate(sql) > 0;
 	} catch (Exception e) {
+	    LOG.error("Error saveOrUpdate", e);
 	    throw new IntegrationException(e);
 	}
     }

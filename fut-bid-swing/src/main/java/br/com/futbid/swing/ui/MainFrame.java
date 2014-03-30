@@ -3,23 +3,32 @@ package br.com.futbid.swing.ui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 
+import javax.annotation.PostConstruct;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
-/**
- * Header degrade
- */
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+@org.springframework.stereotype.Component
 public class MainFrame extends JFrame implements IFrame {
 
-    private static final long serialVersionUID = 2014022801L;
+    private static final Logger LOG = LoggerFactory.getLogger(MainFrame.class);
 
-    private JPanel mainPanel;
+    private static final long serialVersionUID = 2014022802L;
 
-    private JPanel header;
+    @Autowired
+    private HeaderPanel header;
+
+    @Autowired
+    private DefaultPainel mainPanel;
 
     public MainFrame() {
+    }
 
+    @PostConstruct
+    public void init() {
 	setTitle("FUT - BID");
 	setSize(900, 700);
 	setLocationRelativeTo(null);
@@ -35,15 +44,11 @@ public class MainFrame extends JFrame implements IFrame {
 	     * application.setDockIconImage(myPicture.getImage()); }
 	     */
 	} catch (Exception e) {
-	    //FIXME Add logback
-	    System.out.println(e.getMessage());
-	    //ApplicationLogUtil.addToLog(e.getMessage());
+	    LOG.warn("An unexpected error", e);
 	}
-	header = new HeaderPanel();
-	add(this.header, "North");
 
-	this.mainPanel = new DefaultPainel();
-	add(this.mainPanel, "Center");
+	add(header, "North");
+	add(mainPanel, "Center");
     }
 
     public void showScreen() {

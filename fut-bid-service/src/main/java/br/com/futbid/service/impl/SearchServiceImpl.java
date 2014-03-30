@@ -8,66 +8,77 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import br.com.futbid.domain.ActionInfo;
 import br.com.futbid.domain.ActionResponse;
+import br.com.futbid.domain.Player;
 import br.com.futbid.domain.legacy.BidTokens;
 import br.com.futbid.domain.legacy.Currency;
 import br.com.futbid.domain.search.PlayerSearch;
 import br.com.futbid.domain.search.Search;
 import br.com.futbid.integration.SearchIntegration;
-import br.com.futbid.integration.impl.SearchIntegrationImpl;
 import br.com.futbid.integration.impl.Session;
 import br.com.futbid.integration.repository.impl.PlayerRepositoryImpl;
 import br.com.futbid.service.SearchService;
 
+@Service
 public class SearchServiceImpl implements SearchService {
 
-    private SearchIntegration searchIntegration = new SearchIntegrationImpl();
-    private PlayerRepositoryImpl player = new PlayerRepositoryImpl();
+    private static final Logger LOG = LoggerFactory.getLogger(SearchServiceImpl.class);
 
-    private Session session = new Session();
+    @Autowired
+    private SearchIntegration searchIntegration;
+
+    @Autowired
+    private PlayerRepositoryImpl player;
+
+    @Autowired
+    private Session session;
 
     public ActionResponse search() {
 
-	player.findAll();
-	
-	//FIXME PEgar search do banco
-	Search search = new PlayerSearch();
-	search.setMinBuyPrice("500");
-	search.setMaxBuyPrice("1000");
+	LOG.info("Stating search");
 
 	ActionResponse actionResponse = new ActionResponse();
-	List<JSONObject> results = searchIntegration.search(search);
-	for (JSONObject result : results) {
-	    if (result.has("currencies") && result.has("bidTokens") && result.has("auctionInfo")) {
-		try {
+	List<Player> cards = player.findAll();
+	for (Player card : cards) {
+	    Search search = new PlayerSearch(card);
+	    List<JSONObject> results = searchIntegration.search(search);
+	    for (JSONObject result : results) {
+		if (result.has("currencies") && result.has("bidTokens") && result.has("auctionInfo")) {
+		    try {
 
-		    if (result.has("credits")) {
-			actionResponse.setCredits(Integer.valueOf(result.getInt("credits")));
+			if (result.has("credits")) {
+			    actionResponse.setCredits(Integer.valueOf(result.getInt("credits")));
+			}
+
+			JSONArray currencies = result.getJSONArray("currencies");
+			for (int index = 0; index < currencies.length(); index++) {
+			    Currency currncy = deserializeCurrency(currencies.getJSONObject(index));
+			    actionResponse.getCurrencies().add(currncy);
+			}
+
+			BidTokens bidTokens = deserializeBidTokens(result.getJSONObject("bidTokens"));
+			actionResponse.setBidTokens(bidTokens);
+
+			JSONArray auctionInfoJsonArray = result.getJSONArray("auctionInfo");
+			for (int index = 0; index < auctionInfoJsonArray.length(); index++) {
+			    ActionInfo actionInfo = deserializeActionInfo(auctionInfoJsonArray.getJSONObject(index));
+			    actionResponse.getActionsInfo().add(actionInfo);
+			}
+
+		    } catch (Exception e) {
+			LOG.warn("An unexpected error trying mapping search result", e);
 		    }
-
-		    JSONArray currencies = result.getJSONArray("currencies");
-		    for (int index = 0; index < currencies.length(); index++) {
-			Currency currncy = deserializeCurrency(currencies.getJSONObject(index));
-			actionResponse.getCurrencies().add(currncy);
-		    }
-
-		    BidTokens bidTokens = deserializeBidTokens(result.getJSONObject("bidTokens"));
-		    actionResponse.setBidTokens(bidTokens);
-
-		    JSONArray auctionInfoJsonArray = result.getJSONArray("auctionInfo");
-		    for (int index = 0; index < auctionInfoJsonArray.length(); index++) {
-			ActionInfo actionInfo = deserializeActionInfo(auctionInfoJsonArray.getJSONObject(index));
-			actionResponse.getActionsInfo().add(actionInfo);
-		    }
-
-		} catch (Exception e) {
-		    e.printStackTrace();
 		}
 	    }
 	}
 
 	return actionResponse;
     }
+
 }

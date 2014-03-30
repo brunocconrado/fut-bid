@@ -28,7 +28,7 @@ public enum ActionDuration {
 	    }
 	}
 
-	throw new IllegalArgumentException("Action not found for " + actionDurationLong.toString());
+	throw new IllegalArgumentException("Action not found for " + actionDurationLong);
     }
 
 }

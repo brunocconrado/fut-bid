@@ -20,6 +20,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import br.com.futbid.domain.Account;
 import br.com.futbid.domain.Person;
@@ -31,17 +35,23 @@ import br.com.futbid.integration.exception.IntegrationException;
 import br.com.futbid.integration.util.HashUtil;
 import br.com.futbid.integration.util.HttpUtils;
 
-//@Service
+@Component
 public class AuthenticationIntegrationImpl implements AuthenticationIntegration {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(AuthenticationIntegrationImpl.class);
 
     private static final int WRONG_ANSWER_CODE = 461;
-    private static final int NUCLLUES_ID_MATCH_GROUP = 1;
 
     public static final Pattern NUCLEUS_ID_PATTERN = Pattern.compile(".* userid\\s*:\\s*\"(\\d+)\".*");
 
-    private AccountIntegration accountIntegration = new AccountIntegrationImpl();
+    @Autowired
+    private ConnectionManager connectionManager;
     
-    private Session session = new Session();
+    @Autowired
+    private AccountIntegration accountIntegration;
+    
+    @Autowired
+    private Session session;
 
     @Override
     @SuppressWarnings("static-access")
@@ -49,7 +59,7 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 
 	try {
 
-	    HttpClient client = ConnectionManager.getInstance().getClient();
+	    HttpClient client = connectionManager.getClient();
 
 	    HttpGet loginGet = new HttpGet("http://www.easports.com/uk/fifa/football-club/ultimate-team");
 	    HttpContext context = new BasicHttpContext();
@@ -108,8 +118,7 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 	    session.setAuth(auth);
 	    
 	} catch (Exception e) {
-	    //TODO substituir por log
-	    e.printStackTrace();
+	    LOG.error("Error trying do login", e);
 	    throw new IntegrationException(e);
 	}
 
@@ -150,7 +159,7 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 
 	    HttpResponse response = null;
 	    try {
-		response = ConnectionManager.getInstance().getClient().execute(authenticatePost);
+		response = connectionManager.getClient().execute(authenticatePost);
 	    } catch (Exception e) {
 		e.printStackTrace();
 	    }
@@ -164,11 +173,8 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 	    auth.setServerTime(jsonResp.getString("serverTime"));
 	    auth.setLastOnlineTime(jsonResp.getString("lastOnlineTime"));
 	    auth.setSessionId(jsonResp.getString("sid"));
-
-	    //SessionManager.INSTANCE().setAuthenticationResponse(auth);
 	} catch (Exception e) {
-	    //TODO colocar log
-	    e.printStackTrace();
+	    LOG.error("Error trying do authentication", e);
 	    throw new IntegrationException(e);
 	}
     }
@@ -204,7 +210,7 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 	    params.add(new BasicNameValuePair("answer", HashUtil.getHash(securityAnswer)));
 	    validatePost.setEntity(new UrlEncodedFormEntity(params));
 
-	    HttpResponse response = ConnectionManager.getInstance().getClient().execute(validatePost);
+	    HttpResponse response = connectionManager.getClient().execute(validatePost);
 
 	    String result = HttpUtils.readHttpResponse(response);
 
@@ -223,10 +229,10 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 
 	    auth.setToken(token);
 	} catch (IntegrationException e) {
+	    LOG.error("Error validation answer", e);
 	    throw e;
 	} catch (Exception e) {
-	    //TODO usar log
-	    e.printStackTrace();
+	    LOG.error("An Unexpected error validation answer", e);
 	    throw new IntegrationException(e);
 	}
     }

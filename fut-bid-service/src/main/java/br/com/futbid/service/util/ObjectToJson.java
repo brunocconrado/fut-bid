@@ -1,8 +1,5 @@
 package br.com.futbid.service.util;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,19 +10,19 @@ public class ObjectToJson {
     public static JSONObject serializePlayer(Player player) throws JSONException {
 	JSONObject obj = new JSONObject();
 	obj.put("rating", player.getRating());
-	obj.put("ps3_auction_average", player.getPs3_auction_average());
-	obj.put("club_image", player.getClub_image());
+	obj.put("ps3_auction_average", player.getPs3ActionAverage());
+	obj.put("club_image", player.getClubImage());
 	obj.put("image", player.getImage());
-	obj.put("revision_type", player.getRevision_type());
-	obj.put("workrates_short_string", player.getWorkrates_short_string());
-	obj.put("full_name", player.getFull_name());
-	obj.put("player_id", player.getPlayer_id());
-	obj.put("xbox_auction_average", player.getXbox_auction_average());
+	obj.put("revision_type", player.getRevisionType());
+	obj.put("workrates_short_string", player.getWorkratesShortString());
+	obj.put("full_name", player.getFullName());
+	obj.put("player_id", player.getPlayerId());
+	obj.put("xbox_auction_average", player.getXboxActionAverage());
 	obj.put("id", player.getId());
-	obj.put("nation_image", player.getNation_image());
-	obj.put("pc_auction_average", player.getPc_auction_average());
+	obj.put("nation_image", player.getNationImage());
+	obj.put("pc_auction_average", player.getPcActionAverage());
 	obj.put("type", player.getType());
-	obj.put("short_name", player.getShort_name());
+	obj.put("short_name", player.getShortName());
 	obj.put("club", player.getClub());
 	obj.put("nation", player.getNation());
 	obj.put("attr6", player.getAttr6());

@@ -1,11 +1,13 @@
 package br.com.futbid.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import br.com.futbid.domain.enumeration.search.ActionDuration;
 
+@JsonRootName("settings")
 public class Settings {
     
     @JsonProperty("minCoinsValue")
@@ -38,12 +40,8 @@ public class Settings {
     private boolean logToFile;
     
     @JsonInclude(Include.NON_NULL)
-    @JsonProperty(value = "auctionDuration", required = false)
-    private Long actionDurationLong;
-    
-    @JsonInclude(Include.NON_NULL)
     @JsonProperty(value = "actionDuration", required = false)
-    private ActionDuration actionDuration;
+    private ActionDuration actionDuration = ActionDuration.ONE;
 
     public Long getSleepTime() {
 	return sleepTime;
@@ -61,18 +59,7 @@ public class Settings {
 	this.tradePileSize = tradePileSize;
     }
 
-    public Long getActionDurationLong() {
-        return actionDurationLong;
-    }
-
-    public void setActionDurationLong(Long actionDurationLong) {
-        this.actionDurationLong = actionDurationLong;
-    }
-
     public ActionDuration getActionDuration() {
-	if(actionDuration == null) {
-	    actionDuration = ActionDuration.getBy(actionDurationLong);
-	}
 	return actionDuration;
     }
 

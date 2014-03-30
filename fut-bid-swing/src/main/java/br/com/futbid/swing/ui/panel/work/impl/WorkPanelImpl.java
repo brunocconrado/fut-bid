@@ -11,6 +11,7 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -21,9 +22,13 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import br.com.futbid.domain.BiddedModelView;
+import br.com.futbid.domain.enumeration.Tab;
+import br.com.futbid.integration.impl.Session;
 import br.com.futbid.service.AutoBuyerService;
-import br.com.futbid.service.impl.AutoBuyerServiceImpl;
 import br.com.futbid.swing.ui.WorkProcessListener;
 import br.com.futbid.swing.ui.listener.AutoBidderActionListener;
 import br.com.futbid.swing.ui.listener.AutoBuyerActionLister;
@@ -32,11 +37,25 @@ import br.com.futbid.swing.ui.listener.StartActionListener;
 import br.com.futbid.swing.ui.panel.work.WorkPanel;
 import br.com.futbid.swing.ui.utils.Colors;
 
+@Component
 public class WorkPanelImpl extends JPanel implements WorkPanel {
 
     private static final long serialVersionUID = 2014031101L;
 
-    private AutoBuyerService autoBuyerService = new AutoBuyerServiceImpl();
+    @Autowired
+    private AutoBuyerService autoBuyerService;
+
+    @Autowired
+    private StartActionListener startActionListener;
+
+    @Autowired
+    private AutoBidderActionListener autoBidderActionListener;
+
+    @Autowired
+    private AutoBuyerActionLister autoBuyerActionLister;
+
+    @Autowired
+    private Session session;
 
     private JButton workControllButton;
     private JRadioButton autobuyerMode;
@@ -56,10 +75,14 @@ public class WorkPanelImpl extends JPanel implements WorkPanel {
     private List<BiddedModelView> biddedModels = new ArrayList<BiddedModelView>();
 
     public WorkPanelImpl() {
+    }
 
+    @PostConstruct
+    public void init() {
+
+	setName(Tab.WORK.getName());
+	
 	autoBuyerService.addListener(new WorkProcessListener());
-
-	//AutobuyerProcessor.INSTANCE().addListener(getListener());
 
 	setBackground(Colors.BACK_GROUND);
 	setLayout(new BorderLayout());
@@ -88,11 +111,11 @@ public class WorkPanelImpl extends JPanel implements WorkPanel {
 
 	//SessionManager.INSTANCE().setApplicationMode(SessionManager.ApplicationMode.AUTOBUYER);
 
-	this.autobuyerMode.addActionListener(new AutoBuyerActionLister());
-	this.autobidderMode.addActionListener(new AutoBidderActionListener());
+	this.autobuyerMode.addActionListener(autoBuyerActionLister);
+	this.autobidderMode.addActionListener(autoBidderActionListener);
 
 	workControllButton = new JButton("Start");
-	workControllButton.addActionListener(new StartActionListener());
+	workControllButton.addActionListener(startActionListener);
 	panel.add(new JLabel("Select application mode: "));
 	panel.add(autobuyerMode);
 	panel.add(autobidderMode);
@@ -130,7 +153,7 @@ public class WorkPanelImpl extends JPanel implements WorkPanel {
 	centerScrollPanel.setVerticalScrollBarPolicy(22);
 	centerScrollPanel.setHorizontalScrollBarPolicy(30);
 
-	this.biddedItemTablePanel = getBittedItemTablePanel();
+	biddedItemTablePanel = getBittedItemTablePanel();
 
 	loggingPanel.add(centerScrollPanel, "Center");
 	loggingPanel.add(this.biddedItemTablePanel, "East");
@@ -355,7 +378,7 @@ public class WorkPanelImpl extends JPanel implements WorkPanel {
     @Override
     public void clear() {
 	// TODO Auto-generated method stub
-	
+
     }
 
     @Override

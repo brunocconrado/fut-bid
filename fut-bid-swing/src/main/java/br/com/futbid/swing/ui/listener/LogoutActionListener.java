@@ -5,14 +5,20 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import br.com.futbid.service.AuthenticationService;
 import br.com.futbid.service.AutoBuyerService;
 import br.com.futbid.swing.ui.panel.work.WorkPanel;
 
+@Component
 public class LogoutActionListener implements ActionListener {
 
+    @Autowired
     private AutoBuyerService autoBuyerService;
 
+    @Autowired
     private AuthenticationService authenticationService;
 
     @Override

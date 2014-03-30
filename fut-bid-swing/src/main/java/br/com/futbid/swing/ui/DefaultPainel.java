@@ -8,9 +8,12 @@ import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class DefaultPainel extends JPanel {
     
-    private static final long serialVersionUID = 2014022801L;
+    private static final long serialVersionUID = 2014022802L;
 
     public void paintComponent(Graphics grphcs) {
 	super.paintComponent(grphcs);

@@ -1,5 +1,7 @@
 package br.com.futbid.domain.search;
 
+import br.com.futbid.domain.enumeration.Level;
+
 public abstract class Search {
 
     protected static final String MIN_BUY_PRICE = "200";
@@ -9,7 +11,7 @@ public abstract class Search {
     protected String maxBuyPrice;
     protected String minBuyPrice;
     protected String sellPrice;
-    protected String level;
+    protected Level level;
     protected int maxSearchPageCount = 1;
     protected String cardRating;
     protected String maxPageResult = "16";
@@ -58,11 +60,11 @@ public abstract class Search {
 	this.sellPrice = sellPrice;
     }
 
-    public String getLevel() {
+    public Level getLevel() {
 	return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(Level level) {
 	this.level = level;
     }
 

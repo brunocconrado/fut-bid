@@ -7,14 +7,17 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import br.com.futbid.service.AuthenticationService;
-import br.com.futbid.service.impl.AuthenticationServiceImpl;
 import br.com.futbid.swing.ui.panel.auth.AuthenticationPainel;
 import br.com.futbid.swing.ui.panel.auth.impl.AuthenticationPainelImpl;
 
+@org.springframework.stereotype.Component
 public class AuthActionListener implements ActionListener {
 
-    private AuthenticationService authenticationService = new AuthenticationServiceImpl();
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @Override
     public void actionPerformed(ActionEvent event) {

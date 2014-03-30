@@ -5,13 +5,17 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import br.com.futbid.service.AutoBuyerService;
-import br.com.futbid.service.impl.AutoBuyerServiceImpl;
 import br.com.futbid.swing.ui.panel.work.WorkPanel;
 
+@Component
 public class StartActionListener implements ActionListener {
 
-    private AutoBuyerService autoBuyerService = new AutoBuyerServiceImpl();
+    @Autowired
+    private AutoBuyerService autoBuyerService;
 
     @Override
     public void actionPerformed(ActionEvent event) {

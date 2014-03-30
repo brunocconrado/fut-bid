@@ -13,6 +13,7 @@ import br.com.futbid.domain.legacy.Attribute;
 import br.com.futbid.domain.legacy.BidTokens;
 import br.com.futbid.domain.legacy.Currency;
 import br.com.futbid.domain.legacy.ItemData;
+import br.com.futbid.domain.search.Type;
 
 public final class JsonToObject {
 
@@ -106,26 +107,27 @@ public final class JsonToObject {
 	pi.setAttr5(getInt(object, "attr5"));
 	pi.setAttr6(getInt(object, "attr6"));
 	pi.setClub(getInt(object, "club"));
-	pi.setClub_image(getString(object, "club_image"));
-	pi.setFull_name(getString(object, "full_name"));
+	pi.setClubImage(getString(object, "club_image"));
+	pi.setFullName(getString(object, "full_name"));
 	pi.setId(getLong(object, "id"));
 	pi.setImage(getString(object, "image"));
 	pi.setLeague(getInt(object, "league"));
-	pi.setLevel(getInt(object, "level"));
+	System.out.println("Level: " + getInt(object, "level"));
+	//pi.s(Level.getBy(getInt(object, "level")));
 	pi.setNation(getInt(object, "nation"));
-	pi.setNation_image(getString(object, "nation_image"));
-	pi.setPc_auction_average(getString(object, "pc_auction_average"));
-	pi.setPlayer_id(getLong(object, "player_id"));
+	pi.setNationImage(getString(object, "nation_image"));
+	pi.setPcActionAverage(getString(object, "pc_auction_average"));
+	pi.setPlayerId(getLong(object, "player_id"));
 	pi.setPosition(getString(object, "position"));
-	pi.setPs3_auction_average(getString(object, "ps3_auction_average"));
+	pi.setPs3ActionAverage(getString(object, "ps3_auction_average"));
 	pi.setRare(getBoolean(object, "rare"));
 	pi.setRating(getInt(object, "rating"));
-	pi.setRevision_type(getString(object, "revision_type"));
-	pi.setShort_name(getString(object, "short_name"));
+	pi.setRevisionType(getString(object, "revision_type"));
+	pi.setShortName(getString(object, "short_name"));
 	pi.setSlug(getString(object, "slug"));
-	pi.setType(getString(object, "type"));
-	pi.setWorkrates_short_string(getString(object, "workrates_short_string"));
-	pi.setXbox_auction_average(getString(object, "xbox_auction_average"));
+	pi.setType(Type.valueOf(getString(object, "type")));
+	pi.setWorkratesShortString(getString(object, "workrates_short_string"));
+	pi.setXboxActionAverage(getString(object, "xbox_auction_average"));
 
 	return pi;
     }

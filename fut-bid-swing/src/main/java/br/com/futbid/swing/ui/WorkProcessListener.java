@@ -1,7 +1,5 @@
 package br.com.futbid.swing.ui;
 
-import java.awt.Color;
-
 import br.com.futbid.service.listener.AutoBuyerListener;
 /*import br.com.futbid.swing.ui.panel.work.impl.AuctionInfo;
 import br.com.futbid.swing.ui.panel.work.impl.AutobuyerPanel;

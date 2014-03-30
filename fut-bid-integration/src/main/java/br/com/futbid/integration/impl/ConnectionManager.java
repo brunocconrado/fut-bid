@@ -15,15 +15,21 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.LaxRedirectStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import br.com.futbid.integration.util.HttpUtils;
 
+@Component
 @SuppressWarnings("deprecation")
 public class ConnectionManager {
-
-    private static ConnectionManager instance;
     
-    private Session session = new Session();
+    private static final Logger LOG = LoggerFactory.getLogger(ConnectionManager.class);
+
+    @Autowired
+    private Session session;
 
     private final HttpClient client;
 
@@ -32,17 +38,8 @@ public class ConnectionManager {
 	client.setRedirectStrategy(new LaxRedirectStrategy());
 
 	this.client = client;
-    }
-
-    public static ConnectionManager getInstance() {
-	if (instance == null) {
-	    synchronized (ConnectionManager.class) {
-		if (instance == null) {
-		    instance = new ConnectionManager();
-		}
-	    }
-	}
-	return instance;
+	
+	LOG.debug("HTTPClient {}", client);
     }
 
     public HttpClient getClient() {
@@ -59,7 +56,7 @@ public class ConnectionManager {
 
     public void checkResponseHeadersForCookies(Header[] headers) {
 	for (Header h : headers) {
-	    
+
 	    for (HeaderElement element : h.getElements()) {
 		if (element.getName().equals("EASW_KEY")) {
 		    session.addCookie("EASW_KEY", element.getValue());

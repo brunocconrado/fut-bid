@@ -6,6 +6,10 @@ import java.util.List;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import br.com.futbid.domain.auth.Auth;
 import br.com.futbid.domain.search.Search;
@@ -13,32 +17,41 @@ import br.com.futbid.integration.SearchIntegration;
 import br.com.futbid.integration.exception.IntegrationException;
 import br.com.futbid.integration.util.HttpUtils;
 
+@Component
 public class SearchIntegrationImpl implements SearchIntegration {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SearchIntegrationImpl.class);
+
+    @Autowired
+    private ConnectionManager connectionManager;
     
-    private Session session = new Session();
+    @Autowired
+    private Session session;
 
     @Override
     public List<JSONObject> search(Search search) {
-	
+
 	List<JSONObject> result = new ArrayList<>();
-	
+
 	int currentPage = 1;
-	for(; currentPage <= search.getMaxSearchPageCount(); currentPage++) {
+	for (; currentPage <= search.getMaxSearchPageCount(); currentPage++) {
 	    result.add(search(search, currentPage));
 	}
+
+	LOG.debug("Itens found {}", result);
 	
 	return result;
     }
-    
+
     @Override
     @SuppressWarnings("static-access")
     public JSONObject search(Search search, int page) {
 
 	try {
-	    
+
 	    String url = buildUriString(search, session.getAccount().getHttpsHostHeader(), page, false);
 
-	    HttpPost request = ConnectionManager.getInstance().getHttpPostWithCookie(url, session.getAuth().getSessionId());
+	    HttpPost request = connectionManager.getHttpPostWithCookie(url, session.getAuth().getSessionId());
 
 	    request.addHeader("Host", "utas.fut.ea.com");
 	    request.addHeader("User-Agent",
@@ -47,16 +60,16 @@ public class SearchIntegrationImpl implements SearchIntegration {
 	    request.addHeader("X-HTTP-Method-Override", "GET");
 	    request.addHeader("Origin", "http://www.easports.com");
 	    request.addHeader("Host", session.getAccount().getHostHeader());
-	    
-	    
+
 	    Auth auth = session.getAuth();
 	    request.addHeader("X-UT-PHISHING-TOKEN", auth.getToken().getToken());
 	    request.addHeader("X-UT-SID", auth.getSessionId());
-	   
-	    HttpResponse response = ConnectionManager.getInstance().getClient().execute(request);
+
+	    HttpResponse response = connectionManager.getClient().execute(request);
 
 	    return new JSONObject(HttpUtils.readHttpResponse(response));
 	} catch (Exception e) {
+	    LOG.error("Error searching card", e);
 	    throw new IntegrationException(e);
 	}
     }
@@ -71,6 +84,8 @@ public class SearchIntegrationImpl implements SearchIntegration {
 
 	url.append(search.getURI(isBuyerMode));
 
+	LOG.debug("String to search {}", url);
+	
 	return url.toString();
     }
 

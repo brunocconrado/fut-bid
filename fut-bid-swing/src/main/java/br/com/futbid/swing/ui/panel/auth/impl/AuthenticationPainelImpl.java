@@ -8,28 +8,47 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 
+import javax.annotation.PostConstruct;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import br.com.futbid.domain.auth.Credentials;
+import br.com.futbid.domain.enumeration.Tab;
 import br.com.futbid.swing.ui.listener.AuthActionListener;
 import br.com.futbid.swing.ui.panel.auth.AuthenticationPainel;
 import br.com.futbid.swing.ui.panel.tab.WorkTabPanel;
 import br.com.futbid.swing.ui.utils.Colors;
 
+@Component
 public class AuthenticationPainelImpl extends JPanel implements AuthenticationPainel {
 
     private static final long serialVersionUID = 2014030601L;
 
-    private JTextField emailField;
-    private JTextField passwordField;
-    private JTextField answerField;
+    private JTextField email;
+    private JPasswordField password;
+    private JTextField answer;
+    
+    @Autowired 
+    private AuthActionListener authActionListener;
 
     private WorkTabPanel workTabPanel;
-
+    
     public AuthenticationPainelImpl() {
+	this.email = new JTextField();
+	this.password = new JPasswordField();
+	this.answer = new JTextField();
+    }
+
+    @PostConstruct
+    public void init() {
+	
+	setName(Tab.LOGIN.getName());
 
 	setBackground(Colors.BACK_GROUND);
 	setLayout(new BorderLayout());
@@ -44,19 +63,16 @@ public class AuthenticationPainelImpl extends JPanel implements AuthenticationPa
 	fieldPanel.setPreferredSize(new Dimension(50, 130));
 
 	fieldPanel.add(createLable("Email: ", Colors.BACK_GROUND));
-	emailField = new JTextField();
-	fieldPanel.add(emailField);
+	fieldPanel.add(email);
 
 	fieldPanel.add(createLable("Password: ", Colors.BACK_GROUND));
-	passwordField = new JTextField();
-	fieldPanel.add(passwordField);
+	fieldPanel.add(password);
 
 	fieldPanel.add(createLable("Answer: ", Colors.BACK_GROUND));
-	answerField = new JTextField();
-	fieldPanel.add(answerField);
+	fieldPanel.add(answer);
 
 	JButton loginButton = new JButton("Login");
-	loginButton.addActionListener(new AuthActionListener());
+	loginButton.addActionListener(authActionListener);
 
 	JPanel controllPanel = new JPanel(new FlowLayout(2));
 	controllPanel.setBackground(Colors.BACK_GROUND);
@@ -72,18 +88,15 @@ public class AuthenticationPainelImpl extends JPanel implements AuthenticationPa
     }
 
     @Override
-    public void setWorkPanel(WorkTabPanel workTabPanel) {
+    public void setWorkTabPanel(WorkTabPanel workTabPanel) {
 	this.workTabPanel = workTabPanel;
     }
 
     @Override
     public void clearFields() {
-	//	if (ApplicationParametersManager.INSTANCE().getLicense() == null) {
-	this.emailField.setText("");
-	//	}
-	this.passwordField.setText("");
-	this.answerField.setText("");
-
+	email.setText("");
+	password.setText("");
+	answer.setText("");
     }
 
     @Override
@@ -94,12 +107,11 @@ public class AuthenticationPainelImpl extends JPanel implements AuthenticationPa
     @Override
     public Credentials getCredentials() {
 	Credentials credentials = new Credentials();
-	/*credentials.setLogin(emailField.getText());
-	credentials.setPassword(passwordField.getText());
-	credentials.setSecretAnswer(answerField.getText());*/
-	credentials.setLogin("bruno_csantos@hotmail.com");
-	credentials.setPassword("1212Bruc");
-	credentials.setSecretAnswer("terra");
+	/*
+	 * credentials.setLogin(emailField.getText()); credentials.setPassword(passwordField.getText());
+	 * credentials.setSecretAnswer(answerField.getText());
+	 */
+	
 	return credentials;
     }
 

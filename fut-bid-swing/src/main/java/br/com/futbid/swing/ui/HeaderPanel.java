@@ -7,13 +7,21 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+@Component
 public class HeaderPanel extends JPanel {
     
-    private static final long serialVersionUID = 2014022801L;
+    private static final Logger LOG = LoggerFactory.getLogger(HeaderPanel.class);
+    
+    private static final long serialVersionUID = 2014022802L;
     
     private static final int WIDTH = 100;
     
@@ -36,8 +44,7 @@ public class HeaderPanel extends JPanel {
 	    JLabel picLabel = new JLabel(myPicture);
 	    add(picLabel);
 	} catch (Exception e) {
-	    //FIXME Add logback
-	    //ApplicationLogUtil.addToLog(e.getMessage());
+	    LOG.error("Error init", e);
 	}
     }
 }

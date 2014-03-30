@@ -1,4 +1,4 @@
-package br.com.futbid.domain.search;
+package br.com.futbid.domain.enumeration;
 
 public enum ChemistryStyle {
 
@@ -21,7 +21,6 @@ public enum ChemistryStyle {
     public String getValue() {
 	return this.value;
     }
-
     public String toString() {
 	return this.display;
     }

@@ -8,6 +8,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import br.com.futbid.domain.Account;
 import br.com.futbid.domain.Club;
@@ -17,7 +21,13 @@ import br.com.futbid.integration.AccountIntegration;
 import br.com.futbid.integration.exception.IntegrationException;
 import br.com.futbid.integration.util.HttpUtils;
 
+@Component
 public class AccountIntegrationImpl implements AccountIntegration {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AccountIntegrationImpl.class);
+
+    @Autowired
+    private ConnectionManager connectionManager;
 
     public Account getAccountInfo(Auth auth) {
 
@@ -33,9 +43,9 @@ public class AccountIntegrationImpl implements AccountIntegration {
 
 	    HttpUtils.addStandardHeaders(request, xRoute, String.valueOf(auth.getNucleusId()));
 
-	    HttpResponse response = ConnectionManager.getInstance().getClient().execute(request);
+	    HttpResponse response = connectionManager.getClient().execute(request);
 
-	    ConnectionManager.getInstance().checkResponseHeadersForCookies(response.getHeaders("Set-Cookie"));
+	    connectionManager.checkResponseHeadersForCookies(response.getHeaders("Set-Cookie"));
 
 	    String result = HttpUtils.readHttpResponse(response);
 	    JSONObject shard1JsonResp = new JSONObject(result);
@@ -43,7 +53,7 @@ public class AccountIntegrationImpl implements AccountIntegration {
 	    HttpGet repeatRequest = new HttpGet(url);
 	    HttpUtils.addStandardHeaders(repeatRequest, "https://utas.s2.fut.ea.com:443",
 		    String.valueOf(auth.getNucleusId()));
-	    HttpResponse repeatResponse = ConnectionManager.getInstance().getClient().execute(repeatRequest);
+	    HttpResponse repeatResponse = connectionManager.getClient().execute(repeatRequest);
 
 	    result = HttpUtils.readHttpResponse(repeatResponse);
 	    JSONObject shard2JsonResp = new JSONObject(result);
@@ -69,8 +79,7 @@ public class AccountIntegrationImpl implements AccountIntegration {
 
 	    return account;
 	} catch (Exception e) {
-	    //TODO remover usar log
-	    e.printStackTrace();
+	    LOG.error("An Unexpected error validation answer", e);
 	    throw new IntegrationException(e);
 	}
     }

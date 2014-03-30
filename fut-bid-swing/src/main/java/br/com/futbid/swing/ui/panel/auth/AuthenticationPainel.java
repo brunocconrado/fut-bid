@@ -16,7 +16,7 @@ public interface AuthenticationPainel {
    
    void setName(String name);
    
-   void setWorkPanel(WorkTabPanel workTabPanel);
+   void setWorkTabPanel(WorkTabPanel workTabPanel);
    
    Credentials getCredentials();
 }

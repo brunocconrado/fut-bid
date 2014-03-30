@@ -1,17 +1,25 @@
 package br.com.futbid.domain.search;
 
 import br.com.futbid.domain.Player;
-import br.com.futbid.domain.enumeration.SearchFields;
+import br.com.futbid.domain.enumeration.ChemistryStyle;
+import br.com.futbid.domain.enumeration.Level;
+import br.com.futbid.domain.enumeration.Position;
 
 public class PlayerSearch extends Search {
+    
     private Player player;
+    
     private String command;
+    
     private String country;
+    
     private String league;
-    private String position;
-    private String chemistryStyle;
+    
+    private Position position;
+    
+    private ChemistryStyle chemistryStyle;
 
-    public PlayerSearch() {
+    public PlayerSearch(Player player) {
 	super(Type.PLAYER);
     }
 
@@ -19,13 +27,13 @@ public class PlayerSearch extends Search {
 	StringBuilder url = new StringBuilder();
 
 	if (player != null) {
-	    url.append("&maskedDefId=").append(player.getPlayer_id());
+	    url.append("&maskedDefId=").append(player.getPlayerId());
 	} else {
 	    if (league != null && !league.isEmpty()) {
 		url.append("&leag=").append(league);
 	    }
-	    if (level != null && !level.isEmpty() && !level.equals(Level.ALL.getValue())) {
-		url.append("&lev=").append(getLevel());
+	    if (!Level.ALL.equals(level)) {
+		url.append("&lev=").append(level.getValue());
 	    }
 	    if (country != null && (!country.isEmpty())) {
 		url.append("&nat=").append(country);
@@ -34,9 +42,8 @@ public class PlayerSearch extends Search {
 		url.append("&team=").append(command);
 	    }
 	}
-	if (chemistryStyle != null && !chemistryStyle.isEmpty()
-		&& !chemistryStyle.equals(ChemistryStyle.All.getValue())) {
-	    url.append("&playStyle=").append(chemistryStyle);
+	if (!ChemistryStyle.All.equals(chemistryStyle)) {
+	    url.append("&playStyle=").append(chemistryStyle.getValue());
 	}
 
 	if (minBuyPrice != null && !minBuyPrice.isEmpty()) {
@@ -47,7 +54,7 @@ public class PlayerSearch extends Search {
 	    url.append(isBuyerMode ? "&maxb=" : "&macr=").append(maxBuyPrice);
 	}
 
-	if (Position.All.getValue().equals(position)) {
+	if (Position.All.equals(position)) {
 	    if (Position.Defenders.getValue().equals(position) || Position.Midfielders.getValue().equals(position)
 		    || Position.Attackers.getValue().equals(position)) {
 		url.append("&zone=");
@@ -85,20 +92,20 @@ public class PlayerSearch extends Search {
 	this.league = league;
     }
 
-    public String getPosition() {
+    public Position getPosition() {
 	return this.position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(Position position) {
 	this.position = position;
     }
 
-    public String getChemistryStyle() {
+    public ChemistryStyle getChemistryStyle() {
 	return this.chemistryStyle;
     }
 
-    public void setChemistryStyle(String formation) {
-	this.chemistryStyle = formation;
+    public void setChemistryStyle(ChemistryStyle chemistryStyle) {
+	this.chemistryStyle = chemistryStyle;
     }
 
     public String getCardName() {
@@ -106,10 +113,10 @@ public class PlayerSearch extends Search {
     }
 
     public String getCardIdentifier() {
-	String name = player.getShort_name() + ", ";
+	String name = player.getShortName() + ", ";
 
 	String position = "<no position>";
-	for (SearchFields.Position p : SearchFields.Position.values()) {
+	for (Position p : Position.values()) {
 	    if (p.getValue().equals(getPosition())) {
 		position = p.toString();
 		break;

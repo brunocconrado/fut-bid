@@ -5,8 +5,11 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import org.springframework.stereotype.Component;
+
 import br.com.futbid.swing.ui.settings.SettingsPanel;
 
+@Component
 public class SettingsSaveActionListener implements ActionListener {
     
     @Override

@@ -5,10 +5,18 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import br.com.futbid.integration.impl.Session;
 import br.com.futbid.swing.ui.panel.work.WorkPanel;
 
+@Component
 public class AutoBuyerActionLister implements ActionListener {
 
+    @Autowired
+    private Session session;
+    
     @Override
     public void actionPerformed(ActionEvent event) {
 	Object obj = ((JButton) event.getSource()).getParent().getParent().getParent();

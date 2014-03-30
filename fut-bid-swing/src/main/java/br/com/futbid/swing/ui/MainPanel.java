@@ -8,28 +8,36 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
+import javax.annotation.PostConstruct;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.futbid.domain.enumeration.Tab;
 import br.com.futbid.swing.ui.listener.ChangeTabListener;
 import br.com.futbid.swing.ui.panel.auth.AuthenticationPainel;
-import br.com.futbid.swing.ui.panel.auth.impl.AuthenticationPainelImpl;
 import br.com.futbid.swing.ui.panel.tab.WorkTabPanel;
-import br.com.futbid.swing.ui.panel.work.impl.WorkPanelImpl;
 import br.com.futbid.swing.ui.settings.SettingsPanel;
-import br.com.futbid.swing.ui.settings.impl.SettingsPanelImpl;
 
+@org.springframework.stereotype.Component
 public class MainPanel extends JPanel {
 
-    private static final long serialVersionUID = 1L;
+    private static final Logger LOG = LoggerFactory.getLogger(MainPanel.class);
 
+    private static final long serialVersionUID = 2014030102L;
+
+    @Autowired
     private SettingsPanel settingsPanel;
 
-    private WorkTabPanel workTabPainel;
+    @Autowired
+    private AuthenticationPainel authenticationPanel;
+    
+    @Autowired
+    private WorkTabPanel workTabPanel;
 
     /*
      * private BasePanel ap = new BasePanel(); private SettingsPanel sp = new SettingsPanel(); private
@@ -38,25 +46,20 @@ public class MainPanel extends JPanel {
      */
 
     public MainPanel() {
+    }
 
+    @PostConstruct
+    public void init() {
 	setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
 
 	final JTabbedPane tabPanel = new JTabbedPane();
 	tabPanel.setPreferredSize(new Dimension(800, 550));
 
-	AuthenticationPainel authenticationPanel = new AuthenticationPainelImpl();
-	authenticationPanel.setName(Tab.LOGIN.getName());
-
-	workTabPainel = new WorkTabPanel(authenticationPanel, new WorkPanelImpl());
-	tabPanel.addTab(Tab.LOGIN.getName(), (Component) workTabPainel);
-
-	settingsPanel = new SettingsPanelImpl();
-	settingsPanel.setName(Tab.SETTINGS.getName());
+	tabPanel.addTab(Tab.LOGIN.getName(), (Component) workTabPanel);
 	tabPanel.addTab(Tab.SETTINGS.getName(), (Component) settingsPanel);
 
 	/*
-	 * tabPanel.addTab("Buyer inventory", this.buyIP); 
-	 * tabPanel.addTab("Bidder inventory", this.bidIP);
+	 * tabPanel.addTab("Buyer inventory", this.buyIP); tabPanel.addTab("Bidder inventory", this.bidIP);
 	 */
 
 	add(tabPanel);

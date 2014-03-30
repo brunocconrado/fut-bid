@@ -1,4 +1,4 @@
-package br.com.futbid.domain.search;
+package br.com.futbid.domain.enumeration;
 
 public enum Position {
 
