@@ -4,7 +4,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import br.com.futbid.domain.enumeration.Tab;
-import br.com.futbid.swing.ui.settings.SettingsPanel;
+import br.com.futbid.swing.ui.panel.settings.SettingsPanel;
 
 public class ChangeTabListener implements ChangeListener {
 

@@ -33,12 +33,12 @@ public class AuthenticationPainelImpl extends JPanel implements AuthenticationPa
     private JTextField email;
     private JPasswordField password;
     private JTextField answer;
-    
-    @Autowired 
+
+    @Autowired
     private AuthActionListener authActionListener;
 
     private WorkTabPanel workTabPanel;
-    
+
     public AuthenticationPainelImpl() {
 	this.email = new JTextField();
 	this.password = new JPasswordField();
@@ -47,7 +47,7 @@ public class AuthenticationPainelImpl extends JPanel implements AuthenticationPa
 
     @PostConstruct
     public void init() {
-	
+
 	setName(Tab.LOGIN.getName());
 
 	setBackground(Colors.BACK_GROUND);
@@ -82,8 +82,9 @@ public class AuthenticationPainelImpl extends JPanel implements AuthenticationPa
 	centerContainer.add(fieldPanel, "North");
 	centerContainer.add(controllPanel, "Center");
 
-	add(createLable("Please provide your FUT credentials: ", Colors.BACK_GROUND, Colors.HEADER_COLOR, new Font(
-		"Arial", 1, 14)), "North");
+	Font font = new Font("Arial", 1, 14);
+	add(createLable("Please provide your FUT credentials: ", Colors.BACK_GROUND, Colors.HEADER_COLOR, font, null,
+		null, false), "North");
 	add(centerContainer, "Center");
     }
 
@@ -111,7 +112,7 @@ public class AuthenticationPainelImpl extends JPanel implements AuthenticationPa
 	 * credentials.setLogin(emailField.getText()); credentials.setPassword(passwordField.getText());
 	 * credentials.setSecretAnswer(answerField.getText());
 	 */
-	
+
 	return credentials;
     }
 

@@ -6,17 +6,17 @@ import br.com.futbid.domain.enumeration.Level;
 import br.com.futbid.domain.enumeration.Position;
 
 public class PlayerSearch extends Search {
-    
+
     private Player player;
-    
+
     private String command;
-    
+
     private String country;
-    
+
     private String league;
-    
+
     private Position position;
-    
+
     private ChemistryStyle chemistryStyle;
 
     public PlayerSearch(Player player) {
@@ -113,20 +113,7 @@ public class PlayerSearch extends Search {
     }
 
     public String getCardIdentifier() {
-	String name = player.getShortName() + ", ";
-
-	String position = "<no position>";
-	for (Position p : Position.values()) {
-	    if (p.getValue().equals(getPosition())) {
-		position = p.toString();
-		break;
-	    }
-	}
-	String rating = (getCardRating() != null) && (!getCardRating().isEmpty()) ? ", " + getCardRating() : "";
-
-	StringBuilder res = new StringBuilder(name).append(position).append("," + getLevel()).append(rating);
-
-	return res.toString();
+	return player.getCardIdentifier();
     }
 
     public Player getPlayer() {

@@ -9,6 +9,8 @@ import org.json.JSONObject;
 
 import br.com.futbid.domain.ActionInfo;
 import br.com.futbid.domain.Player;
+import br.com.futbid.domain.enumeration.League;
+import br.com.futbid.domain.enumeration.Position;
 import br.com.futbid.domain.legacy.Attribute;
 import br.com.futbid.domain.legacy.BidTokens;
 import br.com.futbid.domain.legacy.Currency;
@@ -111,14 +113,14 @@ public final class JsonToObject {
 	pi.setFullName(getString(object, "full_name"));
 	pi.setId(getLong(object, "id"));
 	pi.setImage(getString(object, "image"));
-	pi.setLeague(getInt(object, "league"));
+	pi.setLeague(League.findBy(getInt(object, "league")));
 	System.out.println("Level: " + getInt(object, "level"));
 	//pi.s(Level.getBy(getInt(object, "level")));
 	pi.setNation(getInt(object, "nation"));
 	pi.setNationImage(getString(object, "nation_image"));
 	pi.setPcActionAverage(getString(object, "pc_auction_average"));
 	pi.setPlayerId(getLong(object, "player_id"));
-	pi.setPosition(getString(object, "position"));
+	pi.setPosition(Position.findBy(getString(object, "position")));
 	pi.setPs3ActionAverage(getString(object, "ps3_auction_average"));
 	pi.setRare(getBoolean(object, "rare"));
 	pi.setRating(getInt(object, "rating"));

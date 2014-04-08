@@ -1,6 +1,10 @@
 package br.com.futbid.domain;
 
+import br.com.futbid.domain.enumeration.Country;
+import br.com.futbid.domain.enumeration.League;
 import br.com.futbid.domain.enumeration.Level;
+import br.com.futbid.domain.enumeration.Position;
+import br.com.futbid.domain.enumeration.Team;
 import br.com.futbid.domain.search.Type;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -82,16 +86,22 @@ public class Player extends Card {
     private Integer attr6;
 
     @JsonInclude(Include.NON_NULL)
-    private Level level;
-
-    @JsonInclude(Include.NON_NULL)
-    private Integer league;
-
-    @JsonInclude(Include.NON_NULL)
     private boolean rare;
 
     @JsonInclude(Include.NON_NULL)
-    private String position;
+    private Level level;
+    
+    @JsonInclude(Include.NON_NULL)
+    private Team team;
+    
+    @JsonInclude(Include.NON_NULL)
+    private Country country;
+    
+    @JsonInclude(Include.NON_NULL)
+    private League league;
+    
+    @JsonInclude(Include.NON_NULL)
+    private Position position;
 
     public Long getIdPlayer() {
 	return idPlayer;
@@ -277,11 +287,11 @@ public class Player extends Card {
 	this.level = level;
     }
 
-    public Integer getLeague() {
+    public League getLeague() {
 	return league;
     }
 
-    public void setLeague(Integer league) {
+    public void setLeague(League league) {
 	this.league = league;
     }
 
@@ -293,12 +303,46 @@ public class Player extends Card {
 	this.rare = rare;
     }
 
-    public String getPosition() {
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+    public Position getPosition() {
 	return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(Position position) {
 	this.position = position;
+    }
+
+    @Override
+    public String getCardIdentifier() {
+	String name = shortName + ", ";
+
+	String position = "<no position>";
+	for (Position p : Position.values()) {
+	    if (p.getValue().equals(getPosition())) {
+		position = p.toString();
+		break;
+	    }
+	}
+	String rating = (getCardRating() != null) && (!getCardRating().isEmpty()) ? ", " + getCardRating() : "";
+
+	StringBuilder res = new StringBuilder(name).append(position).append("," + getLevel()).append(rating);
+
+	return res.toString();
     }
 
 }

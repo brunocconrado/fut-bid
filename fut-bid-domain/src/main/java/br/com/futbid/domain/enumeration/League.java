@@ -1,5 +1,8 @@
 package br.com.futbid.domain.enumeration;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum League {
 
     Abundesliga("80", "A. Bundesliga"), AirtricityLeague("65", "Airtricity League"), ALeague("351", "A - League"), Allsvenskan(
@@ -17,6 +20,15 @@ public enum League {
 
     private String value;
     private String display;
+    
+    public static Map<String, League> map = new HashMap<>();
+
+    static {
+	for (League league : values()) {
+	    map.put(league.name(), league);
+	    map.put(league.value, league);
+	}
+    }
 
     private League(String value, String display) {
 	this.value = value;
@@ -29,6 +41,14 @@ public enum League {
 
     public String toString() {
 	return this.display;
+    }
+
+    public static League findBy(League league) {
+	return map.get(league.name());
+    }
+    
+    public static League findBy(Integer value) {
+	return map.get(value);
     }
 
 }

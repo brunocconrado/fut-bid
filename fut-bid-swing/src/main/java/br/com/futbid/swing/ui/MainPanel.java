@@ -20,8 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import br.com.futbid.domain.enumeration.Tab;
 import br.com.futbid.swing.ui.listener.ChangeTabListener;
 import br.com.futbid.swing.ui.panel.auth.AuthenticationPainel;
+import br.com.futbid.swing.ui.panel.inventory.BuyerInvetoryPanel;
+import br.com.futbid.swing.ui.panel.settings.SettingsPanel;
 import br.com.futbid.swing.ui.panel.tab.WorkTabPanel;
-import br.com.futbid.swing.ui.settings.SettingsPanel;
 
 @org.springframework.stereotype.Component
 public class MainPanel extends JPanel {
@@ -35,15 +36,12 @@ public class MainPanel extends JPanel {
 
     @Autowired
     private AuthenticationPainel authenticationPanel;
-    
+
     @Autowired
     private WorkTabPanel workTabPanel;
 
-    /*
-     * private BasePanel ap = new BasePanel(); private SettingsPanel sp = new SettingsPanel(); private
-     * AutobuyerInventoryPanel buyIP = new AutobuyerInventoryPanel(); private AutobidderInventoryPanel bidIP = new
-     * AutobidderInventoryPanel();
-     */
+    @Autowired
+    private BuyerInvetoryPanel buyerInvetoryPanel;
 
     public MainPanel() {
     }
@@ -55,8 +53,10 @@ public class MainPanel extends JPanel {
 	final JTabbedPane tabPanel = new JTabbedPane();
 	tabPanel.setPreferredSize(new Dimension(800, 550));
 
+	tabPanel.addTab(Tab.BUY.getName(), (Component) buyerInvetoryPanel);
 	tabPanel.addTab(Tab.LOGIN.getName(), (Component) workTabPanel);
 	tabPanel.addTab(Tab.SETTINGS.getName(), (Component) settingsPanel);
+	
 
 	/*
 	 * tabPanel.addTab("Buyer inventory", this.buyIP); tabPanel.addTab("Bidder inventory", this.bidIP);

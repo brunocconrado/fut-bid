@@ -3,12 +3,13 @@ package br.com.futbid.domain;
 import java.io.Serializable;
 
 import br.com.futbid.domain.enumeration.ChemistryStyle;
+import br.com.futbid.domain.search.SubType;
 import br.com.futbid.domain.search.Type;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-public class Card implements Serializable {
+public abstract class Card implements Serializable {
 
     private static final long serialVersionUID = 2014032702L;
 
@@ -18,10 +19,10 @@ public class Card implements Serializable {
     private String minBuyPrice;
 
     @JsonInclude(Include.NON_NULL)
-    private String buyPrice;
+    private Double buyPrice;
 
     @JsonInclude(Include.NON_NULL)
-    private String sellPrice;
+    private Double sellPrice;
 
     @JsonInclude(Include.NON_NULL)
     private String cardRating;
@@ -33,13 +34,13 @@ public class Card implements Serializable {
     private ChemistryStyle chemistryStyle;
 
     @JsonInclude(Include.NON_NULL)
-    private String position;
-
-    @JsonInclude(Include.NON_NULL)
     private String pType;
 
     @JsonInclude(Include.NON_NULL)
     private Type type;
+
+    @JsonInclude(Include.NON_NULL)
+    private SubType subType;
 
     @JsonInclude(Include.NON_NULL)
     private Integer maxPageCount;
@@ -63,19 +64,19 @@ public class Card implements Serializable {
 	this.minBuyPrice = minBuyPrice;
     }
 
-    public String getBuyPrice() {
+    public Double getBuyPrice() {
 	return buyPrice;
     }
 
-    public void setBuyPrice(String buyPrice) {
+    public void setBuyPrice(Double buyPrice) {
 	this.buyPrice = buyPrice;
     }
 
-    public String getSellPrice() {
+    public Double getSellPrice() {
 	return sellPrice;
     }
 
-    public void setSellPrice(String sellPrice) {
+    public void setSellPrice(Double sellPrice) {
 	this.sellPrice = sellPrice;
     }
 
@@ -103,14 +104,6 @@ public class Card implements Serializable {
 	this.chemistryStyle = chemistryStyle;
     }
 
-    public String getPosition() {
-	return position;
-    }
-
-    public void setPosition(String position) {
-	this.position = position;
-    }
-
     public String getpType() {
 	return pType;
     }
@@ -127,6 +120,14 @@ public class Card implements Serializable {
 	this.type = type;
     }
 
+    public SubType getSubType() {
+	return subType;
+    }
+
+    public void setSubType(SubType subType) {
+	this.subType = subType;
+    }
+
     public Integer getMaxPageCount() {
 	return maxPageCount;
     }
@@ -134,5 +135,7 @@ public class Card implements Serializable {
     public void setMaxPageCount(Integer maxPageCount) {
 	this.maxPageCount = maxPageCount;
     }
+
+    public abstract String getCardIdentifier();
 
 }

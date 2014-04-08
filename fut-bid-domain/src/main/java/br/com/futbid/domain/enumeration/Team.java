@@ -1,5 +1,8 @@
 package br.com.futbid.domain.enumeration;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum Team {
     FcKaiserslautern("29"), FcKoln("31"), FcNurnberg("171"), FcShakhtar("101059"), FcUnionBerlin("1831"), FsvMainz05(
 	    "169"), Hoffenheim("10029"), AVladikavkaz("110230"), AaB("820"), AalesundsFk("1755"), Aberdeen("77"), AcAjaccio(
@@ -109,6 +112,15 @@ public enum Team {
 	    "1948"), ZaglebieLubin("110749"), ZenitStPetersburg("100769");
 
     private String value;
+    
+    public static Map<String, Team> map = new HashMap<>();
+
+    static {
+	for (Team team : values()) {
+	    map.put(team.name(), team);
+	}
+    }
+
 
     private Team(String value) {
 	this.value = value;
@@ -116,5 +128,9 @@ public enum Team {
 
     public String getValue() {
 	return this.value;
+    }
+
+    public static Team findBy(Team team) {
+	return map.get(team.name());
     }
 }

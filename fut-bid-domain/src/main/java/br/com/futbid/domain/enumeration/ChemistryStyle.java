@@ -1,5 +1,8 @@
 package br.com.futbid.domain.enumeration;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum ChemistryStyle {
 
     All("all", "All"), BASIC("250", "BASIC"), SNIPER("251", "SNIPER"), FINISHER("252", "FINISHER"), DEADEYE("253",
@@ -12,6 +15,14 @@ public enum ChemistryStyle {
 
     private String value;
     private String display;
+    
+    public static Map<String, ChemistryStyle> map = new HashMap<>();
+
+    static {
+	for (ChemistryStyle chemistryStyle : values()) {
+	    map.put(chemistryStyle.name(), chemistryStyle);
+	}
+    }
 
     private ChemistryStyle(String value, String display) {
 	this.value = value;
@@ -21,7 +32,8 @@ public enum ChemistryStyle {
     public String getValue() {
 	return this.value;
     }
-    public String toString() {
+
+    public String getDisplay() {
 	return this.display;
     }
 
@@ -34,6 +46,10 @@ public enum ChemistryStyle {
 	    }
 	}
 	return result;
+    }
+
+    public static ChemistryStyle findBy(ChemistryStyle chemistryStyle) {
+	return map.get(chemistryStyle.name());
     }
 
 }

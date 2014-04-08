@@ -1,5 +1,8 @@
 package br.com.futbid.domain.enumeration;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum Position {
 
     All("all", "All"), Defenders("defense", "Def."), Midfielders("midfield", "Mid."), Attackers("attacker", "Att."), GoalKeeper(
@@ -11,6 +14,15 @@ public enum Position {
     private String value;
     private String display;
 
+    public static Map<String, Position> map = new HashMap<>();
+
+    static {
+	for (Position position : values()) {
+	    map.put(position.name(), position);
+	    map.put(position.value, position);
+	}
+    }
+
     private Position(String value, String display) {
 	this.value = value;
 	this.display = display;
@@ -20,16 +32,16 @@ public enum Position {
 	return this.value;
     }
 
-    public static Position[] getMainElements() {
-	Position[] elements = { All, GoalKeeper, RightWingBack, RightBack, CenterBack, LeftBack, LeftWingBack,
-		CentralDefensiveMidfielder, RightMidfielder, CentralMidfielder, LeftMidfielder,
-		CentralAttackingMidfielder, RightForward, CentralForward, LeftForward, RightWinger, Striker, LeftWinger };
-
-	return elements;
-    }
-
     public String toString() {
 	return this.display;
+    }
+
+    public static Position findBy(Position position) {
+	return map.get(position.name());
+    }
+
+    public static Position findBy(String value) {
+	return map.get(value);
     }
 
 }

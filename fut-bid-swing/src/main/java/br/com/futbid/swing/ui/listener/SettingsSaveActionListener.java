@@ -7,7 +7,7 @@ import javax.swing.JButton;
 
 import org.springframework.stereotype.Component;
 
-import br.com.futbid.swing.ui.settings.SettingsPanel;
+import br.com.futbid.swing.ui.panel.settings.SettingsPanel;
 
 @Component
 public class SettingsSaveActionListener implements ActionListener {

@@ -1,5 +1,8 @@
 package br.com.futbid.domain.enumeration;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum Country {
     Albania("1"), Algeria("97"), Angola("98"), Argentina("52"), Armenia("3"), Australia("195"), Austria("4"), Barbados(
 	    "66"), Belarus("6"), Belgium("7"), Bermuda("68"), Bolivia("53"), BosniaHerzegovina("8"), Brazil("54"), Bulgaria(
@@ -18,6 +21,14 @@ public enum Country {
 	    "60"), Venezuela("61"), Wales("50"), Zambia("147"), Zimbabwe("148");
 
     private String value;
+    
+    public static Map<String, Country> map = new HashMap<>();
+
+    static {
+	for (Country country : values()) {
+	    map.put(country.name(), country);
+	}
+    }
 
     private Country(String value) {
 	this.value = value;
@@ -25,5 +36,9 @@ public enum Country {
 
     public String getValue() {
 	return this.value;
+    }
+
+    public static Country findBy(Country country) {
+	return map.get(country.name());
     }
 }
