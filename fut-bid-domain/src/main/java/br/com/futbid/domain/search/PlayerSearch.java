@@ -54,9 +54,9 @@ public class PlayerSearch extends Search {
 	    url.append(isBuyerMode ? "&maxb=" : "&macr=").append(maxBuyPrice);
 	}
 
-	if (Position.All.equals(position)) {
-	    if (Position.Defenders.getValue().equals(position) || Position.Midfielders.getValue().equals(position)
-		    || Position.Attackers.getValue().equals(position)) {
+	if (Position.ALL.equals(position)) {
+	    if (Position.DEFENDERS.getValue().equals(position) || Position.MIDFIELDERS.getValue().equals(position)
+		    || Position.ATTACKERS.getValue().equals(position)) {
 		url.append("&zone=");
 	    } else {
 		url.append("&pos=");

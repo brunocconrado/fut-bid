@@ -5,14 +5,17 @@ import java.util.Map;
 
 public enum Position {
 
-    All("all", "All"), Defenders("defense", "Def."), Midfielders("midfield", "Mid."), Attackers("attacker", "Att."), GoalKeeper(
-	    "GK", "GK"), RightWingBack("RWB", "RWB"), RightBack("RB", "RB"), CenterBack("CB", "CB"), LeftBack("LB",
-	    "LB"), LeftWingBack("LWB", "LWB"), CentralDefensiveMidfielder("CDM", "CDM"), RightMidfielder("RM", "RM"), CentralMidfielder(
-	    "CM", "CM"), LeftMidfielder("LM", "LM"), CentralAttackingMidfielder("CAM", "CAM"), RightForward("RF", "RF"), CentralForward(
-	    "CF", "CF"), LeftForward("LF", "LF"), RightWinger("RW", "RW"), Striker("ST", "ST"), LeftWinger("LW", "LW");
+    ALL("all", "All", "All"), DEFENDERS("defense", "Def.", "Defenders"), MIDFIELDERS("midfield", "Mid.", "Midfielders"), ATTACKERS(
+	    "attacker", "Att.", "Attackers"), GK("GK", "GK", "GoalKeeper"), RWB("RWB", "RWB", "RightWingBack"), RB(
+	    "RB", "RB", "RightBack"), CB("CB", "CB", "CenterBack"), LB("LB", "LB", "LeftBack"), LWB("LWB", "LWB",
+	    "LeftWingBack"), CDM("CDM", "CDM", "CentralDefensiveMidfielder"), RM("RM", "RM", "RightMidfielder"), CM(
+	    "CM", "CM", "CentralMidfielder"), LM("LM", "LM", "LeftMidfielder"), CAM("CAM", "CAM",
+	    "CentralAttackingMidfielder"), RF("RF", "RF", "RightForward"), CF("CF", "CF", "CentralForward"), LF("LF",
+	    "LF", "LeftForward"), RW("RW", "RW", "RightWinger"), ST("ST", "ST", "Striker"), LW("LW", "LW", "LeftWinger");
 
     private String value;
     private String display;
+    private String description;
 
     public static Map<String, Position> map = new HashMap<>();
 
@@ -23,13 +26,18 @@ public enum Position {
 	}
     }
 
-    private Position(String value, String display) {
+    private Position(String value, String display, String description) {
 	this.value = value;
 	this.display = display;
+	this.description = description;
     }
 
     public String getValue() {
 	return this.value;
+    }
+
+    public String getDescription() {
+	return description;
     }
 
     public String toString() {

@@ -11,9 +11,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class ImageLoader extends Thread {
     
     private JPanel imageContainer;

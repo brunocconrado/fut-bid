@@ -13,7 +13,7 @@ public abstract class Card implements Serializable {
 
     private static final long serialVersionUID = 2014032702L;
 
-    protected Long id;
+    private Long id;
 
     @JsonInclude(Include.NON_NULL)
     private String minBuyPrice;
@@ -44,6 +44,12 @@ public abstract class Card implements Serializable {
 
     @JsonInclude(Include.NON_NULL)
     private Integer maxPageCount;
+
+    @JsonInclude(Include.NON_NULL)
+    private String image;
+
+    @JsonInclude(Include.NON_NULL)
+    private boolean rare;
 
     public Card() {
     }
@@ -134,6 +140,22 @@ public abstract class Card implements Serializable {
 
     public void setMaxPageCount(Integer maxPageCount) {
 	this.maxPageCount = maxPageCount;
+    }
+
+    public String getImage() {
+	return image;
+    }
+
+    public void setImage(String image) {
+	this.image = image;
+    }
+
+    public boolean isRare() {
+	return rare;
+    }
+
+    public void setRare(boolean rare) {
+	this.rare = rare;
     }
 
     public abstract String getCardIdentifier();

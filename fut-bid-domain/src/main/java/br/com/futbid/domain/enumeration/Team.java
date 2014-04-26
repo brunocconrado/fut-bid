@@ -118,6 +118,7 @@ public enum Team {
     static {
 	for (Team team : values()) {
 	    map.put(team.name(), team);
+	    map.put(team.value, team);
 	}
     }
 
@@ -132,5 +133,9 @@ public enum Team {
 
     public static Team findBy(Team team) {
 	return map.get(team.name());
+    }
+    
+    public static Team findBy(String code) {
+	return map.get(code);
     }
 }

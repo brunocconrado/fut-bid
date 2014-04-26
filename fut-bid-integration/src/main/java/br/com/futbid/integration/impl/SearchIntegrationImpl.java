@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -11,11 +12,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.com.futbid.domain.Player;
 import br.com.futbid.domain.auth.Auth;
 import br.com.futbid.domain.search.Search;
 import br.com.futbid.integration.SearchIntegration;
 import br.com.futbid.integration.exception.IntegrationException;
 import br.com.futbid.integration.util.HttpUtils;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 @Component
 public class SearchIntegrationImpl implements SearchIntegration {
@@ -24,7 +29,10 @@ public class SearchIntegrationImpl implements SearchIntegration {
 
     @Autowired
     private ConnectionManager connectionManager;
-    
+
+    @Autowired
+    private ObjectMapper mapper;
+
     @Autowired
     private Session session;
 
@@ -39,12 +47,11 @@ public class SearchIntegrationImpl implements SearchIntegration {
 	}
 
 	LOG.debug("Itens found {}", result);
-	
+
 	return result;
     }
 
     @Override
-    @SuppressWarnings("static-access")
     public JSONObject search(Search search, int page) {
 
 	try {
@@ -74,6 +81,35 @@ public class SearchIntegrationImpl implements SearchIntegration {
 	}
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Player> searchPlayerByName(String name) {
+
+	try {
+
+	    HttpGet request = new HttpGet("http://www.futhead.com/14/players/search/quick/?term=" + name);
+
+	    HttpResponse response = connectionManager.getClient().execute(request);
+
+	    String responseMessage = HttpUtils.readHttpResponse(response);
+
+	    LOG.debug("Response Message {}", responseMessage);
+
+	    List<Player> players = new ArrayList<>();
+	    if (responseMessage != null && !responseMessage.isEmpty()) {
+		responseMessage = "{\"ArrayList\":" + responseMessage + "}";
+
+		players = mapper.readValue(responseMessage,
+			TypeFactory.defaultInstance().constructCollectionType(ArrayList.class, Player.class));
+	    }
+
+	    return players;
+	} catch (Exception e) {
+	    LOG.error("Error searching player by name", e);
+	    throw new IntegrationException(e);
+	}
+    }
+
     private static String buildUriString(Search search, String hostName, int page, boolean isBuyerMode) {
 
 	int nextPage = (page - 1) * Integer.valueOf(search.getMaxPageResult());
@@ -85,7 +121,7 @@ public class SearchIntegrationImpl implements SearchIntegration {
 	url.append(search.getURI(isBuyerMode));
 
 	LOG.debug("String to search {}", url);
-	
+
 	return url.toString();
     }
 

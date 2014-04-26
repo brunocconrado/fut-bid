@@ -1,5 +1,7 @@
 package br.com.futbid.swing.ui.utils;
 
+import br.com.futbid.swing.config.Config;
+
 public class Utils {
 
     private static final double MY_PART_FROM_SELL_PRICE = 0.95D;
@@ -23,6 +25,9 @@ public class Utils {
     }
 
     public static Double calculateProfit(Double buyPrice, Double sellPrice) {
+	if (buyPrice == null || sellPrice == null) {
+	    return 0D;
+	}
 	return sellPrice * MY_PART_FROM_SELL_PRICE - buyPrice;
     }
 
@@ -35,6 +40,10 @@ public class Utils {
 	}
 
 	return result;
+    }
+
+    public static <T> T getBean(Class<T> clazz) {
+	return Config.getBean(clazz);
     }
 
 }

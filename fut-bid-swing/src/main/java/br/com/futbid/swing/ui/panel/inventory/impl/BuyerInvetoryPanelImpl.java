@@ -9,6 +9,7 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.swing.BorderFactory;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.com.futbid.domain.Card;
+import br.com.futbid.domain.Player;
 import br.com.futbid.domain.enumeration.InventoryTypes;
 import br.com.futbid.integration.impl.Session;
 import br.com.futbid.swing.ui.listener.BuyerInventoryClearActionListener;
@@ -65,6 +67,8 @@ public class BuyerInvetoryPanelImpl extends JPanel implements BuyerInvetoryPanel
     @Autowired
     private Session session;
 
+    private List<Player> players;
+
     public BuyerInvetoryPanelImpl() {
 	itemTablePanel = new JPanel();
 	itemTablePanel.setBackground(Colors.WHITE);
@@ -78,13 +82,18 @@ public class BuyerInvetoryPanelImpl extends JPanel implements BuyerInvetoryPanel
 	scrollPanel.setVerticalScrollBarPolicy(22);
 	scrollPanel.setHorizontalScrollBarPolicy(31);
 
-	typeComboBox = new JComboBox<>(InventoryTypes.values());
-	typeComboBox.addActionListener(inventoryTypesActionListener);
-	typeComboBox.setSelectedIndex(FIRST);
-
 	controlButtonPanel = new JPanel(new FlowLayout(1));
 	controlButtonPanel.setBackground(Color.WHITE);
 	controlButtonPanel.setPreferredSize(new Dimension(190, 35));
+
+	players = new ArrayList<>();
+    }
+
+    @PostConstruct
+    public void init() {
+	typeComboBox = new JComboBox<>(InventoryTypes.values());
+	typeComboBox.addActionListener(inventoryTypesActionListener);
+	typeComboBox.setSelectedIndex(FIRST);
 
 	selectButton = new JButton("Select");
 	selectButton.addActionListener(inventorySelectActionListener);
@@ -93,11 +102,6 @@ public class BuyerInvetoryPanelImpl extends JPanel implements BuyerInvetoryPanel
 	deleteButton = new JButton("Delete");
 	deleteButton.addActionListener(inventoryDeleteActionListener);
 	controlButtonPanel.add(deleteButton);
-    }
-
-    @PostConstruct
-    public void init() {
-	initTypesPanel();
 
 	setBackground(Colors.BACK_GROUND);
 	setLayout(new BorderLayout());
@@ -156,7 +160,7 @@ public class BuyerInvetoryPanelImpl extends JPanel implements BuyerInvetoryPanel
 	JPanel itemTableCenter = new JPanel(new FlowLayout(1));
 	itemTableCenter.setBackground(Colors.WHITE);
 
-	itemTableCenter.add(this.itemTablePanel);
+	itemTableCenter.add(itemTablePanel);
 
 	itemListPanel.add(headersPanel, "North");
 	itemListPanel.add(itemTableCenter, "Center");
@@ -182,9 +186,6 @@ public class BuyerInvetoryPanelImpl extends JPanel implements BuyerInvetoryPanel
 
 	add(scrollPanel, "North");
 	add(configurationPanel, "Center");
-
-	//SessionManager.INSTANCE().loadOldAutobuyerSearchParameterList();
-	//refreshSearchItemList();
     }
 
     public void refreshSearchItemList() {
@@ -193,7 +194,6 @@ public class BuyerInvetoryPanelImpl extends JPanel implements BuyerInvetoryPanel
 	itemTablePanel.setLayout(new GridBagLayout());
 
 	int verticalIndex = 0;
-	//FIXME Pegar do banco de dados as cartas
 	for (final Card card : new ArrayList<Card>()) {
 
 	    GridBagConstraints gridBagConstraints = new GridBagConstraints();
@@ -220,12 +220,14 @@ public class BuyerInvetoryPanelImpl extends JPanel implements BuyerInvetoryPanel
 	    itemTablePanel.add(l2, gridBagConstraints);
 
 	    gridBagConstraints.gridx = 3;
-	    JLabel l3 = createLable(card.getBuyPrice().toString(), null, new Dimension(80, 30), HORIZONTAL_POSITION, true);
+	    JLabel l3 = createLable(card.getBuyPrice().toString(), null, new Dimension(80, 30), HORIZONTAL_POSITION,
+		    true);
 	    l3.setBorder(matterBorder);
 	    itemTablePanel.add(l3, gridBagConstraints);
 
 	    gridBagConstraints.gridx = 4;
-	    JLabel l4 = createLable(card.getSellPrice().toString(), null, new Dimension(80, 30), HORIZONTAL_POSITION, true);
+	    JLabel l4 = createLable(card.getSellPrice().toString(), null, new Dimension(80, 30), HORIZONTAL_POSITION,
+		    true);
 	    l4.setBorder(matterBorder);
 	    itemTablePanel.add(l4, gridBagConstraints);
 
@@ -291,23 +293,25 @@ public class BuyerInvetoryPanelImpl extends JPanel implements BuyerInvetoryPanel
 	 */
     }
 
-    private void initTypesPanel() {
-	/*
-	 * InventoryTypes.PLAYER_CARD.setOptionPanel(new PlayerOptionPanel(this));
-	 * InventoryTypes.CONTRACT_CARD.setOptionPanel(new ContractOptionPanel(this));
-	 * InventoryTypes.FITNESS_CARD.setOptionPanel(new FitnessOptionPanel(this));
-	 * InventoryTypes.POSITION_CARD.setOptionPanel(new PositionOptionPanel(this));
-	 * 
-	 * InventoryTypes.CHEMISTRY_STYLE.setOptionPanel(new ChemistryOptionPanel(this));
-	 */
+    @Override
+    public void changeOptionPanelByType(JPanel panel) {
+	tradeOptionPanel.removeAll();
+	tradeOptionPanel.setLayout(new BorderLayout());
+	tradeOptionPanel.add(panel, "Center");
+	tradeOptionPanel.updateUI();
     }
 
     @Override
-    public void changeOptionPanelByType(JPanel panel) {
-	this.tradeOptionPanel.removeAll();
-	this.tradeOptionPanel.setLayout(new BorderLayout());
-	this.tradeOptionPanel.add(panel, "Center");
-	this.tradeOptionPanel.updateUI();
+    @SuppressWarnings("unchecked")
+    public void setCards(List<? extends Card> cards) {
+	players = (List<Player>) cards;
+	refreshSearchItemList();
+    }
+
+    @Override
+    public <T extends Card> void addCards(T card) {
+	players.add((Player) card);
+	refreshSearchItemList();
     }
 
 }

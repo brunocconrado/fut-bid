@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Configuration
-@ComponentScan(basePackages = { "br.com.futbid", "br.com.futbid.integration" })
+@ComponentScan(basePackages = { "br.com.futbid.integration", "br.com.futbid.service", "br.com.futbid.swing" })
 public class Config {
 
     private static ConfigurableApplicationContext context;

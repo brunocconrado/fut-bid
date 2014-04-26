@@ -1,5 +1,7 @@
 package br.com.futbid.domain;
 
+import br.com.futbid.domain.deserealize.LeagueCustomDeserealize;
+import br.com.futbid.domain.deserealize.TeamCustomDeserealize;
 import br.com.futbid.domain.enumeration.Country;
 import br.com.futbid.domain.enumeration.League;
 import br.com.futbid.domain.enumeration.Level;
@@ -9,7 +11,9 @@ import br.com.futbid.domain.search.Type;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonRootName("player")
 public class Player extends Card {
@@ -20,37 +24,44 @@ public class Player extends Card {
 	setType(Type.PLAYER);
     }
 
+    @JsonProperty("player_id")
     private Long idPlayer;
 
     @JsonInclude(Include.NON_NULL)
-    private String ps3ActionAverage;
-
-    @JsonInclude(Include.NON_NULL)
+    @JsonProperty("club_image")
     private String clubImage;
 
-    @JsonInclude(Include.NON_NULL)
-    private String image;
-
+    @JsonProperty("revision_type")
     @JsonInclude(Include.NON_NULL)
     private String revisionType;
 
+    @JsonProperty("workrates_short_string")
     @JsonInclude(Include.NON_NULL)
     private String workratesShortString;
 
+    @JsonProperty("full_name")
     @JsonInclude(Include.NON_NULL)
     private String fullName;
 
+    @JsonProperty("short_name")
     @JsonInclude(Include.NON_NULL)
-    private String xboxActionAverage;
+    private String shortName;
 
-    @JsonInclude(Include.NON_NULL)
-    private String nationImage;
-
+    @JsonProperty("pc_auction_average")
     @JsonInclude(Include.NON_NULL)
     private String pcActionAverage;
 
+    @JsonProperty("xbox_auction_average")
     @JsonInclude(Include.NON_NULL)
-    private String shortName;
+    private String xboxActionAverage;
+
+    @JsonProperty("ps3_auction_average")
+    @JsonInclude(Include.NON_NULL)
+    private String ps3ActionAverage;
+
+    @JsonProperty("nation_image")
+    @JsonInclude(Include.NON_NULL)
+    private String nationImage;
 
     @JsonInclude(Include.NON_NULL)
     private String slug;
@@ -86,20 +97,19 @@ public class Player extends Card {
     private Integer attr6;
 
     @JsonInclude(Include.NON_NULL)
-    private boolean rare;
+    private Level level;
+
+    @JsonDeserialize(using = TeamCustomDeserealize.class)
+    @JsonProperty("club")
+    private Team team;
 
     @JsonInclude(Include.NON_NULL)
-    private Level level;
-    
-    @JsonInclude(Include.NON_NULL)
-    private Team team;
-    
-    @JsonInclude(Include.NON_NULL)
     private Country country;
-    
+
+    @JsonDeserialize(using = LeagueCustomDeserealize.class)
     @JsonInclude(Include.NON_NULL)
     private League league;
-    
+
     @JsonInclude(Include.NON_NULL)
     private Position position;
 
@@ -111,28 +121,12 @@ public class Player extends Card {
 	this.idPlayer = idPlayer;
     }
 
-    public String getPs3ActionAverage() {
-	return ps3ActionAverage;
-    }
-
-    public void setPs3ActionAverage(String ps3ActionAverage) {
-	this.ps3ActionAverage = ps3ActionAverage;
-    }
-
     public String getClubImage() {
 	return clubImage;
     }
 
     public void setClubImage(String clubImage) {
 	this.clubImage = clubImage;
-    }
-
-    public String getImage() {
-	return image;
-    }
-
-    public void setImage(String image) {
-	this.image = image;
     }
 
     public String getRevisionType() {
@@ -159,20 +153,12 @@ public class Player extends Card {
 	this.fullName = fullName;
     }
 
-    public String getXboxActionAverage() {
-	return xboxActionAverage;
+    public String getShortName() {
+	return shortName;
     }
 
-    public void setXboxActionAverage(String xboxActionAverage) {
-	this.xboxActionAverage = xboxActionAverage;
-    }
-
-    public String getNationImage() {
-	return nationImage;
-    }
-
-    public void setNationImage(String nationImage) {
-	this.nationImage = nationImage;
+    public void setShortName(String shortName) {
+	this.shortName = shortName;
     }
 
     public String getPcActionAverage() {
@@ -183,12 +169,28 @@ public class Player extends Card {
 	this.pcActionAverage = pcActionAverage;
     }
 
-    public String getShortName() {
-	return shortName;
+    public String getXboxActionAverage() {
+	return xboxActionAverage;
     }
 
-    public void setShortName(String shortName) {
-	this.shortName = shortName;
+    public void setXboxActionAverage(String xboxActionAverage) {
+	this.xboxActionAverage = xboxActionAverage;
+    }
+
+    public String getPs3ActionAverage() {
+	return ps3ActionAverage;
+    }
+
+    public void setPs3ActionAverage(String ps3ActionAverage) {
+	this.ps3ActionAverage = ps3ActionAverage;
+    }
+
+    public String getNationImage() {
+	return nationImage;
+    }
+
+    public void setNationImage(String nationImage) {
+	this.nationImage = nationImage;
     }
 
     public String getSlug() {
@@ -287,36 +289,28 @@ public class Player extends Card {
 	this.level = level;
     }
 
+    public Team getTeam() {
+	return team;
+    }
+
+    public void setTeam(Team team) {
+	this.team = team;
+    }
+
+    public Country getCountry() {
+	return country;
+    }
+
+    public void setCountry(Country country) {
+	this.country = country;
+    }
+
     public League getLeague() {
 	return league;
     }
 
     public void setLeague(League league) {
 	this.league = league;
-    }
-
-    public boolean isRare() {
-	return rare;
-    }
-
-    public void setRare(boolean rare) {
-	this.rare = rare;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }
-
-    public Country getCountry() {
-        return country;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
     }
 
     public Position getPosition() {
