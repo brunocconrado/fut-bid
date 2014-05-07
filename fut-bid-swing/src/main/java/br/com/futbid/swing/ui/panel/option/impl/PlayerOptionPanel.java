@@ -27,6 +27,8 @@ import br.com.futbid.domain.enumeration.League;
 import br.com.futbid.domain.enumeration.Level;
 import br.com.futbid.domain.enumeration.Position;
 import br.com.futbid.domain.enumeration.Team;
+import br.com.futbid.domain.search.SubType;
+import br.com.futbid.domain.search.Type;
 import br.com.futbid.service.PlayerService;
 import br.com.futbid.swing.ui.dialog.PlayerFinderDialog;
 import br.com.futbid.swing.ui.event.BuyPriceKeyListener;
@@ -240,6 +242,7 @@ public class PlayerOptionPanel extends JPanel implements Dialog, OptionPanel, Ca
 
     @Override
     public Player getPlayerSelected() {
+	createPlayerSearchItem();
 	return playerSelected;
     }
 
@@ -281,6 +284,7 @@ public class PlayerOptionPanel extends JPanel implements Dialog, OptionPanel, Ca
 
     @Override
     public JDialog getDialog() {
+	playerFinderDialog.getDialog();
 	return playerFinderDialog;
     }
 
@@ -322,6 +326,7 @@ public class PlayerOptionPanel extends JPanel implements Dialog, OptionPanel, Ca
 	    playerSelected = new Player();
 	}
 
+	//playerSelected.setSubType(SubType.CHEMISTRY);
 	playerSelected.setLevel((Level) levelField.getSelectedItem());
 	playerSelected.setTeam((Team) teamField.getSelectedItem());
 	playerSelected.setCountry((Country) countryField.getSelectedItem());
@@ -333,7 +338,8 @@ public class PlayerOptionPanel extends JPanel implements Dialog, OptionPanel, Ca
 	playerSelected.setCardRating(cardRatingField.getText());
 	playerSelected.setMaxPageRes(pageResultSize.getText());
 	playerSelected.setMaxPageCount(Utils.parseInt(pageCount.getText()));
-
+	playerSelected.setType(Type.PLAYER);
+	
 	clearAllFields();
 	removeSelectedPlayerInfo();
 

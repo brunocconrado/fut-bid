@@ -37,6 +37,8 @@ public class PlayerFinderDialog extends JDialog implements Dialog, OptionPanel {
     private JPanel contentTable;
 
     private JTextField searchField;
+    
+    private JPanel tableDataContainer;
 
     private Dialog parent;
 
@@ -66,7 +68,7 @@ public class PlayerFinderDialog extends JDialog implements Dialog, OptionPanel {
 	contentTable = new JPanel();
 	contentTable.setBackground(Color.white);
 
-	JPanel tableDataContainer = new JPanel(new FlowLayout(1));
+	tableDataContainer = new JPanel(new FlowLayout(1));
 	tableDataContainer.setBackground(Color.white);
 
 	JPanel controllPanel = getControlPanel();
@@ -89,14 +91,19 @@ public class PlayerFinderDialog extends JDialog implements Dialog, OptionPanel {
 
     @Override
     public JDialog getDialog() {
+	searchField.setText("");
+	searchField.updateUI();
 	return this;
     }
 
     @Override
     public void updateTable(List<Player> players) {
-	this.contentTable.removeAll();
-	this.contentTable.setBackground(Color.white);
-	this.contentTable.setLayout(new GridBagLayout());
+	tableDataContainer.removeAll();
+	tableDataContainer.updateUI();
+	
+	contentTable = new JPanel();
+	contentTable.setBackground(Color.white);
+	contentTable.setLayout(new GridBagLayout());
 
 	int verticanIndex = 0;
 
@@ -146,15 +153,17 @@ public class PlayerFinderDialog extends JDialog implements Dialog, OptionPanel {
 	}
 
 	contentTable.updateUI();
+	tableDataContainer.add(contentTable);
+	tableDataContainer.updateUI();
     }
 
     @Override
     public void setPlayerSelected(Player player) {
-	((OptionPanel)parent).setPlayerSelected(player);
+	((OptionPanel) parent).setPlayerSelected(player);
     }
-    
+
     public Player getPlayerSelected() {
-	return ((OptionPanel)parent).getPlayerSelected();
+	return ((OptionPanel) parent).getPlayerSelected();
     }
 
     private Component getAsyncImagePanel(String url) {

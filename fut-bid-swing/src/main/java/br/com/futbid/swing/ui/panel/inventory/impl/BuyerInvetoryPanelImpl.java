@@ -51,6 +51,8 @@ public class BuyerInvetoryPanelImpl extends JPanel implements BuyerInvetoryPanel
     private JPanel controlButtonPanel;
     private JButton selectButton;
     private JButton deleteButton;
+    
+    private JPanel itemTableCenter;
 
     @Autowired
     private BuyerInventoryClearActionListener buyerInventoryClearActionListener;
@@ -194,12 +196,12 @@ public class BuyerInvetoryPanelImpl extends JPanel implements BuyerInvetoryPanel
 	itemTablePanel.setLayout(new GridBagLayout());
 
 	int verticalIndex = 0;
-	for (final Card card : new ArrayList<Card>()) {
+	for (final Card card : players) {
 
 	    GridBagConstraints gridBagConstraints = new GridBagConstraints();
 	    gridBagConstraints.fill = 2;
 	    gridBagConstraints.gridx = 0;
-	    gridBagConstraints.gridy = 0;
+	    gridBagConstraints.gridy = verticalIndex;
 
 	    final MatteBorder matterBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK);
 
@@ -209,7 +211,7 @@ public class BuyerInvetoryPanelImpl extends JPanel implements BuyerInvetoryPanel
 	    itemTablePanel.add(numb, gridBagConstraints);
 
 	    gridBagConstraints.gridx = 1;
-	    JLabel cardLabel = createLable(card.getSubType().getDescription(), null, new Dimension(130, 30),
+	    JLabel cardLabel = createLable(card.getType().getValue(), null, new Dimension(130, 30),
 		    HORIZONTAL_POSITION, true);
 	    cardLabel.setBorder(matterBorder);
 	    itemTablePanel.add(cardLabel, gridBagConstraints);

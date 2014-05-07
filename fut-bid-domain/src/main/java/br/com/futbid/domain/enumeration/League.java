@@ -47,6 +47,10 @@ public enum League {
 	return map.get(league.name());
     }
     
+    public static League findBy(String name) {
+	return map.get(name);
+    }
+    
     public static League findBy(Integer value) {
 	return map.get(value);
     }

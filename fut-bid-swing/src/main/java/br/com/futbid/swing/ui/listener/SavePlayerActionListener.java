@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.com.futbid.domain.Player;
 import br.com.futbid.service.PlayerService;
 import br.com.futbid.swing.ui.panel.inventory.BuyerInvetoryPanel;
 import br.com.futbid.swing.ui.panel.option.OptionPanel;
@@ -22,10 +23,11 @@ public class SavePlayerActionListener implements ActionListener {
     public void actionPerformed(ActionEvent event) {
 	JButton button = (JButton) event.getSource();
 	OptionPanel optionPanel = (OptionPanel) button.getParent().getParent();
-	playerService.savePlayer(optionPanel.getPlayerSelected());
 
-	((BuyerInvetoryPanel) button.getParent().getParent().getParent().getParent()).addCards(optionPanel
-		.getPlayerSelected());
+	Player player = optionPanel.getPlayerSelected();
+	playerService.savePlayer(player);
+
+	((BuyerInvetoryPanel) button.getParent().getParent().getParent().getParent().getParent()).addCards(player);
 
     }
 

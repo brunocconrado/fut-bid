@@ -2,6 +2,7 @@ target/
 *.war
 *.class
 .classpath
+*.db
 .project
 .settings/
 .metadata/

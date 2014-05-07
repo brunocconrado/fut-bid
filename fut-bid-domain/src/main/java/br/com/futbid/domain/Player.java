@@ -1,6 +1,7 @@
 package br.com.futbid.domain;
 
 import br.com.futbid.domain.deserealize.LeagueCustomDeserealize;
+import br.com.futbid.domain.deserealize.PositionCustomDeserealize;
 import br.com.futbid.domain.deserealize.TeamCustomDeserealize;
 import br.com.futbid.domain.enumeration.Country;
 import br.com.futbid.domain.enumeration.League;
@@ -110,6 +111,7 @@ public class Player extends Card {
     @JsonInclude(Include.NON_NULL)
     private League league;
 
+    @JsonDeserialize(using = PositionCustomDeserealize.class)
     @JsonInclude(Include.NON_NULL)
     private Position position;
 
@@ -327,14 +329,14 @@ public class Player extends Card {
 
 	String position = "<no position>";
 	for (Position p : Position.values()) {
-	    if (p.getValue().equals(getPosition())) {
+	    if (p.equals(getPosition())) {
 		position = p.toString();
 		break;
 	    }
 	}
 	String rating = (getCardRating() != null) && (!getCardRating().isEmpty()) ? ", " + getCardRating() : "";
 
-	StringBuilder res = new StringBuilder(name).append(position).append("," + getLevel()).append(rating);
+	StringBuilder res = new StringBuilder(name).append(position).append(rating);
 
 	return res.toString();
     }
