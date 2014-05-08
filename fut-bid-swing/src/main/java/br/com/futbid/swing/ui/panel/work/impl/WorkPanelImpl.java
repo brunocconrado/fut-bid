@@ -53,6 +53,9 @@ public class WorkPanelImpl extends JPanel implements WorkPanel {
 
     @Autowired
     private AutoBuyerActionLister autoBuyerActionLister;
+    
+    @Autowired
+    private LogoutActionListener logoutActionListener;
 
     @Autowired
     private Session session;
@@ -148,7 +151,7 @@ public class WorkPanelImpl extends JPanel implements WorkPanel {
 	statusPanel.add(new JLabel("Sold items: "));
 	statusPanel.add(this.currentSoldItemLabel = new JLabel("0"));
 
-	JScrollPane centerScrollPanel = new JScrollPane(this.logField);
+	JScrollPane centerScrollPanel = new JScrollPane(logField);
 	centerScrollPanel.setPreferredSize(new Dimension(0, 300));
 	centerScrollPanel.setVerticalScrollBarPolicy(22);
 	centerScrollPanel.setHorizontalScrollBarPolicy(30);
@@ -251,7 +254,7 @@ public class WorkPanelImpl extends JPanel implements WorkPanel {
 
 	panel.setBackground(Colors.BACK_GROUND);
 	JButton logout = new JButton("Logout");
-	logout.addActionListener(new LogoutActionListener());
+	logout.addActionListener(logoutActionListener);
 	controllPanel.add(logout);
 
 	JPanel infoPanel = new JPanel(new FlowLayout(0));
@@ -261,7 +264,7 @@ public class WorkPanelImpl extends JPanel implements WorkPanel {
 	this.applciationStatusLabel.setForeground(Color.RED);
 	this.applciationStatusLabel.setFont(new Font("Arial", 0, 20));
 
-	infoPanel.add(this.applciationStatusLabel);
+	infoPanel.add(applciationStatusLabel);
 
 	panel.add(controllPanel, "East");
 	panel.add(infoPanel, "West");

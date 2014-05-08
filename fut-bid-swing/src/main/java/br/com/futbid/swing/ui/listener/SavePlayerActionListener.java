@@ -24,10 +24,11 @@ public class SavePlayerActionListener implements ActionListener {
 	JButton button = (JButton) event.getSource();
 	OptionPanel optionPanel = (OptionPanel) button.getParent().getParent();
 
-	Player player = optionPanel.getPlayerSelected();
+	Player player = (Player) optionPanel.getCardSelected();
 	playerService.savePlayer(player);
 
-	((BuyerInvetoryPanel) button.getParent().getParent().getParent().getParent().getParent()).addCards(player);
+	((BuyerInvetoryPanel) button.getParent().getParent().getParent().getParent().getParent())
+		.setCards(playerService.findAll());
 
     }
 

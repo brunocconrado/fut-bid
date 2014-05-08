@@ -1,11 +1,11 @@
 package br.com.futbid.swing.ui.panel.option;
 
-import br.com.futbid.domain.Player;
+import br.com.futbid.domain.Card;
 
 public interface OptionPanel {
 
-    public void setPlayerSelected(Player player);
+    public void setCardSelected(Card card);
     
-    public Player getPlayerSelected();
+    public Card getCardSelected();
     
 }

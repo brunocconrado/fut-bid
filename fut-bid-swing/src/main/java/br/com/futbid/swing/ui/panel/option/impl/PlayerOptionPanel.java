@@ -19,7 +19,9 @@ import javax.swing.JTextField;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
+import br.com.futbid.domain.Card;
 import br.com.futbid.domain.Player;
 import br.com.futbid.domain.enumeration.ChemistryStyle;
 import br.com.futbid.domain.enumeration.Country;
@@ -27,7 +29,6 @@ import br.com.futbid.domain.enumeration.League;
 import br.com.futbid.domain.enumeration.Level;
 import br.com.futbid.domain.enumeration.Position;
 import br.com.futbid.domain.enumeration.Team;
-import br.com.futbid.domain.search.SubType;
 import br.com.futbid.domain.search.Type;
 import br.com.futbid.service.PlayerService;
 import br.com.futbid.swing.ui.dialog.PlayerFinderDialog;
@@ -83,7 +84,7 @@ public class PlayerOptionPanel extends JPanel implements Dialog, OptionPanel, Ca
 
     @Autowired
     private PlayerFinderDialog playerFinderDialog;
-    
+
     @Autowired
     private PlayerService playerService;
 
@@ -219,29 +220,57 @@ public class PlayerOptionPanel extends JPanel implements Dialog, OptionPanel, Ca
     }
 
     @Override
-    public void setPlayerSelected(Player player) {
-	playerSelected = player;
+    public void setCardSelected(Card card) {
+	playerSelected = (Player) card;
 
-	playerNameField.setText(player.getFullName());
+	teamField.setSelectedItem(playerSelected.getTeam());
+	teamField.setEnabled(playerSelected.getTeam() == null);
 
-	teamField.setEnabled(false);
-	countryField.setEnabled(false);
-	leagueField.setEnabled(false);
-	positionField.setEditable(false);
-	deleteBtn.setEnabled(true);
+	countryField.setSelectedItem(playerSelected.getCountry());
+	//countryField.setEnabled(playerSelected.getCountry() == null);
+
+	leagueField.setSelectedItem(playerSelected.getLeague());
+	//leagueField.setEnabled(playerSelected.getLeague() == null);
+
+	positionField.setSelectedItem(playerSelected.getPosition());
+	//positionField.setEnabled(playerSelected.getPosition() == null);
+
+	cardRatingField.setText(playerSelected.getRating().toString());
+	//cardRatingField.setEditable(false);
+
+	deleteBtn.setEnabled(false);
 	playerFinderDialog.setVisible(false);
-	cardRatingField.setText(player.getRating().toString());
+
+	addPlayerButton.setText("Save");
+	removeSelectedPlayerInfo();
+
+	playerNameField.setText(playerSelected.getFullName());
+
+	buyPriceField.setText(Utils.getString(playerSelected.getBuyPrice()));
+	sellPriceField.setText(Utils.getString(playerSelected.getSellPrice()));
+
+	chemistryStyleField.setSelectedItem(ChemistryStyle.findBy(playerSelected.getChemistryStyle()));
+
+	levelField.setSelectedItem(Level.findBy(playerSelected.getLevel()));
+
+	cardRatingField.setText(playerSelected.getCardRating());
+	pageResultSize.setText(String.valueOf(StringUtils.isEmpty(playerSelected.getMaxPageRes()) ? 12 : playerSelected
+		.getMaxPageRes()));
+	pageCount.setText(String.valueOf(StringUtils.isEmpty(playerSelected.getMaxPageCount()) ? 1 : playerSelected
+		.getMaxPageCount()));
+
 	for (Position position : Position.values()) {
-	    if (position.equals(player.getPosition())) {
+	    if (position.equals(playerSelected.getPosition())) {
 		positionField.setSelectedItem(position);
 		break;
 	    }
 	}
+
 	calculateProfit();
     }
 
     @Override
-    public Player getPlayerSelected() {
+    public Card getCardSelected() {
 	createPlayerSearchItem();
 	return playerSelected;
     }
@@ -256,26 +285,11 @@ public class PlayerOptionPanel extends JPanel implements Dialog, OptionPanel, Ca
 	deleteBtn.setEnabled(false);
     }
 
-    public void clearAllFields() {
-	playerNameField.setText("");
-	levelField.setSelectedIndex(0);
-	buyPriceField.setText("");
-	sellPriceField.setText("");
-	teamField.setSelectedIndex(0);
-	countryField.setSelectedIndex(0);
-	positionField.setSelectedIndex(0);
-	leagueField.setSelectedIndex(0);
-	chemistryStyleField.setSelectedIndex(0);
-	cardRatingField.setText("");
-	profitLabel.setText("");
-	pageResultSize.setText(String.valueOf(16));
-	pageCount.setText(String.valueOf(1));
-    }
-
     protected void calculateProfit() {
 	Double result = Utils.calculateProfit(Utils.parseDouble(buyPriceField.getText()),
 		Utils.parseDouble(sellPriceField.getText()));
 	profitLabel.setText(result == null ? "" : result.toString());
+	profitLabel.updateUI();
     }
 
     public boolean isSelected(Player player) {
@@ -299,25 +313,9 @@ public class PlayerOptionPanel extends JPanel implements Dialog, OptionPanel, Ca
 	//no-op
     }
 
-    public void selectMode(Player player) {
-	playerSelected = player;
-	addPlayerButton.setText("Save");
-	removeSelectedPlayerInfo();
-
-	buyPriceField.setText(player.getBuyPrice().toString());
-	sellPriceField.setText(player.getSellPrice().toString());
-
-	positionField.setSelectedItem(Position.findBy(player.getPosition()));
-	chemistryStyleField.setSelectedItem(ChemistryStyle.findBy(player.getChemistryStyle()));
-	leagueField.setSelectedItem(League.findBy(player.getLeague()));
-	countryField.setSelectedItem(Country.findBy(player.getCountry()));
-	teamField.setSelectedItem(Team.findBy(player.getTeam()));
-	levelField.setSelectedItem(Level.findBy(player.getLevel()));
-
-	cardRatingField.setText(player.getCardRating());
-	pageResultSize.setText(player.getMaxPageRes());
-	pageCount.setText(String.valueOf(player.getMaxPageCount()));
-	calculateProfit();
+    @Override
+    public List<Player> getCards() {
+	return playerService.findAll();
     }
 
     private boolean createPlayerSearchItem() {
@@ -326,7 +324,6 @@ public class PlayerOptionPanel extends JPanel implements Dialog, OptionPanel, Ca
 	    playerSelected = new Player();
 	}
 
-	//playerSelected.setSubType(SubType.CHEMISTRY);
 	playerSelected.setLevel((Level) levelField.getSelectedItem());
 	playerSelected.setTeam((Team) teamField.getSelectedItem());
 	playerSelected.setCountry((Country) countryField.getSelectedItem());
@@ -336,19 +333,30 @@ public class PlayerOptionPanel extends JPanel implements Dialog, OptionPanel, Ca
 	playerSelected.setPosition((Position) positionField.getSelectedItem());
 	playerSelected.setChemistryStyle((ChemistryStyle) chemistryStyleField.getSelectedItem());
 	playerSelected.setCardRating(cardRatingField.getText());
-	playerSelected.setMaxPageRes(pageResultSize.getText());
+	playerSelected.setMaxPageRes(Utils.parseInt(pageResultSize.getText()));
 	playerSelected.setMaxPageCount(Utils.parseInt(pageCount.getText()));
 	playerSelected.setType(Type.PLAYER);
-	
+
 	clearAllFields();
 	removeSelectedPlayerInfo();
 
 	return true;
     }
 
-    @Override
-    public List<Player> getCards() {
-	return playerService.findAll();
+    private void clearAllFields() {
+	playerNameField.setText("");
+	levelField.setSelectedIndex(0);
+	buyPriceField.setText("");
+	sellPriceField.setText("");
+	teamField.setSelectedIndex(0);
+	countryField.setSelectedIndex(0);
+	positionField.setSelectedIndex(0);
+	leagueField.setSelectedIndex(0);
+	chemistryStyleField.setSelectedIndex(0);
+	cardRatingField.setText("");
+	profitLabel.setText("");
+	pageResultSize.setText(String.valueOf(16));
+	pageCount.setText(String.valueOf(1));
     }
 
 }

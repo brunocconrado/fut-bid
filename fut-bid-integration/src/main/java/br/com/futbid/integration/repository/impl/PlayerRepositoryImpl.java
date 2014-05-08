@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Repository
 public class PlayerRepositoryImpl implements PlayerRepository {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(PlayerRepositoryImpl.class);
 
     @Autowired
@@ -80,6 +80,18 @@ public class PlayerRepositoryImpl implements PlayerRepository {
 	    return success ? player : null;
 	} catch (Exception e) {
 	    LOG.error("error saveOrUpdate playes", e);
+	    throw new RepositoryException(e);
+	}
+
+    }
+
+    @Override
+    public boolean remove(Player player) {
+	try {
+	    String sql = "delete cards where where id = %s";
+	    return connection.getConnection().createStatement().executeUpdate(format(sql, player.getId())) > 0;
+	} catch (Exception e) {
+	    LOG.error("error removing playes", e);
 	    throw new RepositoryException(e);
 	}
 

@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 
 import javax.annotation.PostConstruct;
 import javax.swing.JComboBox;
-import javax.swing.JPanel;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,14 +36,14 @@ public class InventoryTypesActionListener implements ActionListener {
 			.getParent();
 
 		Class<?> clazz = Class.forName(((InventoryTypes) inventoryComBox.getSelectedItem()).getClassName());
-		CardsOption<?> cardsOption =  (CardsOption<?>) Utils.getBean(clazz);
+		CardsOption<?> cardsOption = (CardsOption<?>) Utils.getBean(clazz);
+
+		buyBuyerInvetoryPanel.changeOptionPanelByType(cardsOption);
 		buyBuyerInvetoryPanel.setCards(cardsOption.getCards());
-		buyBuyerInvetoryPanel.changeOptionPanelByType((JPanel) cardsOption);
+
 	    }
 	} catch (ClassNotFoundException e) {
 	    LOG.error("Error try change action listener ", e);
 	}
-
     }
-
 }

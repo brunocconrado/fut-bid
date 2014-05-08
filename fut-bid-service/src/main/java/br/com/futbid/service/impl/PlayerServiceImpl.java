@@ -14,7 +14,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Autowired
     private PlayerRepository playerRepository;
-    
+
     @Override
     public void savePlayer(Player player) {
 	playerRepository.saveOrUpdate(player);
@@ -23,6 +23,11 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public List<Player> findAll() {
 	return playerRepository.findAll();
+    }
+
+    @Override
+    public boolean remove(Player player) {
+	return playerRepository.remove(player);
     }
 
 }

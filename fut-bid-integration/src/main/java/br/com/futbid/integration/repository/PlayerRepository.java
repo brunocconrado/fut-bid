@@ -12,4 +12,6 @@ public interface PlayerRepository {
 
     List<Player> findAll();
 
+    boolean remove(Player player);
+
 }

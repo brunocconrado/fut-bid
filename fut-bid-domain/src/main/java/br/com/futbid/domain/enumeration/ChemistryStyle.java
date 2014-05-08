@@ -49,7 +49,7 @@ public enum ChemistryStyle {
     }
 
     public static ChemistryStyle findBy(ChemistryStyle chemistryStyle) {
-	return map.get(chemistryStyle.name());
+	return chemistryStyle == null ? All : map.get(chemistryStyle.name());
     }
 
 }

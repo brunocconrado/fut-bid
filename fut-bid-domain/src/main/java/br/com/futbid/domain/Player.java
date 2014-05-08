@@ -341,4 +341,16 @@ public class Player extends Card {
 	return res.toString();
     }
 
+    @Override
+    public String toString() {
+	return "Player [" + (idPlayer != null ? "idPlayer: " + idPlayer + ", " : "")
+		+ (fullName != null ? "fullName: " + fullName + ", " : "")
+		+ (playerId != null ? "playerId: " + playerId + ", " : "")
+		+ (rating != null ? "rating: " + rating + ", " : "") + (club != null ? "club: " + club + ", " : "")
+		+ (nation != null ? "nation: " + nation + ", " : "") + (level != null ? "level: " + level + ", " : "")
+		+ (team != null ? "team: " + team + ", " : "") + (country != null ? "country: " + country + ", " : "")
+		+ (league != null ? "league: " + league + ", " : "")
+		+ (position != null ? "position: " + position : "") + " ]";
+    }
+
 }

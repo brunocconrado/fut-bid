@@ -46,4 +46,16 @@ public class Utils {
 	return Config.getBean(clazz);
     }
 
+    public static String getString(Object obj) {
+	if (obj == null) {
+	    return "";
+	}
+
+	if (obj instanceof Double) {
+	    return ((Double) obj).toString();
+	}
+
+	return String.valueOf(obj);
+    }
+
 }

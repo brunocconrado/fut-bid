@@ -27,6 +27,7 @@ public enum Country {
     static {
 	for (Country country : values()) {
 	    map.put(country.name(), country);
+	    map.put(country.value, country);
 	}
     }
 

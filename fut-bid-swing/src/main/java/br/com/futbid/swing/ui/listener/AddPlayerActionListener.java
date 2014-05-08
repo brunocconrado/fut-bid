@@ -21,7 +21,7 @@ public class AddPlayerActionListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-	optionPanel.setPlayerSelected(player);
+	optionPanel.setCardSelected(player);
 	((JDialog)optionPanel).setVisible(false);
     }
 

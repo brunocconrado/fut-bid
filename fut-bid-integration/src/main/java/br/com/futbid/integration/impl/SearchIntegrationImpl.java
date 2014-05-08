@@ -82,7 +82,6 @@ public class SearchIntegrationImpl implements SearchIntegration {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<Player> searchPlayerByName(String name) {
 
 	try {

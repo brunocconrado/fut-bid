@@ -9,5 +9,7 @@ public interface PlayerService {
     public void savePlayer(Player player);
 
     public List<Player> findAll();
+
+    public boolean remove(Player player);
     
 }

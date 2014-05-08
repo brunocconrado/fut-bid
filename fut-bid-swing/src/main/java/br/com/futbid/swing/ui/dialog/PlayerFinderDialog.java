@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import br.com.futbid.domain.Card;
 import br.com.futbid.domain.Player;
 import br.com.futbid.service.ImageService;
 import br.com.futbid.swing.ui.event.PlayerSearchKeyListener;
@@ -138,7 +139,7 @@ public class PlayerFinderDialog extends JDialog implements Dialog, OptionPanel {
 	    contentTable.add(position, c);
 
 	    c.gridx = 5;
-	    JLabel rating = new JLabel(player.getRating() + "" + verticanIndex);
+	    JLabel rating = new JLabel(player.getRating().toString());
 	    rating.setPreferredSize(new Dimension(50, 40));
 	    rating.setHorizontalTextPosition(0);
 	    rating.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.black));
@@ -146,7 +147,7 @@ public class PlayerFinderDialog extends JDialog implements Dialog, OptionPanel {
 	    contentTable.add(rating, c);
 
 	    c.gridx = 6;
-	    JButton action = new JButton("Select");
+ 	    JButton action = new JButton("Select");
 	    action.addActionListener(new AddPlayerActionListener(player, this));
 	    action.setPreferredSize(new Dimension(80, 35));
 	    contentTable.add(action, c);
@@ -158,12 +159,12 @@ public class PlayerFinderDialog extends JDialog implements Dialog, OptionPanel {
     }
 
     @Override
-    public void setPlayerSelected(Player player) {
-	((OptionPanel) parent).setPlayerSelected(player);
+    public void setCardSelected(Card card) {
+	((OptionPanel) parent).setCardSelected(card);
     }
 
-    public Player getPlayerSelected() {
-	return ((OptionPanel) parent).getPlayerSelected();
+    public Card getCardSelected() {
+	return ((OptionPanel) parent).getCardSelected(); 
     }
 
     private Component getAsyncImagePanel(String url) {

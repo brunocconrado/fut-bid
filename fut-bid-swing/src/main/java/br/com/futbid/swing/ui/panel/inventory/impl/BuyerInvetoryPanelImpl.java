@@ -32,7 +32,10 @@ import br.com.futbid.swing.ui.listener.InventoryDeleteActionListener;
 import br.com.futbid.swing.ui.listener.InventorySelectActionListener;
 import br.com.futbid.swing.ui.listener.InventoryTypesActionListener;
 import br.com.futbid.swing.ui.panel.inventory.BuyerInvetoryPanel;
+import br.com.futbid.swing.ui.panel.option.CardsOption;
+import br.com.futbid.swing.ui.panel.option.OptionPanel;
 import br.com.futbid.swing.ui.utils.Colors;
+import br.com.futbid.swing.ui.utils.Utils;
 
 @Component
 public class BuyerInvetoryPanelImpl extends JPanel implements BuyerInvetoryPanel {
@@ -49,22 +52,14 @@ public class BuyerInvetoryPanelImpl extends JPanel implements BuyerInvetoryPanel
     private JScrollPane scrollPanel;
     private JPanel itemListPanel;
     private JPanel controlButtonPanel;
-    private JButton selectButton;
-    private JButton deleteButton;
-    
-    private JPanel itemTableCenter;
+
+    private CardsOption<?> cardsOption;
 
     @Autowired
     private BuyerInventoryClearActionListener buyerInventoryClearActionListener;
 
     @Autowired
     private InventoryTypesActionListener inventoryTypesActionListener;
-
-    @Autowired
-    private InventorySelectActionListener inventorySelectActionListener;
-
-    @Autowired
-    private InventoryDeleteActionListener inventoryDeleteActionListener;
 
     @Autowired
     private Session session;
@@ -96,14 +91,6 @@ public class BuyerInvetoryPanelImpl extends JPanel implements BuyerInvetoryPanel
 	typeComboBox = new JComboBox<>(InventoryTypes.values());
 	typeComboBox.addActionListener(inventoryTypesActionListener);
 	typeComboBox.setSelectedIndex(FIRST);
-
-	selectButton = new JButton("Select");
-	selectButton.addActionListener(inventorySelectActionListener);
-	controlButtonPanel.add(selectButton);
-
-	deleteButton = new JButton("Delete");
-	deleteButton.addActionListener(inventoryDeleteActionListener);
-	controlButtonPanel.add(deleteButton);
 
 	setBackground(Colors.BACK_GROUND);
 	setLayout(new BorderLayout());
@@ -180,11 +167,11 @@ public class BuyerInvetoryPanelImpl extends JPanel implements BuyerInvetoryPanel
 	itemTypePanel.add(new JLabel(" or add :"));
 	itemTypePanel.add(typeComboBox);
 
-	this.tradeOptionPanel = new JPanel();
-	this.tradeOptionPanel.setBackground(Colors.BACK_GROUND);
+	tradeOptionPanel = new JPanel();
+	tradeOptionPanel.setBackground(Colors.BACK_GROUND);
 
 	configurationPanel.add(itemTypePanel, "North");
-	configurationPanel.add(this.tradeOptionPanel, "Center");
+	configurationPanel.add(tradeOptionPanel, "Center");
 
 	add(scrollPanel, "North");
 	add(configurationPanel, "Center");
@@ -222,14 +209,14 @@ public class BuyerInvetoryPanelImpl extends JPanel implements BuyerInvetoryPanel
 	    itemTablePanel.add(l2, gridBagConstraints);
 
 	    gridBagConstraints.gridx = 3;
-	    JLabel l3 = createLable(card.getBuyPrice().toString(), null, new Dimension(80, 30), HORIZONTAL_POSITION,
-		    true);
+	    JLabel l3 = createLable(Utils.getString(card.getBuyPrice()), null, new Dimension(80, 30),
+		    HORIZONTAL_POSITION, true);
 	    l3.setBorder(matterBorder);
 	    itemTablePanel.add(l3, gridBagConstraints);
 
 	    gridBagConstraints.gridx = 4;
-	    JLabel l4 = createLable(card.getSellPrice().toString(), null, new Dimension(80, 30), HORIZONTAL_POSITION,
-		    true);
+	    JLabel l4 = createLable(Utils.getString(card.getSellPrice()), null, new Dimension(80, 30),
+		    HORIZONTAL_POSITION, true);
 	    l4.setBorder(matterBorder);
 	    itemTablePanel.add(l4, gridBagConstraints);
 
@@ -244,11 +231,11 @@ public class BuyerInvetoryPanelImpl extends JPanel implements BuyerInvetoryPanel
 	    controlButtonPanel.setPreferredSize(new Dimension(190, 35));
 
 	    JButton selectButton = new JButton("Select");
-	    selectButton.addActionListener(inventorySelectActionListener);
+	    selectButton.addActionListener(new InventorySelectActionListener(card, (OptionPanel) cardsOption));
 	    controlButtonPanel.add(selectButton);
 
 	    JButton deleteButton = new JButton("Delete");
-	    deleteButton.addActionListener(inventoryDeleteActionListener);
+	    deleteButton.addActionListener(new InventoryDeleteActionListener(card, this));
 	    controlButtonPanel.add(deleteButton);
 
 	    gridBagConstraints.gridx = 6;
@@ -261,45 +248,14 @@ public class BuyerInvetoryPanelImpl extends JPanel implements BuyerInvetoryPanel
 	itemTablePanel.updateUI();
     }
 
-    protected void clearPanelIfThisItemSelected(Card card) {
-	/*
-	 * if ((sp instanceof PlayerSearchItem)) { PlayerOptionPanel panel = (PlayerOptionPanel)
-	 * InventoryTypes.PLAYER_CARD.getOptionPanel(); if (panel.isSelected((PlayerSearchItem) sp)) { panel.addMode();
-	 * panel.clearAllFields(); } } else if ((sp instanceof FitnessSearchItem)) { FitnessOptionPanel panel =
-	 * (FitnessOptionPanel) InventoryTypes.FITNESS_CARD.getOptionPanel(); if (panel.isSelected((FitnessSearchItem)
-	 * sp)) { panel.addMode(); panel.clearAllFields(); } } else if ((sp instanceof PositionSearchItem)) {
-	 * PositionOptionPanel panel = (PositionOptionPanel) InventoryTypes.POSITION_CARD.getOptionPanel(); if
-	 * (panel.isSelected((PositionSearchItem) sp)) { panel.addMode(); panel.clearAllFields(); } } else if ((sp
-	 * instanceof ContractSearchItem)) { ContractOptionPanel panel = (ContractOptionPanel)
-	 * InventoryTypes.CONTRACT_CARD.getOptionPanel(); if (panel.isSelected((ContractSearchItem) sp)) {
-	 * panel.addMode(); panel.clearAllFields(); } } else if ((sp instanceof ChemistryStyleSearchItem)) {
-	 * ChemistryOptionPanel panel = (ChemistryOptionPanel) InventoryTypes.CHEMISTRY_STYLE.getOptionPanel(); if
-	 * (panel.isSelected((ChemistryStyleSearchItem) sp)) { panel.addMode(); panel.clearAllFields(); } }
-	 */
-    }
-
-    protected void selectItem(Card card) {
-	/*
-	 * if ((sp instanceof PlayerSearchItem)) { this.typeComboBox.setSelectedItem(InventoryTypes.PLAYER_CARD);
-	 * ((PlayerOptionPanel) InventoryTypes.PLAYER_CARD.getOptionPanel()).selectMode((PlayerSearchItem) sp); } else
-	 * if ((sp instanceof FitnessSearchItem)) { this.typeComboBox.setSelectedItem(InventoryTypes.FITNESS_CARD);
-	 * ((FitnessOptionPanel) InventoryTypes.FITNESS_CARD.getOptionPanel()).selectMode((FitnessSearchItem) sp); }
-	 * else if ((sp instanceof PositionSearchItem)) {
-	 * this.typeComboBox.setSelectedItem(InventoryTypes.POSITION_CARD); ((PositionOptionPanel)
-	 * InventoryTypes.POSITION_CARD.getOptionPanel()).selectMode((PositionSearchItem) sp); } else if ((sp instanceof
-	 * ContractSearchItem)) { this.typeComboBox.setSelectedItem(InventoryTypes.CONTRACT_CARD);
-	 * ((ContractOptionPanel) InventoryTypes.CONTRACT_CARD.getOptionPanel()).selectMode((ContractSearchItem) sp); }
-	 * else if ((sp instanceof ChemistryStyleSearchItem)) {
-	 * this.typeComboBox.setSelectedItem(InventoryTypes.CHEMISTRY_STYLE); ((ChemistryOptionPanel)
-	 * InventoryTypes.CHEMISTRY_STYLE.getOptionPanel()) .selectMode((ChemistryStyleSearchItem) sp); }
-	 */
-    }
-
     @Override
-    public void changeOptionPanelByType(JPanel panel) {
+    public void changeOptionPanelByType(CardsOption<?> cardOption) {
+
+	this.cardsOption = cardOption;
+
 	tradeOptionPanel.removeAll();
 	tradeOptionPanel.setLayout(new BorderLayout());
-	tradeOptionPanel.add(panel, "Center");
+	tradeOptionPanel.add((JPanel) cardOption, "Center");
 	tradeOptionPanel.updateUI();
     }
 
@@ -314,6 +270,11 @@ public class BuyerInvetoryPanelImpl extends JPanel implements BuyerInvetoryPanel
     public <T extends Card> void addCards(T card) {
 	players.add((Player) card);
 	refreshSearchItemList();
+    }
+
+    @Override
+    public OptionPanel getOptionPanel() {
+	return (OptionPanel) cardsOption;
     }
 
 }

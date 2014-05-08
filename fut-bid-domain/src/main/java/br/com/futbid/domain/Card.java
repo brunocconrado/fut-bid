@@ -28,7 +28,7 @@ public abstract class Card implements Serializable {
     private String cardRating;
 
     @JsonInclude(Include.NON_NULL)
-    private String maxPageRes;
+    private Integer maxPageRes;
 
     @JsonInclude(Include.NON_NULL)
     private ChemistryStyle chemistryStyle;
@@ -94,11 +94,11 @@ public abstract class Card implements Serializable {
 	this.cardRating = cardRating;
     }
 
-    public String getMaxPageRes() {
+    public Integer getMaxPageRes() {
 	return maxPageRes;
     }
 
-    public void setMaxPageRes(String maxPageRes) {
+    public void setMaxPageRes(Integer maxPageRes) {
 	this.maxPageRes = maxPageRes;
     }
 
@@ -159,5 +159,15 @@ public abstract class Card implements Serializable {
     }
 
     public abstract String getCardIdentifier();
+
+    @Override
+    public String toString() {
+	return "Card [" + (id != null ? "id: " + id + ", " : "")
+		+ (minBuyPrice != null ? "minBuyPrice: " + minBuyPrice + ", " : "")
+		+ (buyPrice != null ? "buyPrice: " + buyPrice + ", " : "")
+		+ (sellPrice != null ? "sellPrice: " + sellPrice + ", " : "")
+		+ (cardRating != null ? "cardRating: " + cardRating + ", " : "")
+		+ (type != null ? "type: " + type + ", " : "") + "rare: " + rare + " ]";
+    }
 
 }
