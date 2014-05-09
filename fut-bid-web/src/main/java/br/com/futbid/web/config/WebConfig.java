@@ -15,6 +15,7 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.InternalResourceView;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.thymeleaf.extras.conditionalcomments.dialect.ConditionalCommentsDialect;
 import org.thymeleaf.spring3.SpringTemplateEngine;
@@ -53,42 +54,42 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SpringConfig<W
 
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-	configurer.enable();
+        configurer.enable();
     }
 
     @Bean
     public ViewResolver getJspViewResolver() {
-	InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-	resolver.setContentType(CONTENT_TYPE);
-	resolver.setPrefix(VIEW_PREFIX);
-	resolver.setSuffix(".jsp");
-	resolver.setViewClass(DefaultResourceView.class);
-	resolver.setOrder(2);
-	return resolver;
+        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        resolver.setContentType(CONTENT_TYPE);
+        resolver.setPrefix(VIEW_PREFIX);
+        resolver.setSuffix(".jsp");
+        resolver.setViewClass(InternalResourceView.class);
+        resolver.setOrder(2);
+        return resolver;
     }
 
     @Bean
     public ViewResolver getHtmlViewResolver() {
-	ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver();
-	templateResolver.setTemplateMode("LEGACYHTML5");
-	templateResolver.setPrefix(VIEW_PREFIX);
-	templateResolver.setSuffix(".html");
-	templateResolver.setCharacterEncoding(webProperties.getEncoding());
-	templateResolver.setOrder(1);
+        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver();
+        templateResolver.setTemplateMode("LEGACYHTML5");
+        templateResolver.setPrefix(VIEW_PREFIX);
+        templateResolver.setSuffix(".html");
+        templateResolver.setCharacterEncoding(webProperties.getEncoding());
+        templateResolver.setOrder(1);
 
-	SpringTemplateEngine engine = new SpringTemplateEngine();
-	engine.setTemplateResolver(templateResolver);
-	engine.addDialect(new ConditionalCommentsDialect()); // suporte ao IE
+        SpringTemplateEngine engine = new SpringTemplateEngine();
+        engine.setTemplateResolver(templateResolver);
+        engine.addDialect(new ConditionalCommentsDialect()); // suporte ao IE
 
-	ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-	viewResolver.setViewNames(new String[] { "/html/*" }); // para ignorar os jsps
-	viewResolver.setContentType(CONTENT_TYPE);
-	viewResolver.setTemplateEngine(engine);
-	if (webProperties.isDebug()) {
-	    viewResolver.setCache(false);
-	}
-	viewResolver.setOrder(1);
-	return viewResolver;
+        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+        viewResolver.setViewNames(new String[] { "/html/*" }); // para ignorar os jsps
+        viewResolver.setContentType(CONTENT_TYPE);
+        viewResolver.setTemplateEngine(engine);
+        if (webProperties.isDebug()) {
+            viewResolver.setCache(false);
+        }
+        viewResolver.setOrder(1);
+        return viewResolver;
     }
 
     @Override

@@ -1,176 +1,143 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>fut-bid-web</artifactId>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>fut-bid-web</artifactId>
 
-	<parent>
-		<groupId>br.com.futbid</groupId>
-		<artifactId>fut-bid</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
-
-
-	<properties>
-
-		<application.env>local</application.env>
-		<application.logdir>/var/log/fluxoav</application.logdir>
-		<application.web.version>${project.version}-${git.commit.id}</application.web.version>
-		<application.web.context>/${project.artifactId}</application.web.context>
+    <parent>
+        <groupId>br.com.futbid</groupId>
+        <artifactId>fut-bid</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
 
 
-	</properties>
+    <properties>
 
-	<dependencies>
-
-		<!-- Spring WEB -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-		</dependency>
+        <application.env>local</application.env>
+        <application.logdir>/var/log/fluxoav</application.logdir>
+        <application.web.version>${project.version}-${git.commit.id}</application.web.version>
+        <application.web.context>/${project.artifactId}</application.web.context>
 
 
-		<!-- WEB -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
+    </properties>
 
-		<!-- THYMELEAF -->
-		<dependency>
-			<groupId>org.thymeleaf</groupId>
-			<artifactId>thymeleaf</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.thymeleaf</groupId>
-			<artifactId>thymeleaf-spring3</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>nekohtml</groupId>
-			<artifactId>nekohtml</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.thymeleaf.extras</groupId>
-			<artifactId>thymeleaf-extras-conditionalcomments</artifactId>
-		</dependency>
+    <dependencies>
+
+        <!-- Spring WEB -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
 
 
-		<!-- MODULES -->
-		<dependency>
-			<groupId>br.com.futbid</groupId>
-			<artifactId>fut-bid-service</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>br.com.futbid</groupId>
-			<artifactId>fut-bid-commons</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-	</dependencies>
+        <!-- WEB -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <!-- THYMELEAF -->
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf-spring3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>nekohtml</groupId>
+            <artifactId>nekohtml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-conditionalcomments</artifactId>
+        </dependency>
 
 
-	<profiles>
-		<profile>
-			<id>local</id>
-			<properties>
-				<application.logdir>${java.io.tmpdir}/fut-bid</application.logdir>
-				<local.jetty.reload>manual</local.jetty.reload>
-				<local.jetty.scan>0</local.jetty.scan>
-				<local.jetty.port>8081</local.jetty.port>
+        <!-- MODULES -->
+        <dependency>
+            <groupId>br.com.futbid</groupId>
+            <artifactId>fut-bid-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>br.com.futbid</groupId>
+            <artifactId>fut-bid-commons</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.mortbay.jetty</groupId>
-						<artifactId>jetty-maven-plugin</artifactId>
-						<configuration>
-							<reload>${local.jetty.reload}</reload>
-							<scanIntervalSeconds>${local.jetty.scan}</scanIntervalSeconds>
-							<baseAppFirst>false</baseAppFirst>
-							<webAppSourceDirectory>${project.build.directory}/${project.build.finalName}/</webAppSourceDirectory>
-							<webAppConfig>
-								<contextPath>/${project.build.finalName}</contextPath>
-								<descriptor>${project.build.directory}/${project.build.finalName}/WEB-INF/web.xml</descriptor>
-								<allowDuplicateFragmentNames>true</allowDuplicateFragmentNames>
-							</webAppConfig>
-							<systemProperties>
-								<systemProperty>
-									<name>MAVEN_OPTS</name>
-									<value>-Xmx256m -Xms256m -server -Dcom.sun.xml.ws.transport.http.client.HttpTransportPipe.dump=true -XX:+HeapDumpOnOutOfMemoryError</value>
-								</systemProperty>
-								<systemProperty>
-									<name>jetty.port</name>
-									<value>${local.jetty.port}</value>
-								</systemProperty>
-							</systemProperties>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 
-	<build>
-		<finalName>${project.artifactId}</finalName>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>**/*.properties</include>
-					<include>**/*.sql</include>
-					<include>logback.xml</include>
-				</includes>
-				<filtering>true</filtering>
-			</resource>
-			<resource>
-				<directory>src/main/webapp</directory>
-				<includes>
-					<include>**/*.xml</include>
-				</includes>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<archive>
-						<!-- suprime dados de teste do pom.xml -->
-						<addMavenDescriptor>false</addMavenDescriptor>
-						<!-- inclui a versao no WAR -->
-						<manifestEntries>
-							<version>${fluxoav.web.version}</version>
-						</manifestEntries>
-					</archive>
-					<webResources>
-						<resource>
-							<directory>${project.parent.basedir}/${project.artifactId}/src/main/webapp</directory>
-							<filtering>true</filtering>
-							<!-- inclui o profile do spring no web.xml -->
-							<includes>
-								<include>**/*.xml</include>
-							</includes>
-						</resource>
-					</webResources>
-					<overlays>
-						<!-- templates em WEB-INF <overlay> <groupId>${project.groupId}</groupId> <artifactId>fluxo-av-static</artifactId> <targetPath>/WEB-INF/view/html</targetPath> <includes> <include>*.html</include> </includes> <filtered>true</filtered> </overlay> -->
-						<!-- estaticos na raiz do WAR <overlay> <groupId>${project.groupId}</groupId> <artifactId>fluxo-av-static</artifactId> <targetPath>/</targetPath> <includes> <include>assets/css/**</include> <include>assets/js/**</include> <include>*404.html</include> <include>*503.html</include> </includes> </overlay> -->
-					</overlays>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <profiles>
+        <profile>
+            <id>local</id>
+            <properties>
+
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.sql</include>
+                    <include>logback.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/webapp</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <!-- suprime dados de teste do pom.xml -->
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                        <!-- inclui a versao no WAR -->
+                        <manifestEntries>
+                            <version>${fluxoav.web.version}</version>
+                        </manifestEntries>
+                    </archive>
+                    <webResources>
+                        <resource>
+                            <directory>${project.parent.basedir}/${project.artifactId}/src/main/webapp</directory>
+                            <filtering>true</filtering>
+                            <!-- inclui o profile do spring no web.xml -->
+                            <includes>
+                                <include>**/*.xml</include>
+                            </includes>
+                        </resource>
+                    </webResources>
+                    <overlays>
+                        <!-- templates em WEB-INF <overlay> <groupId>${project.groupId}</groupId> <artifactId>fluxo-av-static</artifactId> <targetPath>/WEB-INF/view/html</targetPath> <includes> <include>*.html</include> </includes> <filtered>true</filtered> </overlay> -->
+                        <!-- estaticos na raiz do WAR <overlay> <groupId>${project.groupId}</groupId> <artifactId>fluxo-av-static</artifactId> <targetPath>/</targetPath> <includes> <include>assets/css/**</include> <include>assets/js/**</include> <include>*404.html</include> <include>*503.html</include> </includes> </overlay> -->
+                    </overlays>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

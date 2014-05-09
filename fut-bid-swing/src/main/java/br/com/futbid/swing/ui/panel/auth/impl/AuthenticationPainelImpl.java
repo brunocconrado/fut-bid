@@ -40,80 +40,80 @@ public class AuthenticationPainelImpl extends JPanel implements AuthenticationPa
     private WorkTabPanel workTabPanel;
 
     public AuthenticationPainelImpl() {
-	this.email = new JTextField();
-	this.password = new JPasswordField();
-	this.answer = new JTextField();
+        this.email = new JTextField();
+        this.password = new JPasswordField();
+        this.answer = new JTextField();
     }
 
     @PostConstruct
     public void init() {
 
-	setName(Tab.LOGIN.getName());
+        setName(Tab.LOGIN.getName());
 
-	setBackground(Colors.BACK_GROUND);
-	setLayout(new BorderLayout());
-	setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        setBackground(Colors.BACK_GROUND);
+        setLayout(new BorderLayout());
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-	GridLayout layout = new GridLayout(3, 2);
-	layout.setVgap(30);
+        GridLayout layout = new GridLayout(3, 2);
+        layout.setVgap(30);
 
-	JPanel fieldPanel = new JPanel();
-	fieldPanel.setBackground(Colors.BACK_GROUND);
-	fieldPanel.setLayout(layout);
-	fieldPanel.setPreferredSize(new Dimension(50, 130));
+        JPanel fieldPanel = new JPanel();
+        fieldPanel.setBackground(Colors.BACK_GROUND);
+        fieldPanel.setLayout(layout);
+        fieldPanel.setPreferredSize(new Dimension(50, 130));
 
-	fieldPanel.add(createLable("Email: ", Colors.BACK_GROUND));
-	fieldPanel.add(email);
+        fieldPanel.add(createLable("Email: ", Colors.BACK_GROUND));
+        fieldPanel.add(email);
 
-	fieldPanel.add(createLable("Password: ", Colors.BACK_GROUND));
-	fieldPanel.add(password);
+        fieldPanel.add(createLable("Password: ", Colors.BACK_GROUND));
+        fieldPanel.add(password);
 
-	fieldPanel.add(createLable("Answer: ", Colors.BACK_GROUND));
-	fieldPanel.add(answer);
+        fieldPanel.add(createLable("Answer: ", Colors.BACK_GROUND));
+        fieldPanel.add(answer);
 
-	JButton loginButton = new JButton("Login");
-	loginButton.addActionListener(authActionListener);
+        JButton loginButton = new JButton("Login");
+        loginButton.addActionListener(authActionListener);
 
-	JPanel controllPanel = new JPanel(new FlowLayout(2));
-	controllPanel.setBackground(Colors.BACK_GROUND);
-	controllPanel.add(loginButton);
+        JPanel controllPanel = new JPanel(new FlowLayout(2));
+        controllPanel.setBackground(Colors.BACK_GROUND);
+        controllPanel.add(loginButton);
 
-	JPanel centerContainer = new JPanel(new BorderLayout());
-	centerContainer.add(fieldPanel, "North");
-	centerContainer.add(controllPanel, "Center");
+        JPanel centerContainer = new JPanel(new BorderLayout());
+        centerContainer.add(fieldPanel, "North");
+        centerContainer.add(controllPanel, "Center");
 
-	Font font = new Font("Arial", 1, 14);
-	add(createLable("Please provide your FUT credentials: ", Colors.BACK_GROUND, Colors.HEADER_COLOR, font, null,
-		null, false), "North");
-	add(centerContainer, "Center");
+        Font font = new Font("Arial", 1, 14);
+        add(createLable("Please provide your FUT credentials: ", Colors.BACK_GROUND, Colors.HEADER_COLOR, font, null,
+                null, false), "North");
+        add(centerContainer, "Center");
     }
 
     @Override
     public void setWorkTabPanel(WorkTabPanel workTabPanel) {
-	this.workTabPanel = workTabPanel;
+        this.workTabPanel = workTabPanel;
     }
 
     @Override
     public void clearFields() {
-	email.setText("");
-	password.setText("");
-	answer.setText("");
+        email.setText("");
+        password.setText("");
+        answer.setText("");
     }
 
     @Override
     public void showAutoBuyerPanel() {
-	workTabPanel.showAutoBuyerPanel();
+        workTabPanel.showAutoBuyerPanel();
     }
 
     @Override
     public Credentials getCredentials() {
-	Credentials credentials = new Credentials();
-	/*
-	 * credentials.setLogin(emailField.getText()); credentials.setPassword(passwordField.getText());
-	 * credentials.setSecretAnswer(answerField.getText());
-	 */
+        Credentials credentials = new Credentials();
 
-	return credentials;
+        credentials.setLogin(email.getText());
+        credentials.setPassword(new String(password.getPassword()));
+        credentials.setSecretAnswer(answer.getText());
+
+        return credentials;
     }
 
 }
