@@ -9,6 +9,14 @@
 	</parent>
 
 	<dependencies>
+
+		<!-- Modules -->
+		<dependency>
+			<groupId>br.com.futbid</groupId>
+			<artifactId>fut-bid-commons</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>

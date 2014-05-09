@@ -12,7 +12,18 @@
 		<spring.version>3.2.2.RELEASE</spring.version>
 		<spring.security>3.1.4.RELEASE</spring.security>
 
+		<!-- WEB -->
+		<servlet.api>3.0.1</servlet.api>
 		<jackson.version>2.2.0</jackson.version>
+
+		<!-- SPRING VIEW (THYMELEAF) -->
+		<thymeleaf.version>2.1.1.RELEASE</thymeleaf.version>
+		<thymeleaf.extras.version>2.1.0.RELEASE</thymeleaf.extras.version>
+		<nekohtml.version>1.9.6.2</nekohtml.version>
+
+		<!-- VALIDATION -->
+		<validation-api>1.0.0.GA</validation-api>
+		<hibernate.validator>4.2.0.Final</hibernate.validator>
 
 		<!-- LOG -->
 		<slf4j.api>1.7.5</slf4j.api>
@@ -20,11 +31,11 @@
 		<jansi.version>1.11</jansi.version>
 
 		<sqlite.jdbc.version>3.7.15-M1</sqlite.jdbc.version>
-		
-		
+
 		<java.version>1.7</java.version>
 		<url.encoding>UTF-8</url.encoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 	</properties>
 
@@ -99,6 +110,46 @@
 				<version>${sqlite.jdbc.version}</version>
 			</dependency>
 
+			<!-- WEB -->
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>${servlet.api}</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<!-- THYMELEAF -->
+			<dependency>
+				<groupId>org.thymeleaf</groupId>
+				<artifactId>thymeleaf</artifactId>
+				<version>${thymeleaf.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.thymeleaf</groupId>
+				<artifactId>thymeleaf-spring3</artifactId>
+				<version>${thymeleaf.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.thymeleaf.extras</groupId>
+				<artifactId>thymeleaf-extras-conditionalcomments</artifactId>
+				<version>${thymeleaf.extras.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>nekohtml</groupId>
+				<artifactId>nekohtml</artifactId>
+				<version>${nekohtml.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>xml-apis</groupId>
+						<artifactId>xml-apis</artifactId>
+					</exclusion>
+				</exclusions>
+				<scope>runtime</scope>
+			</dependency>
+
 			<!-- JACKSON -JSON -->
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
@@ -154,6 +205,26 @@
 				<scope>runtime</scope>
 			</dependency>
 
+			<!-- VALIDATION -->
+			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>${validation-api}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>${hibernate.validator}</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>org.slf4j</artifactId>
+						<groupId>slf4j-api</groupId>
+					</exclusion>
+				</exclusions>
+				<scope>runtime</scope>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -170,7 +241,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 		</dependency>
-		
+
 		<!-- LOGGING -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -197,11 +268,16 @@
 		</dependency>
 
 	</dependencies>
-	
-		<build>
+
+	<build>
 		<finalName>${project.artifactId}</finalName>
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>org.mortbay.jetty</groupId>
+					<artifactId>jetty-maven-plugin</artifactId>
+					<version>8.1.12.v20130726</version>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-eclipse-plugin</artifactId>
@@ -422,5 +498,6 @@
 		<module>fut-bid-service</module>
 		<module>fut-bid-swing</module>
 		<module>fut-bid-web</module>
+		<module>fut-bid-commons</module>
 	</modules>
 </project>
