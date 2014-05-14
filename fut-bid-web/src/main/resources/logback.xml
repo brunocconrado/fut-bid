@@ -12,7 +12,7 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>/var/log/futbid/futbid_app.log</file>
+        <file>/var/log/fut-bid/futbid_app.log</file>
         <encoder>
             <charset>UTF-8</charset>
             <pattern>%d{ISO8601} [%thread] %-5level %logger{35} - %msg%n</pattern>
@@ -20,7 +20,7 @@
     </appender>
 
     <appender name="FILE_SERVICE" class="ch.qos.logback.core.FileAppender">
-        <file>/var/log/futbid/futbid_service.log</file>
+        <file>/var/log/fut-bid/futbid_service.log</file>
         <encoder>
             <charset>UTF-8</charset>
             <pattern>%d{ISO8601} [%thread] %-5level %logger{15} - %msg %n</pattern>
@@ -28,7 +28,7 @@
     </appender>
 
     <appender name="FILE_INTEGRATION" class="ch.qos.logback.core.FileAppender">
-        <file>/var/log/futbid/futbid_int.log</file>
+        <file>/var/log/fut-bid/futbid_int.log</file>
         <encoder>
             <charset>UTF-8</charset>
             <pattern>%d{ISO8601} [%thread] %-5level %logger{15} - %msg %n</pattern>
