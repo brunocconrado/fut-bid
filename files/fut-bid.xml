@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_0.dtd">
+<!-- JETTY_HOME="/opt/jetty" JAVA_HOME="/usr/java/jdk1.7.0_55" JETTY_CONSOLE="/var/log/fut-bid/" JETTY_USER="jetty" JETTY_ARGS="OPTIONS=Server,jsp" JAVA_OPTIONS="-server -Xms256m -Xmx256m -Dfile.encoding=UTF-8 -Dorg.mortbay.xml.XmlParser.NotValidating=true -Dsun.net.inetaddr.ttl=60 -Denvironment=dev -Djavax.xml.parsers.DocumentBuilderFactory=com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl" -->
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
+
+	<Call class="java.lang.System" name="setProperty">
+        <!-- Path da APP -->
+        <Arg>application.path</Arg>
+        <Arg>/opt/webapps/fut-bid</Arg>
+    </Call>
+
+    <Call name="addBean">
+        <Arg>
+            <New id="deploymentManager" class="org.eclipse.jetty.deploy.DeploymentManager">
+                <Set name="contexts">
+                    <Ref id="Contexts" />
+                </Set>
+                <Call id="webappProvider" name="addAppProvider">
+                    <Arg>
+                        <New class="org.eclipse.jetty.deploy.providers.WebAppProvider">
+                            <Set name="monitoredDirName"><SystemProperty name="application.path"/></Set>
+                            <Set name="scanInterval">1</Set>
+                            <Set name="extractWars">true</Set>
+                            <Set name="contextPath">/fut-bid-web</Set>
+                            <Set name="war"><SystemProperty name="application.path"/>/fut-bid-web.war</Set>
+                        </New>
+                    </Arg>
+                </Call>
+            </New>
+        </Arg>
+    </Call>
+
+
+
+    <!-- <Set name="ThreadPool"> <New class="org.eclipse.jetty.util.thread.QueuedThreadPool"> <Set name="minThreads">12</Set> <Set name="maxThreads">256</Set> <Set name="detailedDump">false</Set> </New> </Set> -->
+
+    <Call name="addConnector">
+        <Arg>
+            <New class="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                <Set name="host">
+                    <SystemProperty name="jetty.host" default="0.0.0.0" />
+                </Set>
+                <Set name="port">
+                    <SystemProperty name="jetty.port" default="8081" />
+                </Set>
+                <Set name="forwarded">true</Set>
+                <!-- Set name="maxIdleTime">30000</Set -->
+                <Set name="Acceptors">1</Set>
+                <Set name="statsOn">false</Set>
+                <Set name="confidentialPort">8443</Set>
+                <Set name="lowResourcesConnections">5000</Set>
+                <Set name="lowResourcesMaxIdleTime">5000</Set>
+                <Set name="responseBufferSize">65536</Set>
+                <!-- Set name="headerBufferSize">32768</Set -->
+            </New>
+        </Arg>
+    </Call>
+
+    <Call class="java.lang.System" name="setProperty">
+        <!-- Log4J -->
+        <Arg>logback.configuration</Arg>
+        <Arg>file:///opt/webapps/fut-bid/logback.xml</Arg>
+    </Call>
+
+    
+
+    <Set name="handler">
+        <New class="org.eclipse.jetty.server.handler.HandlerList">
+            <Set name="handlers">
+                <Array type="org.eclipse.jetty.server.Handler">
+                    <Item>
+                        <New id="Contexts" class="org.eclipse.jetty.server.handler.ContextHandlerCollection" />
+                    </Item>
+                    <Item>
+                        <New class="org.eclipse.jetty.webapp.WebAppContext">
+                            <Arg>/opt/webapps/fut-bid/fut-bid-web.war</Arg>
+                            <Arg>/fut-bid-web</Arg>
+                        </New>
+                    </Item>
+                    <Item>
+                        <New id="DefaultHandler" class="org.eclipse.jetty.server.handler.DefaultHandler">
+                            <Set name="showContexts">true</Set>
+                        </New>
+                    </Item>
+
+                </Array>
+            </Set>
+        </New>
+    </Set>
+
+
+    <Set name="stopAtShutdown">true</Set>
+    <Set name="sendServerVersion">false</Set>
+    <Set name="sendDateHeader">true</Set>
+    <Set name="gracefulShutdown">1000</Set>
+
+</Configure>
+
