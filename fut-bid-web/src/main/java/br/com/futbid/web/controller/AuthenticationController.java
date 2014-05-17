@@ -18,7 +18,7 @@ public class AuthenticationController extends BaseController {
     public String initView(Model model, HttpServletRequest request, @RequestHeader Map<String, String> headers,
 	    HttpServletResponse response) {
 	LOG.debug("GET /");
-	return "/html/authentication/login";
+	return "/html/authentication/index";
     }
 
 }
