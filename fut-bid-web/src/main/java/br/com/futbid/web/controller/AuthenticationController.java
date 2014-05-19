@@ -20,5 +20,12 @@ public class AuthenticationController extends BaseController {
 	LOG.debug("GET /");
 	return "/html/authentication/index";
     }
+    
+    @RequestMapping(value = "/interna", method = RequestMethod.GET)
+    public String internaView(Model model, HttpServletRequest request, @RequestHeader Map<String, String> headers,
+            HttpServletResponse response) {
+        LOG.debug("GET /");
+        return "/html/interna/interna-app";
+    }
 
 }
