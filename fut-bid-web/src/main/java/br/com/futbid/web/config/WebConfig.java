@@ -98,6 +98,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements SpringConfig<W
 	registry.addResourceHandler("/css/**").addResourceLocations("/css/").setCachePeriod(cacheInSeconds);
 	registry.addResourceHandler("/img/**").addResourceLocations("/img/").setCachePeriod(cacheInSeconds);
 	registry.addResourceHandler("/js/**").addResourceLocations("/js/").setCachePeriod(cacheInSeconds);
+	registry.addResourceHandler("/fonts/**").addResourceLocations("/fonts/").setCachePeriod(cacheInSeconds);
     }
 
     @Bean
