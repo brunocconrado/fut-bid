@@ -11,13 +11,24 @@
 	font-style:normal;
 }
 
+@font-face {
+	font-family: 'icomoon';
+	src:url('../fonts/icomoon.eot');
+	src:url('../fonts/icomoon.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/icomoon.woff') format('woff'),
+		url('../fonts/icomoon.ttf') format('truetype'),
+		url('../fonts/icomoon.svg#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
 html { position: relative; min-height: 100%; }
 body { margin-bottom: 60px; }
-footer { position: absolute; bottom: 0; width: 100%; height: 60px; background-color: #f5f5f5; }
-footer .text-muted{ line-height: 60px; }
+footer { position: absolute; bottom: 0; width: 100%; height: 70px; background-color: #f5f5f5; }
+footer .text-muted{ line-height: 70px; }
 footer a { color: #ccc; text-decoration: none; }
 footer ul { list-style: none; display: table; }
-footer li { float: left; margin-left: 20px; line-height: 60px; }
+footer li { float: left; margin-left: 20px; line-height: 70px; }
 footer li a, 
 #header-secondary-outer #social li a { display: table; height: 24px; position: relative; background-position: center top; text-decoration: none;
 	-webkit-transition: all 0.2s linear;
@@ -49,21 +60,21 @@ footer li a i,
 [class^="icon-"].icon-fixed-width.icon-large,
 [class*=" icon-"].icon-fixed-width.icon-large{ width:1.4285714285714286em; }
 
+[class^="icon-"].hide,
+[class*=" icon-"].hide{ display:none; }
+
+[class^="icon-"].pull-left,
+[class*=" icon-"].pull-left{margin-right:.3em;}
+
+[class^="icon-"].pull-right,
+[class*=" icon-"].pull-right{margin-left:.3em;}
+
+[class^="icon-"],
+[class*=" icon-"]{display:inline;width:auto;height:auto;line-height:normal;vertical-align:baseline;background-image:none;background-position:0% 0%;background-repeat:repeat;margin-top:0;}
+
 .icons-ul{ margin-left:2.142857142857143em; list-style-type:none; }
 .icons-ul>li{ position:relative; }
 .icons-ul .icon-li{ position:absolute;left:-2.142857142857143em;width:2.142857142857143em;text-align:center;line-height:inherit; }
-
-.icon-twitter:before { content: "\f099"; }
-.icon-facebook:before { content: "\f09a"; }
-
-
-.icon-twitter:hover{ color: #2ac4ea; text-decoration: none; }
-.icon-facebook:hover{ color: #2ac4ea; text-decoration: none; }
-.icon-envelope-alt:hover { color: #2ac4ea; text-decoration: none; }
-.icon-star:hover { color: #2ac4ea; text-decoration: none; }
-
-[class^="icon-"].hide,
-[class*=" icon-"].hide{ display:none; }
 
 .icon-muted{ color:#eeeeee; }
 .icon-light{ color:#ffffff; }
@@ -80,15 +91,6 @@ footer li a i,
 
 .pull-right{float:right;}
 .pull-left{float:left;}
-
-[class^="icon-"].pull-left,
-[class*=" icon-"].pull-left{margin-right:.3em;}
-
-[class^="icon-"].pull-right,
-[class*=" icon-"].pull-right{margin-left:.3em;}
-
-[class^="icon-"],
-[class*=" icon-"]{display:inline;width:auto;height:auto;line-height:normal;vertical-align:baseline;background-image:none;background-position:0% 0%;background-repeat:repeat;margin-top:0;}
 
 .icon-white,
 .nav-pills>.active>a>[class^="icon-"],
@@ -201,6 +203,10 @@ a .icon-rotate-270:before,
 a .icon-flip-horizontal:before,
 a .icon-flip-vertical:before{ display:inline-block; }
 
+[data-icon]:before { font-family: 'icomoon'!important; content: attr(data-icon); speak: none; font-weight: normal; font-variant: normal; text-transform: none; line-height: 1; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+.icon-twitter:before { content: "\f099"; }
+.icon-facebook:before { content: "\f09a"; }
 .icon-glass:before{content:"\f000";}
 .icon-music:before{content:"\f001";}
 .icon-search:before{content:"\f002";}
@@ -562,22 +568,6 @@ a .icon-flip-vertical:before{ display:inline-block; }
 .icon-vk:before{content:"\f189";}
 .icon-weibo:before{content:"\f18a";}
 .icon-renren:before{content:"\f18b";}
-
-
-/******** CUSTOM ICONS ********/
-@font-face {
-	font-family: 'icomoon';
-	src:url('../fonts/icomoon.eot');
-	src:url('../fonts/icomoon.eot?#iefix') format('embedded-opentype'),
-		url('../fonts/icomoon.woff') format('woff'),
-		url('../fonts/icomoon.ttf') format('truetype'),
-		url('../fonts/icomoon.svg#icomoon') format('svg');
-	font-weight: normal;
-	font-style: normal;
-}
-
-[data-icon]:before { font-family: 'icomoon'!important; content: attr(data-icon); speak: none; font-weight: normal; font-variant: normal; text-transform: none; line-height: 1; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-
 .icon-salient-x, 
 .icon-salient-search, 
 .icon-salient-right-arrow,
@@ -595,7 +585,6 @@ a .icon-flip-vertical:before{ display:inline-block; }
 .icon-salient-heart, 
 .icon-salient-heart-2, 
 .icon-salient-plus{ font-family: 'icomoon'; speak: none; font-style: normal; font-weight: normal; font-variant: normal; text-transform: none; line-height: 1; -webkit-font-smoothing: antialiased; }
-
 .icon-salient-x:before { content: "\e003"; }
 .icon-salient-search:before { content: "\e002"; }
 .icon-salient-right-arrow:before { content: "\e000"; }
@@ -613,3 +602,25 @@ a .icon-flip-vertical:before{ display:inline-block; }
 .icon-salient-heart:before { content: "\e00e"; }
 .icon-salient-heart-2:before { content: "\e00f"; }
 .icon-salient-plus:before { content: "\e010"; }
+
+.icon-twitter:hover{ color: #2ac4ea; text-decoration: none; }
+.icon-facebook:hover{ color: #2ac4ea; text-decoration: none; }
+.icon-envelope-alt:hover { color: #2ac4ea; text-decoration: none; }
+.icon-star:hover { color: #2ac4ea; text-decoration: none; }
+
+/* espaçamentos do topo */
+.top30{ margin-top: 30px; }
+
+/* espaçamentos da esquerda */
+.left15{ margin-left: 15px; }
+
+/* borda na imagem do jogador */
+.img-border{ border: 1px solid #ddd; }
+
+/* espaçamento após cada linha do formulário */ 
+form .row{ margin-top: 25px; }
+form .row>div{ border: 0px solid red; }
+
+/* reset style tabs */
+.nav-tabs { border-bottom: 0px solid #ddd; }
+.tab-content{ border: 1px solid #ddd; background: #fff; margin-bottom: 25px; }

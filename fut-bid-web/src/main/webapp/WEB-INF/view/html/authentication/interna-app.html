@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Compra e venda automática para o Fifa Ultimate Team 2014">
+    <meta name="author" content="Luiz Fernando Souza e Bruno Conrado">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico" th:href="@{assets/ico/favicon.ico}">
+
+    <title>FUT - Compra Automática</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../../../assets/css/bootstrap.css" th:href="@{../../../../assets/css/bootstrap.css}" rel="stylesheet">
+    <link href="../../../../assets/css/style.css" th:href="@{../../../../assets/css/style.css}" rel="stylesheet">
+    <link href="../../../../assets/css/style_login.css" th:href="@{../../../../assets/css/style_login.css}" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../../../assets/js/ie8-responsive-file-warning.js" th:href="@{../assets/js/ie8-responsive-file-warning.js}"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <!-- logotipo -->
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="form-signin-heading">
+            <img src="../../../../assets/images/logo_login_5.png" class="img-responsive" alt="Logo">
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#config" data-toggle="tab">Configurações</a></li>
+            <li><a href="#comprar" data-toggle="tab">Comprar</a></li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+            
+            <!-- ABA DE CONFIGURAÇÒES -->
+            <div class="tab-pane fade in active" id="config"></div>
+
+            <!-- ABA DE COMPRAS -->
+            <div class="tab-pane fade" id="comprar">
+              
+              <form class="form-horizontal top30" role="form">
+                
+                <div class="row">
+                  <!-- Player Card -->
+                  <div class="col-xs-5 col-lg-5 col-md-5 col-lg-5">
+                    <label for="inputPlayerCard" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Tipo de Carta:</label>
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                      <select class="form-control" id="inputPlayerCard">
+                        <option value="fitness">Fitness</option>
+                        <option value="contratos">Contratos</option>
+                        <option value="posicao">Posição</option>
+                        <option value="quimica">Química</option>
+                      </select>
+                    </div>
+                  </div>
+                  <!-- Level Card -->
+                  <div class="col-xs-5 col-lg-5 col-md-5 col-lg-5 col-xs-offset-2 col-sm-offset-2 col-sm-offset-2 col-lg-offset-2">
+                    <label for="inputLevelCard" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Level:</label>
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                      <select class="form-control" id="inputLevelCard">
+                        <option value="all">All</option>
+                        <option value="gold">Gold</option>
+                        <option value="silver">Silver</option>
+                        <option value="bronze">Bronze</option>
+                      </select>
+                    </div>                  
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                    <!-- Player Name -->
+                    <label for="inputPlayerName" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Nome do Jogador:</label>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                      <input type="text" class="form-control" id="inputPlayerName" placeholder="Player Name">
+                    </div>
+                    <br><br><br><br>
+                    <!-- Buy Price -->
+                    <label for="inputBuyPrice" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Preço de Compra:</label>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                      <input type="number" class="form-control" id="inputBuyPrice" placeholder="Buy Price" min="0" step="100">
+                    </div>
+                    <br><br><br><br>
+                    <!-- Sell Price -->
+                    <label for="inputSellPrice" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Preço de Venda:</label>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                      <input type="number" class="form-control" id="inputSellPrice" placeholder="Sell Price" min="0" step="100">
+                    </div>
+                  </div>
+                  <!-- Foto Player -->
+                  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-5">
+                    <label for="semFotoPlayer" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Foto do Jogador:</label>
+                    <img src="../../../../assets/images/sem-foto-vertical.jpg" height="210" class="left15 img-border" alt="">
+                  </div>
+                </div>
+                
+                <div class="row">
+                  <!-- Buy Price -->
+                  <div class="col-xs-5 col-lg-5 col-md-5 col-lg-5">
+                    <label for="inputPosition" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Posição:</label>
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                      <select class="form-control" id="inputPosition">
+                        <option value="all">All</option>
+                        <option value="gk">GK</option>
+                        <option value="rwb">RWB</option>
+                        <option value="rb">RB</option>
+                        <option value="cb">CB</option>
+                        <option value="lb">LB</option>
+                        <option value="lwb">LWB</option>
+                        <option value="cdm">CDM</option>
+                        <option value="rm">RM</option>
+                        <option value="cm">CM</option>
+                        <option value="lm">LM</option>
+                        <option value="cam">CAM</option>
+                        <option value="rf">RF</option>
+                        <option value="cf">CF</option>
+                        <option value="lf">LF</option>
+                        <option value="rw">RW</option>
+                        <option value="lw">LW</option>
+                        <option value="st">ST</option>
+                      </select>
+                    </div>
+                  </div>
+                  <!-- Sell Price -->
+                  <div class="col-xs-5 col-lg-5 col-md-5 col-lg-5 col-xs-offset-2 col-sm-offset-2 col-sm-offset-2 col-lg-offset-2">
+                    <label for="inputChemistry" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Química:</label>
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                      <select class="form-control" id="inputChemistry">
+                        <option value="basic">Basic</option>
+                        <option value="sniper">Sniper</option>
+                        <option value="finishier">Finisher</option>
+                        <option value="deadeye">Deadeye</option>
+                        <option value="marksman">Marksman</option>
+                        <option value="hawk">Hawk</option>
+                        <option value="artist">Artist</option>
+                        <option value="architect">Architect</option>
+                        <option value="powerhouse">Powerhouse</option>
+                        <option value="maestro">Maestro</option>
+                        <option value="engine">Engine</option>
+                        <option value="sentinel">Sentinel</option>
+                        <option value="guardian">Guardian</option>
+                        <option value="gladiator">Gladiator</option>
+                        <option value="backbone">Backbone</option>
+                        <option value="anchor">Anchor</option>
+                        <option value="hunter">Hunter</option>
+                        <option value="catalyst">Catalyst</option>
+                        <option value="shadow">Shadow</option>
+                        <option value="wall">Wall</option>
+                        <option value="shield">Shield</option>
+                        <option value="cat">Cat</option>
+                        <option value="glove">Glove</option>
+                        <option value="gkBasic">GK Basic</option>
+                      </select>
+                    </div>                  
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <label for="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">País:</label>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                      <select class="form-control" id="inputPais">
+                        <option value="All">All</option>
+                        <option value="Albânia">Albânia</option>
+                        <option value="Algéria">Algéria</option>
+                        <option value="Angola">Angola</option>
+                        <option value="Argentina">Argentina</option>
+                        <option value="Armênia">Armênia</option>
+                        <option value="Austrália">Austrália</option>
+                        <option value="Áustria">Áustria</option>
+                        <option value="Barbados">Barbados</option>
+                        <option value="Bielo-Rússia">Bielo-Rússia</option>
+                        <option value="Bélgica">Bélgica</option>
+                        <option value="Bermuda">Bermuda</option>
+                        <option value="Bolívia">Bolívia</option>
+                        <option value="Bosnia Herzegovina">Bosnia Herzegovina</option>
+                        <option value="Brasil">Brasil</option>
+                        <option value="Bulgária">Bulgária</option>
+                        <option value="Camarões">Camarões</option>
+                        <option value="Canadá">Canadá</option>
+                        <option value="Chile">Chile</option>
+                        <option value="Colômbia">Colômbia</option>
+                        <option value="Costa Rica">Costa Rica</option>
+                      </select>
+                    </div> 
+                  </div>
+
+                  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <label for="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Liga:</label>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                      <select class="form-control" id="inputLiga">
+                        <option value="All">All</option>
+                        <option value="A. Bundesliga">A. Bundesliga</option>
+                        <option value="Airtricity League">Airtricity League</option>
+                        <option value="A-League">A-League</option>
+                        <option value="Allsvenskan">Allsvenskan</option>
+                        <option value="Barclays Premier League">Barclays Premier League</option>
+                        <option value="Bundesliga">Bundesliga</option>
+                        <option value="Bundesliga 2">Bundesliga 2</option>
+                        <option value="Eredivisie">Eredivisie</option>
+                        <option value="Hellas Liga">Hellas Liga</option>
+                        <option value="K-League">K-League</option>
+                        <option value="Liga Adelante">Liga Adelante</option>
+                        <option value="Liga BBVA">Liga BBVA</option>
+                        <option value="Liga do Brasil">Liga do Brasil</option>
+                        <option value="MX Liga">MX Liga</option>
+                        <option value="Portuguesa Liga">Portuguesa Liga</option>
+                        <option value="Ligue 1">Ligue 1</option>
+                        <option value="Ligue 2">Ligue 2</option>
+                        <option value="MLS">MLS</option>
+                        <option value="npower League 1">npower League 1</option>
+                        <option value="npower League 2">npower League 2</option>
+                        <option value="Polska Liga">Polska Liga</option>
+                        <option value="Primera Liga">Primera Liga</option>
+                        <option value="Pro League">Pro League</option>
+                        <option value="Russian League">Russian League</option>
+                      </select>
+                    </div> 
+                  </div>
+
+                  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <label for="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Time:</label>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                      <select class="form-control" id="inputTime">
+                        <option value="basic">Corinthians</option>
+                        <option value="sniper">Real Madrid</option>
+                        <option value="finishier">Barcelona</option>
+                        <option value="deadeye">Manchester City</option>
+                        <option value="marksman">Manchester United</option>
+                        <option value="hawk">Chelsea</option>
+                        <option value="artist">Atlético de Madrid</option>
+                        <option value="architect">CSKA</option>
+                        <option value="powerhouse">Juventos</option>
+                        <option value="maestro">Milan</option>
+                        <option value="engine">Roma</option>
+                        <option value="sentinel">Parma</option>
+                        <option value="guardian">Napoli</option>
+                      </select>
+                    </div> 
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="form-group">
+                      <div class="col-xs-offset-10 col-sm-offset-10 col-md-offset-10 col-lg-offset-10 col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                        <button type="submit" class="btn btn-primary top30">Add Player</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              </form>
+            </div>
+          </div>      
+        </div>
+      </div>
+      
+    </div>
+
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+            <p class="text-muted">© 2014 FIFA 14 Ultimate Team Trading Center - O Trading Center mais confiável de FIFA 14. Esse site não é afiliado com a EA Sports.</p>
+          </div>
+          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <ul id="social">
+              <li>
+                <a target="_blank" href="#" title="Entre em contato com a Equipe FUT 2014 - Compra Automática"><i class="icon-envelope-alt"></i></a>
+              </li>
+              <li>
+                <a target="_blank" href="#" title="Curta FUT 2014 - Compra Automática no Facebook"><i class="icon-facebook"></i></a>
+              </li>
+              <li>
+                <a target="_blank" href="#" title="Add aos Favoritos"><i class="icon-star"></i> </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+    
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../../assets/js/bootstrap.js"></script>
+    <script type="text/javascript" src="../../../../assets/js/common.js"></script>
+
+  </body>
+</html>
