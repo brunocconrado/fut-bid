@@ -1,6 +1,6 @@
 package br.com.futbid.web.servlet;
 
-import static br.com.futbid.commons.util.FutBidEnvironment.FLUXOAV_ENV;
+import static br.com.futbid.commons.util.FutBidEnvironment.APPLICATION_ACTIVE_PROFILE;
 import static br.com.futbid.web.config.WebProperties.isDebug;
 import static br.com.futbid.web.servlet.RequestUtils.pathInfo;
 
@@ -31,7 +31,7 @@ public class DefaultServletFilter extends OncePerRequestFilter {
     public void setEnvironment(Environment environment) {
         super.setEnvironment(environment);
         if (environment != null) {
-            this.environmentProfile = environment.getProperty(FLUXOAV_ENV, "");
+            this.environmentProfile = environment.getProperty(APPLICATION_ACTIVE_PROFILE, "");
         }
     }
 

@@ -22,7 +22,7 @@ import br.com.futbid.domain.search.PlayerSearch;
 import br.com.futbid.domain.search.Search;
 import br.com.futbid.integration.SearchIntegration;
 import br.com.futbid.integration.impl.Session;
-import br.com.futbid.integration.repository.impl.PlayerRepositoryImpl;
+import br.com.futbid.integration.repository.PlayerRepository;
 import br.com.futbid.service.SearchService;
 
 @Service
@@ -34,7 +34,7 @@ public class SearchServiceImpl implements SearchService {
     private SearchIntegration searchIntegration;
 
     @Autowired
-    private PlayerRepositoryImpl player;
+    private PlayerRepository player;
 
     @Autowired
     private Session session;

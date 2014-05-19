@@ -29,5 +29,4 @@ public class PlayerServiceImpl implements PlayerService {
     public boolean remove(Player player) {
 	return playerRepository.remove(player);
     }
-
 }
