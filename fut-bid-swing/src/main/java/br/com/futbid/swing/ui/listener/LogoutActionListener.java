@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.com.futbid.integration.impl.Session;
 import br.com.futbid.service.AuthenticationService;
 import br.com.futbid.service.AutoBuyerService;
 import br.com.futbid.swing.ui.panel.work.WorkPanel;
@@ -20,6 +21,9 @@ public class LogoutActionListener implements ActionListener {
 
     @Autowired
     private AuthenticationService authenticationService;
+    
+    @Autowired
+    private Session session;
 
     @Override
     public void actionPerformed(ActionEvent event) {
@@ -35,7 +39,7 @@ public class LogoutActionListener implements ActionListener {
 		workPanel.setDoLogout(true);
 	    }
 	} else {
-	    authenticationService.logout();
+	    authenticationService.logout(session);
 	}
     }
 }

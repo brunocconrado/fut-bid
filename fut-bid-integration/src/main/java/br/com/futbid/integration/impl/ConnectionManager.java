@@ -1,7 +1,7 @@
 package br.com.futbid.integration.impl;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
@@ -25,7 +25,7 @@ import br.com.futbid.integration.util.HttpUtils;
 @Component
 @SuppressWarnings("deprecation")
 public class ConnectionManager {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(ConnectionManager.class);
 
     @Autowired
@@ -38,7 +38,7 @@ public class ConnectionManager {
 	client.setRedirectStrategy(new LaxRedirectStrategy());
 
 	this.client = client;
-	
+
 	LOG.debug("HTTPClient {}", client);
     }
 
@@ -48,8 +48,9 @@ public class ConnectionManager {
 
     public String generateCookieString() {
 	StringBuilder cookieResult = new StringBuilder();
-	for (Map.Entry<String, String> entry : session.getCookies().entrySet()) {
-	    cookieResult.append((String) entry.getKey()).append("=").append((String) entry.getValue()).append("; ");
+	for (Entry<String, Object> entry : session.getCookies().entrySet()) {
+	    HeaderElement element = (HeaderElement) entry.getValue();
+	    cookieResult.append(element.getName()).append("=").append(entry.getValue()).append("; ");
 	}
 	return cookieResult.substring(0, cookieResult.length() - 2);
     }
@@ -58,17 +59,19 @@ public class ConnectionManager {
 	for (Header h : headers) {
 
 	    for (HeaderElement element : h.getElements()) {
+		LOG.debug("Header name| value: {}|{} ", element.getName(), element.getValue());
+		
 		if (element.getName().equals("EASW_KEY")) {
-		    session.addCookie("EASW_KEY", element.getValue());
+		    session.addCookie("EASW_KEY", element);
 		}
 		if (element.getName().equals("easf_sess_com")) {
-		    session.addCookie("easf_sess_com", element.getValue());
+		    session.addCookie("easf_sess_com", element);
 		}
 		if (element.getName().equals("EASF_PERSIST")) {
-		    session.addCookie("EASF_PERSIST", element.getValue());
+		    session.addCookie("EASF_PERSIST", element);
 		}
 		if (element.getName().indexOf("FUTWebPhishing") >= 0) {
-		    session.addCookie(element.getName(), element.getValue());
+		    session.addCookie(element.getName(), element);
 		}
 	    }
 	}

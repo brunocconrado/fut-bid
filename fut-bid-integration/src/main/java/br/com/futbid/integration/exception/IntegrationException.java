@@ -1,15 +1,17 @@
 package br.com.futbid.integration.exception;
 
-public class IntegrationException extends RuntimeException {
+import br.com.futbid.domain.exception.LocalizedException;
+
+public class IntegrationException extends LocalizedException {
 
     private static final long serialVersionUID = 2014031701;
 
-    public IntegrationException(Exception e) {
-	super(e);
+    public IntegrationException(Throwable e, String message, Object... args) {
+	super(e, message, args);
     }
 
-    public IntegrationException(String message) {
-	super(message);
+    public IntegrationException(String message, Object... args) {
+        super(null, message, args);
     }
 
 }

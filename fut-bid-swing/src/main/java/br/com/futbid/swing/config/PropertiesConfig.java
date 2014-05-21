@@ -1,11 +1,11 @@
 package br.com.futbid.swing.config;
 
-import static br.com.futbid.domain.conf.FUTBidEnvironments.APPLICATION_COUNTRY;
-import static br.com.futbid.domain.conf.FUTBidEnvironments.APPLICATION_COUNTRY_UNSET;
-import static br.com.futbid.domain.conf.FUTBidEnvironments.APPLICATION_LANGUAGE;
-import static br.com.futbid.domain.conf.FUTBidEnvironments.APPLICATION_LANGUAGE_UNSET;
-import static br.com.futbid.domain.conf.FUTBidEnvironments.APPLICATION_ENCODING_DEFAULT;
-import static br.com.futbid.domain.conf.FUTBidEnvironments.APPLICATION_ENCODING_DEFAULT_UNSET;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_COUNTRY;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_COUNTRY_UNSET;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_LANGUAGE;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_LANGUAGE_UNSET;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_ENCODING_DEFAULT;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_ENCODING_DEFAULT_UNSET;
 
 import java.io.IOException;
 import java.util.Locale;

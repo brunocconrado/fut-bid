@@ -10,6 +10,18 @@
 
 	<dependencies>
 
+		<!-- VALIDATION -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
 		<!-- Modules -->
 		<dependency>
 			<groupId>br.com.futbid</groupId>

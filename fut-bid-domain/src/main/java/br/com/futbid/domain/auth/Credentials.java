@@ -1,11 +1,16 @@
 package br.com.futbid.domain.auth;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 public class Credentials {
 
+    @NotBlank
     private String login;
 
+    @NotBlank
     private String password;
 
+    @NotBlank
     private String secretAnswer;
 
     public String getLogin() {

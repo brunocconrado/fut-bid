@@ -24,7 +24,7 @@ public class AuthActionListener implements ActionListener {
 	Object obj = ((JButton) event.getSource()).getParent().getParent().getParent();
 	if (obj instanceof AuthenticationPainel) {
 	    AuthenticationPainel authenticationPainel = (AuthenticationPainelImpl) obj;
-	    boolean isAuthenticated = authenticationService.login(authenticationPainel.getCredentials());
+	    boolean isAuthenticated = authenticationService.login(authenticationPainel.getCredentials()) != null;
 	    Object parentAuthenticationPanel = authenticationPainel.getParent();
 	    if (parentAuthenticationPanel instanceof JTabbedPane) {
 		for (Component component : ((JTabbedPane) parentAuthenticationPanel).getComponents()) {

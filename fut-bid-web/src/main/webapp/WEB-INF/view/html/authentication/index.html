@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -48,10 +48,28 @@
       <!-- login -->
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <form class="form-signin" role="form">
-            <input type="email" class="form-control" placeholder="Email" required autofocus>
-            <input type="password" class="form-control" placeholder="Password" required>
-            <input type="text" class="form-control" placeholder="Resposta da pergunta secreta" required>
+          <form class="form-signin" role="form" th:action="@{/authentication}" th:object="${credentials}" method="POST">
+            
+             <!-- Mensagens genéricas para diferentes tipos de erros (backend) -->
+             <div  th:class="${#fields.hasErrors('global')}? 'alert alert-generico alert-danger' : 'alert alert-generico alert-danger hidden' ">
+             	 <!-- start errors -->
+                 <ul th:if="${#fields.hasErrors('global')}">
+                     <li th:each="err : ${#fields.errors('global')}" th:text="${err}"></li>
+                 </ul>
+             </div>    
+            
+            <input type="email" class="form-control" placeholder="Email" required autofocus th:value="*{login}" th:field="*{login}">
+            <div th:if="${#fields.hasErrors('login')}" th:errors="*{login}" th:class="${#fields.hasErrors('login')}? 'alert alert-danger relative' : 'alert alert-danger hidden relative' ">
+              	<span th:each="err : ${#fields.errors('login')}" th:text="${err}"></span>
+            </div>
+            <input type="password" class="form-control" placeholder="Password" required th:value="*{password}" th:field="*{password}">
+             <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" th:class="${#fields.hasErrors('password')}? 'alert alert-danger relative' : 'alert alert-danger hidden relative' ">
+              	<span th:each="err : ${#fields.errors('login')}" th:text="${err}"></span>
+            </div>
+            <input type="text" class="form-control" placeholder="Resposta da pergunta secreta" required th:value="*{secretAnswer}" th:field="*{secretAnswer}">
+             <div th:if="${#fields.hasErrors('secretAnswer')}" th:errors="*{secretAnswer}" th:class="${#fields.hasErrors('secretAnswer')}? 'alert alert-danger relative' : 'alert alert-danger hidden relative' ">
+              	<span th:each="err : ${#fields.errors('secretAnswer')}" th:text="${err}"></span>
+            </div>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
           </form>
         </div>

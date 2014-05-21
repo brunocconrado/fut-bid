@@ -80,7 +80,7 @@ public class AccountIntegrationImpl implements AccountIntegration {
 	    return account;
 	} catch (Exception e) {
 	    LOG.error("An Unexpected error validation answer", e);
-	    throw new IntegrationException(e);
+	    throw new IntegrationException(e, "error.unexpected.error");
 	}
     }
 

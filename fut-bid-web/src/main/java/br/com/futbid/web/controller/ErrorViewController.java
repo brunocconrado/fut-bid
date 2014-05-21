@@ -29,28 +29,32 @@ public class ErrorViewController extends BaseController {
     public static final String SESSION_TIMED_OUT_PARAM = "sessionexp";
     public static final String SESSION_TIMED_OUT = "/?" + SESSION_TIMED_OUT_PARAM + "=1";
 
+    public ErrorViewController() {
+	super(ERROR_VIEW);
+    }
+
     protected String currentView() {
-        return ERROR_VIEW;
+	return ERROR_VIEW;
     }
 
     @RequestMapping(value = ERROR_VIEW, method = { RequestMethod.GET, RequestMethod.POST })
     public String initView(Model model, HttpServletRequest request, @RequestHeader Map<String, String> headers,
-            HttpServletResponse response) {
-        return logHeaders(request, response, headers, ERROR_VIEW);
+	    HttpServletResponse response) {
+	return logHeaders(request, response, headers, ERROR_VIEW);
     }
 
     @RequestMapping(value = FALLBACK_ERROR_VIEW, method = { RequestMethod.GET, RequestMethod.POST })
     public String initFallbackView(Model model, HttpServletRequest request, @RequestHeader Map<String, String> headers,
-            HttpServletResponse response) {
-        return logHeaders(request, response, headers, FALLBACK_ERROR_VIEW);
+	    HttpServletResponse response) {
+	return logHeaders(request, response, headers, FALLBACK_ERROR_VIEW);
     }
 
     @RequestMapping(value = ERROR_VIEW, params = "sid", method = RequestMethod.GET)
     public String verifySessionStatus(WebRequest webRequest, Model model, HttpServletRequest request,
-            HttpServletResponse response) {
-        HttpSession session = request.getSession(false);
-        LOG.debug("description={}, isNew={}", webRequest.getDescription(true), session == null || session.isNew());
-        return logHeaders(request, response, null, ERROR_VIEW);
+	    HttpServletResponse response) {
+	HttpSession session = request.getSession(false);
+	LOG.debug("description={}, isNew={}", webRequest.getDescription(true), session == null || session.isNew());
+	return logHeaders(request, response, null, ERROR_VIEW);
     }
 
 }

@@ -19,12 +19,18 @@ import br.com.futbid.domain.exception.LocalizedException;
 public abstract class BaseController {
 
     protected final Logger LOG = LoggerFactory.getLogger(getClass());
-
+    
+    private String currentView;
+    
     @Autowired
     private Messages messages; 
 
     private String defaultErrorMessage = "";
 
+    protected BaseController(String view) {
+	this.currentView = view;
+    }
+    
     @PostConstruct
     public void postConstruct() {
         defaultErrorMessage = messages.getMessage(GENERIC_ERROR);
@@ -76,7 +82,7 @@ public abstract class BaseController {
         if (LOG.isDebugEnabled()) {
             LOG.debug("errorMessage={} -> {}", errorMessage, messages.getMessage(errorMessage));
         }
-        return "";
+        return currentView;
     }
 
 }

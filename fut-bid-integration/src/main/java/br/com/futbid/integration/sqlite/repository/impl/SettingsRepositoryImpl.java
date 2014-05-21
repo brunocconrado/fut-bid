@@ -41,7 +41,7 @@ public class SettingsRepositoryImpl implements SettingsRepository {
 	    return result == null ? null : mapper.readValue(result, Settings.class);
 	} catch (Exception e) {
 	    LOG.error("Error find", e);
-	    throw new IntegrationException(e);
+	    throw new IntegrationException(e, "error.unexpected.error");
 	}
     }
 
@@ -60,7 +60,7 @@ public class SettingsRepositoryImpl implements SettingsRepository {
 	    return connection.getConnection().createStatement().executeUpdate(sql) > 0;
 	} catch (Exception e) {
 	    LOG.error("Error saveOrUpdate", e);
-	    throw new IntegrationException(e);
+	    throw new IntegrationException(e, "error.unexpected.error");
 	}
     }
 

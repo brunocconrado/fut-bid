@@ -22,7 +22,7 @@ public class Session {
 
     private Account account;
 
-    private Map<String, String> cookies = new HashMap<>();
+    private Map<String, Object> cookies = new HashMap<>();
 
     public Auth getAuth() {
 	return auth;
@@ -45,12 +45,12 @@ public class Session {
 	this.account = account;
     }
 
-    public void addCookie(String key, String value) {
+    public void addCookie(String key, Object value) {
 	LOG.info("Add cookie key-value {}-{}", key, value);
 	cookies.put(key, value);
     }
 
-    public Map<String, String> getCookies() {
+    public Map<String, Object> getCookies() {
 	return cookies;
     }
 

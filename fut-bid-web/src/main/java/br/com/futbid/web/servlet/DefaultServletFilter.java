@@ -1,6 +1,6 @@
 package br.com.futbid.web.servlet;
 
-import static br.com.futbid.commons.util.FutBidEnvironment.APPLICATION_ACTIVE_PROFILE;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_ACTIVE_PROFILE;
 import static br.com.futbid.web.config.WebProperties.isDebug;
 import static br.com.futbid.web.servlet.RequestUtils.pathInfo;
 

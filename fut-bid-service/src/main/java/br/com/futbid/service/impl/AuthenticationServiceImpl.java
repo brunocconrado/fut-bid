@@ -21,20 +21,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private AuthenticationIntegration authenticationIntegration;
 
-    public boolean login(Credentials credentials) {
+    public Session login(Credentials credentials) {
 	//TODO validar licence
 	if (true) {
 	    LOG.warn("AuthenticationAuthorization credentials {}", credentials);
-	    authenticationIntegration.login(credentials.getLogin(), credentials.getPassword(),
+	    return authenticationIntegration.login(credentials.getLogin(), credentials.getPassword(),
 		    credentials.getSecretAnswer());
-	    return true;
 	}
+	
 	LOG.warn("Invalid licence for credentials {}", credentials);
-	return false;
+	
+	return null;
     }
 
-    public void logout() {
-	// TODO Auto-generated method stub
+    public void logout(Session session) {
+	
+	authenticationIntegration.logout(session);
+	
 	LOG.warn("Do logout");
 	session.destroy();
     }

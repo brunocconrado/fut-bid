@@ -77,7 +77,7 @@ public class SearchIntegrationImpl implements SearchIntegration {
 	    return new JSONObject(HttpUtils.readHttpResponse(response));
 	} catch (Exception e) {
 	    LOG.error("Error searching card", e);
-	    throw new IntegrationException(e);
+	    throw new IntegrationException(e, "error.unexpected.error");
 	}
     }
 
@@ -105,7 +105,7 @@ public class SearchIntegrationImpl implements SearchIntegration {
 	    return players;
 	} catch (Exception e) {
 	    LOG.error("Error searching player by name", e);
-	    throw new IntegrationException(e);
+	    throw new IntegrationException(e, "error.unexpected.error");
 	}
     }
 

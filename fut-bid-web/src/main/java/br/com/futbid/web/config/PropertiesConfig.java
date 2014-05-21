@@ -1,12 +1,12 @@
 package br.com.futbid.web.config;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_SINGLETON;
-import static br.com.futbid.commons.util.FutBidEnvironment.APPLICATION_ENCODING_DEFAULT;
-import static br.com.futbid.commons.util.FutBidEnvironment.APPLICATION_ENCODING_DEFAULT_UNSET;
-import static br.com.futbid.commons.util.FutBidEnvironment.APPLICATION_LANGUAGE;
-import static br.com.futbid.commons.util.FutBidEnvironment.APPLICATION_LANGUAGE_UNSET;
-import static br.com.futbid.commons.util.FutBidEnvironment.APPLICATION_COUNTRY;
-import static br.com.futbid.commons.util.FutBidEnvironment.APPLICATION_COUNTRY_UNSET;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_ENCODING_DEFAULT;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_ENCODING_DEFAULT_UNSET;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_LANGUAGE;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_LANGUAGE_UNSET;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_COUNTRY;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_COUNTRY_UNSET;
 
 import java.io.IOException;
 import java.util.Locale;

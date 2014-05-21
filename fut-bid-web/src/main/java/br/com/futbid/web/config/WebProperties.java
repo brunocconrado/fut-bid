@@ -1,16 +1,16 @@
 package br.com.futbid.web.config;
 
-import static br.com.futbid.commons.util.FutBidEnvironment.APPLICATION_ENCODING_DEFAULT;
-import static br.com.futbid.commons.util.FutBidEnvironment.APPLICATION_ENCODING_DEFAULT_UNSET;
-import static br.com.futbid.commons.util.FutBidEnvironment.DEV;
-import static br.com.futbid.commons.util.FutBidEnvironment.APPLICATION_CONTEXT;
-import static br.com.futbid.commons.util.FutBidEnvironment.APPLICATION_DEPLOYURL;
-import static br.com.futbid.commons.util.FutBidEnvironment.APPLICATION_ACTIVE_PROFILE;
-import static br.com.futbid.commons.util.FutBidEnvironment.APPLICATION_LOGDIR;
-import static br.com.futbid.commons.util.FutBidEnvironment.APPLICATION_VERSION;
-import static br.com.futbid.commons.util.FutBidEnvironment.LOCAL;
-import static br.com.futbid.commons.util.FutBidEnvironment.PROD;
-import static br.com.futbid.commons.util.FutBidEnvironment.QA;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_ENCODING_DEFAULT;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_ENCODING_DEFAULT_UNSET;
+import static br.com.futbid.commons.environment.FutBidEnvironment.DEV;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_CONTEXT;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_DEPLOYURL;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_ACTIVE_PROFILE;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_LOGDIR;
+import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_VERSION;
+import static br.com.futbid.commons.environment.FutBidEnvironment.LOCAL;
+import static br.com.futbid.commons.environment.FutBidEnvironment.PROD;
+import static br.com.futbid.commons.environment.FutBidEnvironment.QA;
 
 import java.util.Objects;
 
