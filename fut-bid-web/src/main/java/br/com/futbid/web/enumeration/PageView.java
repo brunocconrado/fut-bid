@@ -4,6 +4,7 @@ public enum PageView {
 
     AUTHENTICATION("/html/authentication/index"),
     MAIN("/html/internal/internal-app"), 
+    AUTHENTICATION_CONTROLLER("/"),
     MAIN_CONTROLLER("/api/internal"), 
     USER_REGISTER("public/user/register"),
     UNAUTHORIZED_VIEW("/public/unauthorized"), 

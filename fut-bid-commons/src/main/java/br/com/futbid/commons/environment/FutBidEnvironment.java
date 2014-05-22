@@ -38,9 +38,10 @@ public abstract class FutBidEnvironment {
     
     //AUTH JSON
     public static final String AUTH_DEFAULT_URL = "auth.default.url";
-    public static final String AUTH_DEFAUL_VALIDATE_ANSWER_URL = "auth.validate.answer.url";
+    public static final String AUTH_DEFAULT_VALIDATE_ANSWER_URL = "auth.validate.answer.url";
     public static final String AUTH_HOME_URL = "auth.home.url";
-    public static final String AUTH_DEFAUL_STATE_URL = "auth.state.url";
+    public static final String AUTH_DEFAULT_STATE_URL = "auth.state.url";
+    public static final String AUTH_DEFAULT_LOGOUT = "auth.default.logout";
     public static final String AUTH_HEADER_REFER = "auth.header.refer";
     public static final String AUTH_POST_JSON = "auth.post.json";
     public static final String AUTH_DEFAULT_LOGGED = "auth.default.logged";
@@ -48,6 +49,7 @@ public abstract class FutBidEnvironment {
 
     public static final String HTTP_USER_AGENT = "http.user.agent";
     public static final String HTTP_USER_SESSION = "user.session";
+    public static final String HTTP_USER_NAME = "userName";
     
     
 

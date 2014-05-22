@@ -3,6 +3,7 @@ package br.com.futbid.web.controller;
 import java.util.Map;
 
 import static br.com.futbid.commons.environment.FutBidEnvironment.HTTP_USER_SESSION;
+import static br.com.futbid.commons.environment.FutBidEnvironment.HTTP_USER_NAME;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +28,7 @@ public class AuthenticationController extends BaseController {
 
     @Autowired
     private AuthenticationService authenticationService;
-    
+
     public AuthenticationController() {
 	super(PageView.AUTHENTICATION.getView());
     }
@@ -57,6 +58,7 @@ public class AuthenticationController extends BaseController {
 
 	    Session session = authenticationService.login(credentials);
 	    request.getSession().setAttribute(HTTP_USER_SESSION, session);
+	    request.getSession().setAttribute(HTTP_USER_NAME, session.getAccount().getName());
 
 	    return "redirect:" + PageView.MAIN_CONTROLLER.getView();
 	} catch (Exception e) {
@@ -64,16 +66,18 @@ public class AuthenticationController extends BaseController {
 	}
 
     }
-    
+
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String authentication(Model model, HttpServletRequest request) {
 	Object session = request.getSession().getAttribute(HTTP_USER_SESSION);
 	LOG.info("GET logout {}", session);
-	if(session != null) {
+	if (session != null) {
 	    authenticationService.logout((Session) session);
+	    request.getSession().removeAttribute(HTTP_USER_SESSION);
+	    request.getSession().removeAttribute(HTTP_USER_NAME);
 	}
-	
-	return PageView.AUTHENTICATION.getView();
+
+	return "redirect:" + PageView.AUTHENTICATION_CONTROLLER.getView();
     }
 
 }

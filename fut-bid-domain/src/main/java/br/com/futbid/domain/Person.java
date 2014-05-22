@@ -7,26 +7,26 @@ import java.util.List;
 
 public class Person {
 
-    private long personaId;
+    private long personId;
 
-    private String personaName;
+    private String personName;
 
     private List<Club> userClubList = new ArrayList<Club>();
 
-    public long getPersonaId() {
-	return personaId;
+    public long getPersonId() {
+	return personId;
     }
 
-    public void setPersonaId(long personaId) {
-	this.personaId = personaId;
+    public void setPersonId(long personId) {
+	this.personId = personId;
     }
 
-    public String getPersonaName() {
-	return personaName;
+    public String getPersonName() {
+	return personName;
     }
 
-    public void setPersonaName(String personaName) {
-	this.personaName = personaName;
+    public void setPersonName(String personName) {
+	this.personName = personName;
     }
 
     public List<Club> getUserClubList() {
@@ -58,8 +58,7 @@ public class Person {
 
     @Override
     public String toString() {
-	return "Person [personaId: " + personaId + ", "
-		+ (personaName != null ? "personaName: " + personaName + ", " : "")
+	return super.toString() + " Person [personId: " + personId + ", " + (personName != null ? "personName: " + personName + ", " : "")
 		+ (userClubList != null ? "userClubList: " + userClubList : "") + " ]";
     }
 

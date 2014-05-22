@@ -4,11 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class HttpUtils {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(HttpUtils.class);
 
     private HttpUtils() {
 	throw new UnsupportedOperationException();
@@ -24,8 +27,8 @@ public final class HttpUtils {
 	    result.append(line);
 	}
 	
-	System.out.println(result.toString());
-	
+	LOG.debug("Response: {}", result);
+
 	return result.toString();
     }
 

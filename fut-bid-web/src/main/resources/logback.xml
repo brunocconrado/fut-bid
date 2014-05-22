@@ -67,7 +67,7 @@
         <appender-ref ref="CONSOLE" />
     </logger>
 
-    <logger name="br.com.futbid.integration" level="DEBUG" additivity="false">
+    <logger name="br.com.futbid.integration" level="DEBUG" additivity="true">
         <appender-ref ref="FILE_INTEGRATION" />
     </logger>
 

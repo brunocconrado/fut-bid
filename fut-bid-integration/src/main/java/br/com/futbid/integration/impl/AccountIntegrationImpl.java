@@ -92,8 +92,8 @@ public class AccountIntegrationImpl implements AccountIntegration {
 
 	    Person person = new Person();
 
-	    person.setPersonaId(jsonObject.getLong("personaId"));
-	    person.setPersonaName(jsonObject.getString("personaName"));
+	    person.setPersonId(jsonObject.getLong("personaId"));
+	    person.setPersonName(jsonObject.getString("personaName"));
 
 	    JSONArray jsonArray = jsonObject.getJSONArray("userClubList");
 	    for (int j = 0; j < jsonArray.length(); j++) {

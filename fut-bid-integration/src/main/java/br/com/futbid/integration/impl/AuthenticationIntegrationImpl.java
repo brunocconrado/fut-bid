@@ -3,8 +3,9 @@ package br.com.futbid.integration.impl;
 import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_ENCODING_DEFAULT_UNSET;
 import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_DEFAULT_LOGGED;
 import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_DEFAULT_URL;
-import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_DEFAUL_STATE_URL;
-import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_DEFAUL_VALIDATE_ANSWER_URL;
+import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_DEFAULT_STATE_URL;
+import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_DEFAULT_VALIDATE_ANSWER_URL;
+import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_DEFAULT_LOGOUT;
 import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_HEADER_REFER;
 import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_HOME_URL;
 import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_INVALID_ANSWER;
@@ -12,6 +13,7 @@ import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_POST_JSON
 import static br.com.futbid.commons.environment.FutBidEnvironment.HTTP_USER_AGENT;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -155,9 +157,9 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 
 	try {
 
-	    HttpGet httpGet = new HttpGet(environment.getProperty(AUTH_DEFAUL_STATE_URL));
+	    HttpGet httpGet = new HttpGet(environment.getProperty(AUTH_DEFAULT_STATE_URL));
 	    setDefaultHeaders(httpGet);
-	    for(Entry<String, Object> entity : session.getCookies().entrySet()) {
+	    for (Entry<String, Object> entity : session.getCookies().entrySet()) {
 		HeaderElement element = (HeaderElement) entity.getValue();
 		httpGet.addHeader(element.getName(), element.getValue());
 	    }
@@ -166,9 +168,13 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 	    String result = HttpUtils.readHttpResponse(response);
 	    JSONObject jsonResp = new JSONObject(result);
 	    final boolean isLogged = jsonResp.getBoolean("isLoggedIn");
-	    if (isLogged) {
+	    LOG.info("Status login: {}", isLogged ? "Authenticated" : "Not Authenticated");
 
-	    }
+	    httpGet.setURI(new URI(environment.getProperty(AUTH_DEFAULT_LOGOUT)));
+
+	    response = connectionManager.getClient().execute(httpGet);
+	    result = HttpUtils.readHttpResponse(response);
+	    LOG.info("Logout response: {}", result);
 	} catch (Exception e) {
 	    LOG.error("Error trying do authentication", e);
 	    throw new IntegrationException(e, "error.unexpected.error");
@@ -188,7 +194,7 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 	    httpPost.addHeader("X-UT-Route", account.getxUtRoute());
 
 	    String authJson = String.format(environment.getProperty(AUTH_POST_JSON), Long.valueOf(auth.getNucleusId()),
-		    Long.valueOf(person.getPersonaId()), person.getPersonaName(), person.getLastVisitedUserClub()
+		    Long.valueOf(person.getPersonId()), person.getPersonName(), person.getLastVisitedUserClub()
 			    .getPlatform());
 	    //ADD JSON TO POST
 	    httpPost.setEntity(new StringEntity(authJson, ContentType.APPLICATION_JSON));
@@ -218,7 +224,7 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
     public void validateAnswer(Auth auth, String xUtRoute, String securityAnswer) {
 	try {
 
-	    HttpPost httpPost = new HttpPost(environment.getProperty(AUTH_DEFAUL_VALIDATE_ANSWER_URL));
+	    HttpPost httpPost = new HttpPost(environment.getProperty(AUTH_DEFAULT_VALIDATE_ANSWER_URL));
 	    setDefaultHeaders(httpPost);
 	    httpPost.addHeader("Referer", environment.getProperty(AUTH_HEADER_REFER));
 	    httpPost.addHeader("Easw-Session-Data-Nucleus-Id", String.valueOf(auth.getNucleusId()));

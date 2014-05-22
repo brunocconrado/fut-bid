@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -38,6 +38,14 @@
           </div>
         </div>
       </div>
+
+     <!-- HEllo | Logout -->
+	 <div class="row">
+	 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		 	<p>Hello <label th:text="${session.userName}"></label></p>
+		 	<a th:href="@{/logout}" th:title="Logout">Logout</a>
+	 	</div>
+	 </div>	
 
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
