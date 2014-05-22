@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import br.com.futbid.domain.enumeration.InventoryTypes;
+import br.com.futbid.swing.config.Config;
 import br.com.futbid.swing.ui.panel.inventory.BuyerInvetoryPanel;
 import br.com.futbid.swing.ui.panel.option.CardsOption;
-import br.com.futbid.swing.ui.utils.Utils;
 
 @Component
 public class InventoryTypesActionListener implements ActionListener {
@@ -36,7 +36,7 @@ public class InventoryTypesActionListener implements ActionListener {
 			.getParent();
 
 		Class<?> clazz = Class.forName(((InventoryTypes) inventoryComBox.getSelectedItem()).getClassName());
-		CardsOption<?> cardsOption = (CardsOption<?>) Utils.getBean(clazz);
+		CardsOption<?> cardsOption = (CardsOption<?>) Config.getBean(clazz);
 
 		buyBuyerInvetoryPanel.changeOptionPanelByType(cardsOption);
 		buyBuyerInvetoryPanel.setCards(cardsOption.getCards());

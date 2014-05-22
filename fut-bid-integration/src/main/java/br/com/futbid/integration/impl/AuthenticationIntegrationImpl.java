@@ -205,6 +205,7 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 	    }
 
 	    String result = HttpUtils.readHttpResponse(response);
+	    LOG.debug("Response authenticate: {}", result);
 
 	    JSONObject jsonResp = new JSONObject(result);
 
