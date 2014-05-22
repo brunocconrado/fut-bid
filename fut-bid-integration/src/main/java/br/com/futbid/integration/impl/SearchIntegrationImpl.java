@@ -34,7 +34,7 @@ public class SearchIntegrationImpl implements SearchIntegration {
     private ObjectMapper mapper;
 
     @Autowired
-    private Session session;
+    private SessionManager session;
 
     @Override
     public List<JSONObject> search(Search search) {

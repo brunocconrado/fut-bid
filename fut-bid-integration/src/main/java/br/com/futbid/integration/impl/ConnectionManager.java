@@ -29,7 +29,7 @@ public class ConnectionManager {
     private static final Logger LOG = LoggerFactory.getLogger(ConnectionManager.class);
 
     @Autowired
-    private Session session;
+    private SessionManager session;
 
     private final HttpClient client;
 

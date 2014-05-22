@@ -54,6 +54,13 @@ public class Session {
 	return cookies;
     }
 
+    public Session copyTo(Session session) {
+	session.setAccount(this.account);
+	session.setAuth(this.auth);
+	session.getCookies().putAll(this.cookies);
+	return session;
+    }
+
     @PreDestroy
     public void destroy() {
 	LOG.info("Finished {}", this.getClass().getCanonicalName());
@@ -61,5 +68,4 @@ public class Session {
 	account = null;
 	cookies.clear();
     }
-
 }

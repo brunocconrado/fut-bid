@@ -1,7 +1,10 @@
 package br.com.futbid.integration.impl;
 
+import org.springframework.stereotype.Component;
 
-public class SessionManager {
+
+@Component
+public class SessionManager extends Session {
    /* private static SessionManager instance;
     private String sessionEmail;
     private String sessionPassword;

@@ -16,9 +16,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private static final Logger LOG = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
     
     @Autowired
-    private Session session;
-
-    @Autowired
     private AuthenticationIntegration authenticationIntegration;
 
     public Session login(Credentials credentials) {

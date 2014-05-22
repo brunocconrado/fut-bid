@@ -72,9 +72,6 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
     private AccountIntegration accountIntegration;
 
     @Autowired
-    private Session session;
-
-    @Autowired
     private EnvironmentProperties environment;
 
     @PostConstruct
@@ -139,6 +136,7 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 	    authenticate(auth, account);
 	    validateAnswer(auth, account.getxUtRoute(), secretAnswer);
 
+	    Session session = new Session();
 	    session.setAccount(account);
 	    session.setAuth(auth);
 
