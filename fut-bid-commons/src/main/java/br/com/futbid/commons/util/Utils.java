@@ -1,9 +1,15 @@
-package br.com.futbid.swing.ui.utils;
+package br.com.futbid.commons.util;
 
-import br.com.futbid.swing.config.Config;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class Utils {
 
+    private static final Logger LOG = LoggerFactory.getLogger(Utils.class);
+
+    
     private static final double MY_PART_FROM_SELL_PRICE = 0.95D;
 
     public static boolean isDouble(String text) {
@@ -42,10 +48,6 @@ public class Utils {
 	return result;
     }
 
-    public static <T> T getBean(Class<T> clazz) {
-	return Config.getBean(clazz);
-    }
-
     public static String getString(Object obj) {
 	if (obj == null) {
 	    return "";
@@ -56,6 +58,28 @@ public class Utils {
 	}
 
 	return String.valueOf(obj);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static <T> T getFromJSON(JSONObject jsonObject, String key, Class<T> clazz) {
+        
+        if(!jsonObject.has(key)) {
+            LOG.info("JsonObject dosen`t has key {}", key);
+            return null;
+        }
+        
+        T result = null;
+        if(clazz.equals(String.class)) {
+            result = (T) jsonObject.getString(key);
+        } else if(clazz.equals(Integer.class)) {
+            result = (T) Integer.valueOf(jsonObject.getInt(key));
+        } else if(clazz.equals(Double.class)) {
+            result = (T) Double.valueOf(jsonObject.getDouble(key));
+        }
+        
+        LOG.info("Value found for key: {}-{}", key, result);
+        
+        return result;
     }
 
 }

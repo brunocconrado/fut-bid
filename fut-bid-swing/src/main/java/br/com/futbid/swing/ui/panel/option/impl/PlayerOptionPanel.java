@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import br.com.futbid.commons.util.Utils;
 import br.com.futbid.domain.Card;
 import br.com.futbid.domain.Player;
 import br.com.futbid.domain.enumeration.ChemistryStyle;
@@ -41,7 +42,6 @@ import br.com.futbid.swing.ui.panel.option.CardsOption;
 import br.com.futbid.swing.ui.panel.option.Dialog;
 import br.com.futbid.swing.ui.panel.option.OptionPanel;
 import br.com.futbid.swing.ui.utils.Colors;
-import br.com.futbid.swing.ui.utils.Utils;
 
 @Component
 public class PlayerOptionPanel extends JPanel implements Dialog, OptionPanel, CardsOption<Player> {

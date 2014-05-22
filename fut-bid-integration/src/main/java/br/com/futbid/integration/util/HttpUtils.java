@@ -27,7 +27,7 @@ public final class HttpUtils {
 	    result.append(line);
 	}
 	
-	LOG.debug("Response: {}", result);
+	//LOG.debug("Response: {}", result);
 
 	return result.toString();
     }
