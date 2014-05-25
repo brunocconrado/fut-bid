@@ -13,6 +13,8 @@ public class Credentials {
     @NotBlank
     private String secretAnswer;
 
+    private String ipAddress;
+
     public String getLogin() {
 	return login;
     }
@@ -37,16 +39,20 @@ public class Credentials {
 	this.secretAnswer = secretAnswer;
     }
 
+    public String getIpAddress() {
+	return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+	this.ipAddress = ipAddress;
+    }
+
     @Override
     public String toString() {
-	return "Credentials [" + (login != null ? "login: " + login + ", " : "")
-		+ (password != null ? "password: " + password + ", " : "")
-		+ (secretAnswer != null ? "secretAnswer: " + secretAnswer + ", " : "")
-		+ (getLogin() != null ? "getLogin(): " + getLogin() + ", " : "")
-		+ (getPassword() != null ? "getPassword(): " + getPassword() + ", " : "")
-		+ (getSecretAnswer() != null ? "getSecretAnswer(): " + getSecretAnswer() + ", " : "")
-		+ (getClass() != null ? "getClass(): " + getClass() + ", " : "") + "hashCode(): " + hashCode() + ", "
-		+ (super.toString() != null ? "toString(): " + super.toString() : "") + " ]";
+	return super.toString() + " [Credentials " + (login != null ? "login=" + login + ", " : "")
+		+ (password != null ? "password=" + password + ", " : "")
+		+ (secretAnswer != null ? "secretAnswer=" + secretAnswer + ", " : "")
+		+ (ipAddress != null ? "ipAddress=" + ipAddress : "") + "]";
     }
 
 }

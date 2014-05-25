@@ -22,8 +22,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	//TODO validar licence
 	if (true) {
 	    LOG.warn("AuthenticationAuthorization credentials {}", credentials);
-	    return authenticationIntegration.login(credentials.getLogin(), credentials.getPassword(),
-		    credentials.getSecretAnswer());
+	    return authenticationIntegration.login(credentials);
 	}
 	
 	LOG.warn("Invalid licence for credentials {}", credentials);

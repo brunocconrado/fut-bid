@@ -31,19 +31,15 @@ public class ConnectionManager {
     @Autowired
     private SessionManager session;
 
-    private final HttpClient client;
-
     private ConnectionManager() {
-	DefaultHttpClient client = new DefaultHttpClient();
-	client.setRedirectStrategy(new LaxRedirectStrategy());
-
-	this.client = client;
-
-	LOG.debug("HTTPClient {}", client);
     }
 
     public HttpClient getClient() {
-	return this.client;
+	DefaultHttpClient client = new DefaultHttpClient();
+	client.setRedirectStrategy(new LaxRedirectStrategy());
+
+	LOG.debug("HTTPClient {}", client);
+	return client;
     }
 
     public String generateCookieString() {
@@ -60,7 +56,7 @@ public class ConnectionManager {
 
 	    for (HeaderElement element : h.getElements()) {
 		LOG.debug("Header name| value: {}|{} ", element.getName(), element.getValue());
-		
+
 		if (element.getName().equals("EASW_KEY")) {
 		    session.addCookie("EASW_KEY", element);
 		}

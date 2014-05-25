@@ -49,6 +49,7 @@ public class AuthenticationController extends BaseController {
 
 	try {
 
+	    credentials.setIpAddress(request.getRemoteAddr());
 	    LOG.debug("Post credentials {}", credentials);
 
 	    if (bindingResult.hasErrors()) {

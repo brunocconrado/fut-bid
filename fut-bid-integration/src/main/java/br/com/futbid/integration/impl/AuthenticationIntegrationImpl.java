@@ -2,10 +2,10 @@ package br.com.futbid.integration.impl;
 
 import static br.com.futbid.commons.environment.FutBidEnvironment.APPLICATION_ENCODING_DEFAULT_UNSET;
 import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_DEFAULT_LOGGED;
-import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_DEFAULT_URL;
-import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_DEFAULT_STATE_URL;
-import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_DEFAULT_VALIDATE_ANSWER_URL;
 import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_DEFAULT_LOGOUT;
+import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_DEFAULT_STATE_URL;
+import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_DEFAULT_URL;
+import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_DEFAULT_VALIDATE_ANSWER_URL;
 import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_HEADER_REFER;
 import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_HOME_URL;
 import static br.com.futbid.commons.environment.FutBidEnvironment.AUTH_INVALID_ANSWER;
@@ -25,6 +25,7 @@ import javax.annotation.PostConstruct;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -47,6 +48,7 @@ import br.com.futbid.commons.message.EnvironmentProperties;
 import br.com.futbid.domain.Account;
 import br.com.futbid.domain.Person;
 import br.com.futbid.domain.auth.Auth;
+import br.com.futbid.domain.auth.Credentials;
 import br.com.futbid.domain.auth.Token;
 import br.com.futbid.integration.AccountIntegration;
 import br.com.futbid.integration.AuthenticationIntegration;
@@ -61,7 +63,9 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 
     public static final Pattern NUCLEUS_ID_PATTERN = Pattern.compile(".* userid\\s*:\\s*\"(\\d+)\".*");
 
-    private static final CharSequence INVALID_CREDENTIALS = "Your Email or Password is incorrect. Please try again.";
+    private static final String DIV_ERROR_MESSAGE = "<div class=\"general-error\">";
+
+    private static final String DIV_GENERAL_INFO = "<div class=\"general-info\">";
 
     private Integer invalidAnswer;
 
@@ -81,46 +85,55 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
     }
 
     @Override
-    public Session login(String email, String password, String secretAnswer) {
+    public Session login(Credentials credentials) {
 
 	try {
 
 	    HttpClient client = connectionManager.getClient();
 
 	    HttpGet loginGet = new HttpGet(environment.getProperty(AUTH_HOME_URL));
-	    HttpContext context = new BasicHttpContext();
 
+	    loginGet.setHeader("Host", "www.easports.com");
+	    loginGet.setHeader("User-Agent", environment.getProperty(HTTP_USER_AGENT));
+	    loginGet.setHeader("X-Forwarded-For", credentials.getIpAddress());
+	    HttpContext context = new BasicHttpContext();
 	    HttpResponse response = client.execute(loginGet, context);
-	    if (response.getStatusLine().getStatusCode() != 200) {
+	    if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
 		throw new IOException(response.getStatusLine().toString());
 	    }
-
 	    LOG.debug("Call Login page Home: {}", HttpUtils.readHttpResponse(response));
 
-	    HttpUriRequest currentReq = (HttpUriRequest) context.getAttribute("http.request");
-	    HttpHost currentHost = (HttpHost) context.getAttribute("http.target_host");
-
-	    String currentUrl = currentHost.toURI() + currentReq.getURI();
-
 	    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-	    nameValuePairs.add(new BasicNameValuePair("email", email));
-	    nameValuePairs.add(new BasicNameValuePair("password", password));
+	    nameValuePairs.add(new BasicNameValuePair("email", credentials.getLogin()));
+	    nameValuePairs.add(new BasicNameValuePair("password", credentials.getPassword()));
 	    nameValuePairs.add(new BasicNameValuePair("_eventId", "submit"));
 	    nameValuePairs.add(new BasicNameValuePair("_rememberMe", "on"));
 	    nameValuePairs.add(new BasicNameValuePair("rememberMe", "on"));
 	    nameValuePairs.add(new BasicNameValuePair("facebookAuth", ""));
 
-	    HttpPost httpPost = new HttpPost(currentUrl);
+	    HttpUriRequest currentReq = (HttpUriRequest) context.getAttribute("http.request");
+	    HttpHost currentHost = (HttpHost) context.getAttribute("http.target_host");
+	    String url = currentHost.toURI() + currentReq.getURI();
+	    LOG.debug("URL LOGIN -> {}", url);
+	    HttpPost httpPost = new HttpPost(url);
+
 	    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, APPLICATION_ENCODING_DEFAULT_UNSET));
 	    httpPost.setHeader("User-Agent", environment.getProperty(HTTP_USER_AGENT));
+	    httpPost.setHeader("X-Forwarded-For", credentials.getIpAddress());
 	    HttpResponse httpResponse = client.execute(httpPost);
 
 	    Long nucluesId = Long.valueOf(0L);
 	    String nucleusIdString = HttpUtils.readHttpResponse(httpResponse);
+	    LOG.info(nucleusIdString);
 	    Matcher matcher = NUCLEUS_ID_PATTERN.matcher(nucleusIdString);
 	    if (matcher.matches()) {
 		nucluesId = Long.valueOf(Long.parseLong(matcher.group(1)));
-	    } else if (nucleusIdString.contains(INVALID_CREDENTIALS)) {
+	    } else if (nucleusIdString.contains(DIV_ERROR_MESSAGE)) {
+		String errorMessage = nucleusIdString.substring(nucleusIdString.indexOf(DIV_ERROR_MESSAGE)
+			+ DIV_ERROR_MESSAGE.length(), nucleusIdString.indexOf(DIV_GENERAL_INFO));
+		errorMessage = errorMessage.replaceAll("<div>", "").replace("</div>", "").trim();
+		throw new IntegrationException("service.ea.custom.message", errorMessage);
+	    } else {
 		throw new IntegrationException("error.invalid.credentials");
 	    }
 
@@ -129,12 +142,12 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 
 	    LOG.debug("Reponse of auth default logged: {}", HttpUtils.readHttpResponse(localeResponse));
 
-	    Auth auth = new Auth();
+	    Auth auth = new Auth(credentials);
 	    auth.setNucleusId(nucluesId.longValue());
 
 	    Account account = accountIntegration.getAccountInfo(auth);
-	    authenticate(auth, account);
-	    validateAnswer(auth, account.getxUtRoute(), secretAnswer);
+	    authenticate(client, auth, account);
+	    validateAnswer(client, auth, account.getxUtRoute(), credentials.getSecretAnswer());
 
 	    Session session = new Session();
 	    session.setAccount(account);
@@ -162,7 +175,9 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 		httpGet.addHeader(element.getName(), element.getValue());
 	    }
 
-	    HttpResponse response = connectionManager.getClient().execute(httpGet);
+	    HttpClient client = connectionManager.getClient();
+
+	    HttpResponse response = client.execute(httpGet);
 	    String result = HttpUtils.readHttpResponse(response);
 	    JSONObject jsonResp = new JSONObject(result);
 	    final boolean isLogged = jsonResp.getBoolean("isLoggedIn");
@@ -170,7 +185,7 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 
 	    httpGet.setURI(new URI(environment.getProperty(AUTH_DEFAULT_LOGOUT)));
 
-	    response = connectionManager.getClient().execute(httpGet);
+	    response = client.execute(httpGet);
 	    result = HttpUtils.readHttpResponse(response);
 	    LOG.info("Logout response: {}", result);
 	} catch (Exception e) {
@@ -180,7 +195,7 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 
     }
 
-    private void authenticate(Auth auth, Account account) {
+    private void authenticate(HttpClient client, Auth auth, Account account) {
 	try {
 
 	    Person person = account.getPerson().iterator().next();
@@ -199,7 +214,7 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 
 	    HttpResponse response = null;
 	    try {
-		response = connectionManager.getClient().execute(httpPost);
+		response = client.execute(httpPost);
 	    } catch (Exception e) {
 		LOG.error("Error trying post authentication", e);
 	    }
@@ -220,7 +235,7 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 	}
     }
 
-    public void validateAnswer(Auth auth, String xUtRoute, String securityAnswer) {
+    public void validateAnswer(HttpClient client, Auth auth, String xUtRoute, String securityAnswer) {
 	try {
 
 	    HttpPost httpPost = new HttpPost(environment.getProperty(AUTH_DEFAULT_VALIDATE_ANSWER_URL));
@@ -234,7 +249,7 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
 	    params.add(new BasicNameValuePair("answer", HashUtil.getHash(securityAnswer)));
 	    httpPost.setEntity(new UrlEncodedFormEntity(params));
 
-	    HttpResponse response = connectionManager.getClient().execute(httpPost);
+	    HttpResponse response = client.execute(httpPost);
 
 	    String result = HttpUtils.readHttpResponse(response);
 
@@ -264,7 +279,7 @@ public class AuthenticationIntegrationImpl implements AuthenticationIntegration 
     private void setDefaultHeaders(HttpRequestBase httpRequestBase) {
 	httpRequestBase.addHeader("Accept", "application/json, text/javascript;");
 	httpRequestBase.addHeader("Host", "www.easports.com");
-	httpRequestBase.addHeader("Accept-Language", "en-GB,en;q=0.5");
+	httpRequestBase.addHeader("Accept-Language", "en-US,en;q=0.8,pt;q=0.6");
 	httpRequestBase.addHeader("X-Requested-With", "XMLHttpRequest");
 	httpRequestBase.addHeader("X-UT-Embed-Error", "true");
 	httpRequestBase.addHeader("Connection", "keep-alive");

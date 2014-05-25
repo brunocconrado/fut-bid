@@ -25,8 +25,14 @@ public class Auth {
     private String serverTime;
 
     private String sessionId;
-    
+
     private Token token;
+
+    private Credentials credentials;
+
+    public Auth(Credentials credentials) {
+	this.credentials = credentials;
+    }
 
     public long getId() {
 	return id;
@@ -124,26 +130,39 @@ public class Auth {
 	this.sessionId = sessionId;
     }
 
+    public String getIpAddress() {
+	return credentials.getIpAddress();
+    }
+
     public Token getToken() {
-        return token;
+	return token;
     }
 
     public void setToken(Token token) {
-        this.token = token;
+	this.token = token;
+    }
+
+    public Credentials getCredentials() {
+	return credentials;
+    }
+
+    public void setCredentials(Credentials credentials) {
+	this.credentials = credentials;
     }
 
     @Override
     public String toString() {
-	return "Auth [id: " + id + ", status: " + status + ", nucleusId: " + nucleusId + ", "
-		+ (email != null ? "email: " + email + ", " : "") + "personId: " + personId + ", "
-		+ (personGamertag != null ? "personGamertag: " + personGamertag + ", " : "")
-		+ (personPlatform != null ? "personPlatform: " + personPlatform + ", " : "")
-		+ (ipPort != null ? "ipPort: " + ipPort + ", " : "")
-		+ (lastOnlineTime != null ? "lastOnlineTime: " + lastOnlineTime + ", " : "")
-		+ (protocol != null ? "protocol: " + protocol + ", " : "")
-		+ (serverTime != null ? "serverTime: " + serverTime + ", " : "")
-		+ (sessionId != null ? "sessionId: " + sessionId + ", " : "")
-		+ (token != null ? "token: " + token : "") + " ]";
+	return super.toString() + " [Auth id=" + id + ", status=" + status + ", nucleusId=" + nucleusId + ", "
+		+ (email != null ? "email=" + email + ", " : "") + "personId=" + personId + ", "
+		+ (personGamertag != null ? "personGamertag=" + personGamertag + ", " : "")
+		+ (personPlatform != null ? "personPlatform=" + personPlatform + ", " : "")
+		+ (ipPort != null ? "ipPort=" + ipPort + ", " : "")
+		+ (lastOnlineTime != null ? "lastOnlineTime=" + lastOnlineTime + ", " : "")
+		+ (protocol != null ? "protocol=" + protocol + ", " : "")
+		+ (serverTime != null ? "serverTime=" + serverTime + ", " : "")
+		+ (sessionId != null ? "sessionId=" + sessionId + ", " : "")
+		+ (token != null ? "token=" + token + ", " : "")
+		+ (credentials != null ? "credentials=" + credentials : "") + "]";
     }
 
 }
